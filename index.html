@@ -1,0 +1,2439 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>计算机组成原理 · 期末复习总览（知识图谱骨架）</title>
+<style>
+  :root{
+    --bg:#f5f6f8;
+    --card:#ffffff;
+    --ink:#1b1f24;
+    --ink-2:#3d4650;
+    --muted:#6b7480;
+    --line:#e3e6ea;
+    --line-2:#eef0f3;
+    --s:#c62828;
+    --s-bg:#fdecea;
+    --a:#d97706;
+    --a-bg:#fef3e2;
+    --b:#2f6ea5;
+    --b-bg:#eaf2fa;
+    --ch1:#5b7c99;
+    --ch2:#8a6bbf;
+    --ch3:#2e8b8b;
+    --ch4:#b0672f;
+    --ch5:#3f7d4e;
+    --ch6:#9c5d7e;
+    --accent:#1f4e79;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+    background:var(--bg);
+    color:var(--ink);
+    line-height:1.75;
+    -webkit-font-smoothing:antialiased;
+  }
+  /* ---------- 顶栏 ---------- */
+  .topbar{
+    position:sticky; top:0; z-index:50;
+    background:rgba(255,255,255,.92);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line);
+    padding:12px 28px;
+    display:flex; align-items:center; gap:16px;
+  }
+  .brand{font-weight:700; font-size:16px; letter-spacing:.3px}
+  .brand span{color:var(--muted); font-weight:400; font-size:13px; margin-left:10px}
+  .topbar .meta{
+    margin-left:auto; display:flex; gap:8px; flex-wrap:wrap;
+  }
+  .chip{
+    font-size:12px; padding:3px 10px; border-radius:999px;
+    background:var(--line-2); color:var(--ink-2); border:1px solid var(--line);
+    white-space:nowrap;
+  }
+  .chip.s{background:var(--s-bg); color:var(--s); border-color:#f6cfcb}
+  .chip.a{background:var(--a-bg); color:var(--a); border-color:#f8ddb4}
+  .chip.b{background:var(--b-bg); color:var(--b); border-color:#cfe0f0}
+
+  /* ---------- 布局 ---------- */
+  .layout{display:flex; align-items:flex-start; max-width:1360px; margin:0 auto}
+  .sidebar{
+    position:sticky; top:57px;
+    width:236px; flex:0 0 236px;
+    height:calc(100vh - 57px);
+    overflow-y:auto;
+    padding:22px 14px 60px 22px;
+    border-right:1px solid var(--line);
+  }
+  .sidebar h4{
+    font-size:11px; letter-spacing:1.4px; color:var(--muted);
+    text-transform:uppercase; margin:0 0 10px 8px; font-weight:600;
+  }
+  .sidebar a{
+    display:block; padding:7px 10px; border-radius:8px;
+    color:var(--ink-2); text-decoration:none; font-size:13.5px;
+    border-left:2px solid transparent;
+  }
+  .sidebar a:hover{background:var(--line-2); color:var(--ink)}
+  .sidebar a.on{background:#eaf1f8; color:var(--accent); font-weight:600; border-left-color:var(--accent)}
+  .sidebar .sub{padding-left:22px; font-size:12.5px; color:var(--muted)}
+
+  main{flex:1; min-width:0; padding:26px 30px 90px}
+  section{scroll-margin-top:70px; margin-bottom:44px}
+
+  /* ---------- 卡片 ---------- */
+  .card{
+    background:var(--card); border:1px solid var(--line);
+    border-radius:14px; padding:22px 24px; margin-bottom:18px;
+  }
+  h2{
+    font-size:21px; margin:0 0 6px; letter-spacing:.2px;
+    display:flex; align-items:center; gap:10px;
+  }
+  h2::before{
+    content:""; width:4px; height:20px; border-radius:2px; background:var(--accent);
+  }
+  .lead{color:var(--muted); font-size:13.5px; margin:0 0 20px}
+  h3{font-size:15.5px; margin:22px 0 10px}
+
+  /* ---------- 概览格 ---------- */
+  .facts{display:grid; grid-template-columns:repeat(auto-fit,minmax(190px,1fr)); gap:12px}
+  .fact{
+    background:var(--card); border:1px solid var(--line); border-radius:12px;
+    padding:14px 16px;
+  }
+  .fact .k{font-size:12px; color:var(--muted); margin-bottom:4px}
+  .fact .v{font-size:19px; font-weight:700; letter-spacing:.3px}
+  .fact .v small{font-size:12px; font-weight:400; color:var(--muted); margin-left:4px}
+
+  /* ---------- 图谱 ---------- */
+  .graphwrap{
+    background:var(--card); border:1px solid var(--line); border-radius:14px;
+    padding:10px 8px 4px; overflow:hidden;
+  }
+  .graph-legend{
+    display:flex; gap:18px; flex-wrap:wrap; justify-content:center;
+    padding:6px 0 14px; font-size:12.5px; color:var(--muted);
+  }
+  .graph-legend i{
+    display:inline-block; width:9px; height:9px; border-radius:50%;
+    margin-right:6px; vertical-align:1px;
+  }
+  svg text{font-family:inherit}
+  .gn{cursor:pointer}
+  .gn:hover rect{filter:brightness(.96)}
+
+  /* ---------- 分级表 ---------- */
+  table{width:100%; border-collapse:collapse; font-size:13.5px}
+  th,td{padding:10px 12px; text-align:left; border-bottom:1px solid var(--line-2); vertical-align:top}
+  th{
+    font-size:12px; color:var(--muted); font-weight:600;
+    background:#fafbfc; border-bottom:1px solid var(--line);
+    position:sticky; top:57px; z-index:5;
+  }
+  tr:last-child td{border-bottom:none}
+  tbody tr:hover{background:#fafbfc}
+  td.c{text-align:center}
+  .lv{font-weight:700; font-size:12.5px; padding:1px 8px; border-radius:6px; white-space:nowrap}
+  .lv.s{background:var(--s-bg); color:var(--s)}
+  .lv.a{background:var(--a-bg); color:var(--a)}
+  .lv.b{background:var(--b-bg); color:var(--b)}
+  .src{color:var(--muted); font-size:12.5px}
+  .tk{color:var(--ink-2); font-size:12.5px; white-space:nowrap}
+  .pts{font-weight:600; color:var(--ink)}
+
+  .filter{
+    display:flex; gap:8px; margin-bottom:14px; flex-wrap:wrap;
+  }
+  .filter button{
+    font:inherit; font-size:13px; cursor:pointer;
+    padding:6px 14px; border-radius:8px;
+    border:1px solid var(--line); background:var(--card); color:var(--ink-2);
+  }
+  .filter button:hover{border-color:#c9d2dc}
+  .filter button.on{background:var(--accent); color:#fff; border-color:var(--accent)}
+
+  /* ---------- 章节主线 ---------- */
+  .chap{
+    background:var(--card); border:1px solid var(--line); border-radius:14px;
+    margin-bottom:14px; overflow:hidden;
+  }
+  .chap header{
+    display:flex; align-items:center; gap:12px;
+    padding:14px 20px; cursor:pointer; user-select:none;
+  }
+  .chap header:hover{background:#fafbfc}
+  .bar{width:4px; height:34px; border-radius:2px; flex:0 0 4px}
+  .chap h3{margin:0; font-size:15px; flex:1}
+  .chap .sub{font-size:12.5px; color:var(--muted); font-weight:400; margin-left:2px}
+  .chap .body{padding:0 20px 18px; display:none}
+  .chap.open .body{display:block}
+  .arrow{color:var(--muted); font-size:12px; transition:transform .18s}
+  .chap.open .arrow{transform:rotate(90deg)}
+  .rows{display:grid; grid-template-columns:82px 1fr; gap:6px 14px; font-size:13.5px; margin:6px 0 0}
+  .rows dt{color:var(--muted); font-size:12.5px; padding-top:2px}
+  .rows dd{margin:0}
+  .kp{display:inline-block; margin:0 6px 6px 0; padding:2px 9px; border-radius:7px; font-size:12.5px; border:1px solid var(--line)}
+  .kp.s{background:var(--s-bg); color:var(--s); border-color:#f6cfcb}
+  .kp.a{background:var(--a-bg); color:var(--a); border-color:#f8ddb4}
+  .kp.b{background:var(--b-bg); color:var(--b); border-color:#cfe0f0}
+
+  /* ---------- 路线图 ---------- */
+  .steps{list-style:none; padding:0; margin:0; counter-reset:st}
+  .steps li{
+    position:relative; padding:0 0 20px 44px; border-left:2px solid var(--line);
+    margin-left:14px;
+  }
+  .steps li:last-child{border-left-color:transparent; padding-bottom:0}
+  .steps li::before{
+    counter-increment:st; content:counter(st);
+    position:absolute; left:-15px; top:0;
+    width:28px; height:28px; border-radius:50%;
+    background:var(--card); border:2px solid var(--accent); color:var(--accent);
+    font-size:12.5px; font-weight:700; display:grid; place-items:center;
+  }
+  .steps b{display:block; font-size:14px; margin-bottom:2px}
+  .steps p{margin:0; font-size:13px; color:var(--muted)}
+
+  /* ---------- 待办 ---------- */
+  .todo{display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:12px}
+  .todo div{
+    border:1px dashed #c8d2dd; border-radius:12px; padding:14px 16px;
+    background:#fbfcfd;
+  }
+  .todo .t{font-weight:600; font-size:14px; margin-bottom:4px}
+  .todo .d{font-size:12.5px; color:var(--muted)}
+  .todo .st{
+    display:inline-block; margin-top:8px; font-size:11.5px; padding:2px 8px;
+    border-radius:6px; background:var(--line-2); color:var(--muted);
+  }
+  .note{
+    background:#fff8e6; border:1px solid #f3e0b0; border-radius:10px;
+    padding:12px 16px; font-size:13px; color:#7a5a12; margin-top:14px;
+  }
+  .note b{color:#5c4409}
+  /* ---------- 基本概念 ---------- */
+  .cg{display:grid; grid-template-columns:repeat(auto-fit,minmax(330px,1fr)); gap:14px}
+  .cbox{
+    background:var(--card); border:1px solid var(--line); border-radius:13px;
+    padding:16px 18px 14px;
+  }
+  .cbox h3{
+    margin:0 0 8px; font-size:14.5px; display:flex; align-items:center; gap:8px;
+  }
+  .cbox .no{
+    display:inline-grid; place-items:center; width:22px; height:22px; flex:0 0 22px;
+    border-radius:6px; background:var(--accent); color:#fff; font-size:12px; font-weight:700;
+  }
+  .cbox p{margin:0 0 8px; font-size:13.4px; color:var(--ink-2)}
+  .cbox ul{margin:0 0 8px; padding-left:19px; font-size:13.4px; color:var(--ink-2)}
+  .cbox li{margin-bottom:4px}
+  .cbox .why{
+    margin:8px 0 0; padding:9px 12px; border-radius:9px;
+    background:#fdf6e8; border-left:3px solid #e0b34d;
+    font-size:12.8px; color:#6b5316;
+  }
+  .cbox .why b{color:#8a6400}
+  .eq{
+    display:inline-block; padding:1px 7px; border-radius:5px;
+    background:#eef2f7; border:1px solid #dbe3ec; color:#1f4e79;
+    font-family:ui-monospace,SFMono-Regular,Consolas,monospace; font-size:12.5px;
+  }
+  /* ---------- 问答窗口 ---------- */
+  .chat{
+    background:#fbfcfd; border:1px solid var(--line); border-radius:14px;
+    padding:16px 16px 12px; margin:14px 0;
+  }
+  .chat .ttl{
+    font-size:12.5px; color:var(--muted); margin-bottom:12px;
+    display:flex; align-items:center; gap:7px;
+  }
+  .chat .ttl::before{
+    content:""; width:6px; height:6px; border-radius:50%; background:#38a169;
+  }
+  .chat .rd{display:none; margin-bottom:10px}
+  .chat .rd.on{display:block; animation:fi .22s ease}
+  @keyframes fi{from{opacity:0; transform:translateY(4px)} to{opacity:1; transform:none}}
+  .bub{
+    max-width:80%; padding:9px 14px; border-radius:14px;
+    font-size:13.3px; margin-bottom:8px; line-height:1.72;
+  }
+  .bub.ask{
+    margin-left:auto; background:#e6eff9; color:#16456b;
+    border-bottom-right-radius:5px; font-weight:600;
+  }
+  .bub.ans{
+    background:#fff; border:1px solid var(--line); border-bottom-left-radius:5px;
+    color:var(--ink-2);
+  }
+  .bub.ans b{color:var(--accent)}
+  .chat .nx{
+    font:inherit; font-size:12.8px; cursor:pointer;
+    padding:6px 14px; border-radius:8px;
+    border:1px dashed #8aa9c4; background:#fff; color:var(--accent);
+  }
+  .chat .nx:hover{background:#f2f7fb}
+  .chat .end{font-size:12.3px; color:var(--muted); display:none}
+  .chat .end.on{display:block}
+
+  /* ---------- 例题与解答 ---------- */
+  .ex{
+    background:var(--card); border:1px solid var(--line); border-radius:14px;
+    padding:20px 22px 18px; margin-bottom:16px;
+  }
+  .ex h3{margin-top:0}
+  .ex .q{
+    background:#f4f7fa; border-left:3px solid var(--accent); border-radius:8px;
+    padding:12px 15px; font-size:13.5px; margin-bottom:14px; color:var(--ink-2);
+    line-height:1.78;
+  }
+  .ex .q em{font-style:normal; color:#fff; background:var(--accent);
+    font-size:11.5px; padding:1px 7px; border-radius:5px; margin-right:8px; font-weight:600}
+  .sol{margin:0 0 10px; padding:0; list-style:none; counter-reset:s2}
+  .sol li{
+    counter-increment:s2; position:relative; padding-left:30px;
+    margin-bottom:9px; font-size:13.4px; color:var(--ink-2); line-height:1.75;
+  }
+  .sol li::before{
+    content:counter(s2); position:absolute; left:0; top:2px;
+    width:20px; height:20px; border-radius:50%; background:#eef2f7;
+    color:var(--accent); font-size:11.5px; font-weight:700;
+    display:grid; place-items:center;
+  }
+  .sol li b{color:var(--ink)}
+  .final{
+    background:#eef7ef; border:1px solid #cfe6d4; border-radius:10px;
+    padding:11px 15px; font-size:13.4px; color:#1f5d33; margin-top:12px; line-height:1.75;
+  }
+  .final b{color:#14532d}
+  .warn{
+    background:#fdecea; border:1px solid #f6cfcb; border-radius:10px;
+    padding:11px 15px; font-size:13.1px; color:#8a2018; margin-top:10px; line-height:1.75;
+  }
+  .warn b{color:#7a1410}
+  .sub2{font-size:12.5px; color:var(--muted); font-weight:400; margin-left:8px; letter-spacing:0}
+
+  @media (max-width:960px){
+    .sidebar{display:none}
+    main{padding:20px 16px 70px}
+    th{position:static}
+    .bub{max-width:92%}
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="brand">计算机组成原理 · 期末复习<span>全套讲义 · 五大章精讲 · v6</span></div>
+  <div class="meta">
+    <span class="chip s">S级 7 项</span>
+    <span class="chip a">A级 8 项</span>
+    <span class="chip b">B级 5 项</span>
+    <span class="chip">画图题 4 道</span>
+  </div>
+</div>
+
+<div class="layout">
+  <aside class="sidebar">
+    <h4>目录</h4>
+    <a href="#overview" class="on">① 考试长什么样</a>
+    <a href="#basics">② 基本概念速查</a>
+    <a href="#graph">③ 知识图谱</a>
+    <a href="#levels">④ 考点分级总表</a>
+    <a href="#chapters">⑤ 六条章主线</a>
+    <a href="#cache">⑥ 第3章 Cache 精讲</a>
+    <a href="#mem">⑦ 存储器扩展精讲</a>
+    <a href="#fp">⑧ 第2章 浮点与 ALU</a>
+    <a href="#acore">⑨ A级考点(1/4/5章)</a>
+    <a href="#plan">⑩ 复习路线</a>
+    <a href="#todo">⑪ 待填充模块</a>
+    <h4 style="margin-top:22px">快速跳转</h4>
+    <a href="#ch3" class="sub">第3章 存储系统（最重）</a>
+    <a href="#ch2" class="sub">第2章 运算方法</a>
+    <a href="#ch5" class="sub">第5章 中央处理机</a>
+  </aside>
+
+  <main>
+
+    <!-- ============ ① 概览 ============ -->
+    <section id="overview">
+      <h2>① 考试长什么样</h2>
+      <p class="lead">以下信息全部来自你的真实作业与老师复习 PPT，不是猜测。</p>
+
+      <div class="facts">
+        <div class="fact"><div class="k">题型（8 份作业一致）</div><div class="v">单选 / 多选 / 填空 / 简答</div></div>
+        <div class="fact"><div class="k">单选占比</div><div class="v">36 ~ 100<small>分</small></div></div>
+        <div class="fact"><div class="k">简答单题</div><div class="v">8 ~ 20<small>分</small></div></div>
+        <div class="fact"><div class="k">简答题总数</div><div class="v">12<small>道已确认</small></div></div>
+        <div class="fact"><div class="k">画图题</div><div class="v">4<small>道 / 约 72 分</small></div></div>
+        <div class="fact"><div class="k">最重的一章</div><div class="v">第3章 存储<small>约 100 分</small></div></div>
+      </div>
+
+      <div class="card" style="margin-top:16px">
+        <h3 style="margin-top:0">三条必须先知道的结论</h3>
+        <ol style="margin:0; padding-left:22px; font-size:13.8px">
+          <li><b>画图题不是背出来的，是画出来的。</b>4 道画图题分别考 74LS181 进位链、8 体交叉存储、74LS138 译码连接图（两道），共约 72 分。这部分单独立章，配 SVG 标准图。</li>
+          <li><b>第 3 章存储系统是绝对重心。</b>IMG5 整份作业 + 大半份 IMG7 都在这一章，Cache 与存储器扩展合计约 100 分。</li>
+          <li><b>作业里没覆盖的四块，老师复习 PPT 全给了例题。</b>性能评价、补码溢出、指令系统设计、CPU 微操作——这四块只能在复习 PPT 与第九/十章作业答案里补，别漏。</li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- ============ ② 基本概念速查 ============ -->
+    <section id="basics">
+      <h2>② 基本概念速查（零基础必读）</h2>
+      <p class="lead">这 10 组概念是<b>所有计算题的地基</b>。它们本身几乎不直接考，但每一个都会决定你后面那道 16~20 分的大题算得对不对。建议先顺着读一遍，遇到不懂的点开下方问答窗口。</p>
+
+      <div class="note" style="margin-bottom:16px">
+        <b>为什么必须先学这一章？</b>举个真实的例子：IMG5 那道 16 分的 Cache 题，第一步是"4MB 主存 → 22 位地址"。这一步用到"1M = 2²⁰""按字节编址"两个概念。这两个概念一错，后面地址怎么分段、命中率怎么算，全部废掉 —— 但老师在复习 PPT 里根本没解释过它们，因为默认你会。
+      </div>
+
+      <div class="cg">
+
+        <div class="cbox">
+          <h3><span class="no">1</span>位 / 字节 / 字：三个长度单位</h3>
+          <ul>
+            <li><b>位（bit，b）</b>：最小单位，1 位存一个 0 或 1。所有容量、地址、位宽最后都落到"位"上。</li>
+            <li><b>字节（Byte，B）</b>：固定 = 8 位。<b>容量和编址</b>的默认单位。</li>
+            <li><b>字（Word）</b>：CPU 一次处理的单位，长度不固定，由机器决定（8/16/32/64 位）。</li>
+          </ul>
+          <p>三者换算：<span class="eq">1 字 = 字长 ÷ 8 字节 = 字长 位</span>。字长 32 位 → 1 字 = 4 字节 = 32 位。</p>
+          <div class="why"><b>影响解题：</b>题目写"每字 32 位"，你要立刻反应成 4 字节。IMG5-13 里"每块 8 字 × 32 位 = 32 字节 = 2⁵"，那个 5 就是块内地址位数。不换算就写不出这 5 位。</div>
+        </div>
+
+        <div class="cbox">
+          <h3><span class="no">2</span>K / M / G 是 2 的幂，不是 1000</h3>
+          <ul>
+            <li><span class="eq">1K = 2¹⁰ = 1024</span>　<span class="eq">1M = 2²⁰</span>　<span class="eq">1G = 2³⁰</span></li>
+            <li>1KB = 2¹⁰ 字节；1MB = 2²⁰ 字节；1GB = 2³⁰ 字节。</li>
+            <li>写芯片容量时"16K×32 位"表示 16K 个存储字、每字 32 位，总容量 = 2¹⁴ × 32 位。</li>
+          </ul>
+          <div class="why"><b>影响解题：</b>2MB = 2 × 2²⁰ = 2²¹ 字节 → 21 位地址。若按 10⁶ 算成 2×10⁶，取对数算地址位数会得到非整数，整题崩。（少数场合如磁盘容量、传输速率用 10 进制，考试默认 2 的幂。）</div>
+        </div>
+
+        <div class="cbox">
+          <h3><span class="no">3</span>编址方式：按字节编址 vs 按字编址 ★最关键</h3>
+          <ul>
+            <li><b>编址单位</b> = 一个地址管多少内容。</li>
+            <li><b>按字节编址</b>：1 个地址 = 1 字节（现代机器通用）。</li>
+            <li><b>按字编址</b>：1 个地址 = 1 个字（可能是 16/32 位）。</li>
+          </ul>
+          <p>核心公式：<span class="eq">地址位数 = log₂(总容量 ÷ 编址单位)</span></p>
+          <p>例：4MB 按字节编址 → 2²¹ ÷ 1 = 2²¹ → <b>21 位</b>；同一块 4MB 按字编址（字长 32 位）→ 2²¹ ÷ 4 = 2¹⁹ → <b>19 位</b>。</p>
+          <div class="why"><b>影响解题：</b>Cache 地址划分、存储器扩展、寻址范围 —— 每一道大题的第一步都是先算总地址位数。这一步错了，后面分段全错，16 分直接归零。</div>
+        </div>
+
+        <div class="cbox">
+          <h3><span class="no">4</span>四种"字长"别混</h3>
+          <ul>
+            <li><b>机器字长</b>：CPU 一次能处理的位数（ALU 宽度、通用寄存器宽度）。</li>
+            <li><b>指令字长</b>：一条指令占多少位。可能等于机器字长，也可能半字长、双字长。</li>
+            <li><b>存储字长</b>：一个存储单元（一个地址）存多少位。</li>
+            <li><b>数据字长</b>：一个数据占多少位。</li>
+          </ul>
+          <div class="why"><b>影响解题：</b>复习 PPT 那道指令系统设计题一开头就说"字长 16 位，存储字长等于指令字长"。这句话的作用是告诉你<b>指令字长 = 16 位</b>，于是操作码 + 地址码总共只能用 16 位 —— 这才有了后面的"位数预算"。</div>
+        </div>
+
+        <div class="cbox">
+          <h3><span class="no">5</span>块 / 行 / 组 / 路 ★Cache 题四个关键词</h3>
+          <ul>
+            <li><b>块（Block）/ 字块</b>：主存与 Cache 之间搬运数据的<b>单位</b>。主存里叫"块"，Cache 里叫"行"，两者大小相同。</li>
+            <li><b>行（Line）</b>：Cache 中存放一个块的物理位置。</li>
+            <li><b>组（Set）</b>：组相联中，若干行组成一组。</li>
+            <li><b>路（Way）</b>：<b>每组内的行数</b>。4 路 = 每组 4 行。</li>
+          </ul>
+          <p><span class="eq">Cache 块数 = Cache 容量 ÷ 块大小</span>　<span class="eq">组数 = 块数 ÷ 路数</span></p>
+          <p>三种映射其实就是"每组几行"的三种极端与折中：<b>直接映射</b> = 每组 1 行（组数 = 块数）；<b>全相联</b> = 全体一组（组数 = 1）；<b>N 路组相联</b> = 每组 N 行。</p>
+          <div class="why"><b>影响解题：</b>直接映射的地址里<b>没有"组地址"这一项</b>（用行号）；全相联的地址里<b>既没有行号也没有组号</b>（只有标记）。地址格式不一样，根源是结构不一样，不是记公式。</div>
+        </div>
+
+        <div class="cbox">
+          <h3><span class="no">6</span>时间链条：时钟周期 → 机器周期 → 指令周期</h3>
+          <ul>
+            <li><b>时钟周期 T</b> = 1/f，CPU 最小节拍。</li>
+            <li><b>机器周期（CPU 周期）</b>：完成一个基本操作的时间，通常由<b>存取周期</b>决定 —— 因为访存最慢。</li>
+            <li><b>指令周期</b>：执行一条指令的全部时间 = 若干机器周期。</li>
+            <li><b>CPI</b>：平均每条指令占几个时钟周期。<b>MIPS</b>：每秒执行多少百万条指令。</li>
+          </ul>
+          <p>三行公式足够应付：<span class="eq">T = 1/f</span>　<span class="eq">MIPS = f ÷ (CPI × 10⁶)</span>　<span class="eq">指令周期 = CPI × T</span></p>
+          <div class="why"><b>影响解题：</b>第九章作业前 4 题全在这条链上。最常见的错法是<b>单位不统一</b>：f 用 MHz、T 却要写 μs、MIPS 里又要除 10⁶。先把单位统一到 Hz 和 s，再代数。</div>
+        </div>
+
+        <div class="cbox">
+          <h3><span class="no">7</span>指令术语：操作码 / 地址码 / 形式地址 / 有效地址</h3>
+          <ul>
+            <li><b>操作码（OP）</b>：这条指令干什么。</li>
+            <li><b>地址码</b>：操作数在哪。</li>
+            <li><b>形式地址（A）</b>：指令里写着的那个数。</li>
+            <li><b>有效地址（EA）</b>：真正拿去访存的地址。<b>寻址方式</b>就是"由 A 算出 EA"的规则。</li>
+          </ul>
+          <div class="why"><b>影响解题：</b>指令字长固定时，<b>操作码和地址码是此消彼长的关系</b> —— 多一种指令、多一个地址字段，就要从别处挤位。这就是"操作码扩展法"的全部原理。</div>
+        </div>
+
+        <div class="cbox">
+          <h3><span class="no">8</span>数制术语：真值 / 机器数 / 四种码</h3>
+          <ul>
+            <li><b>真值</b>：带正负号的真实数值，如 −10101。</li>
+            <li><b>机器数</b>：把符号也变成 0/1 之后的编码。</li>
+            <li><b>原码</b>：符号位 + 绝对值。<b>反码</b>：负数符号位不变、其余取反。<b>补码</b>：反码末位 +1。<b>移码</b>：补码符号位取反。</li>
+          </ul>
+          <p>记忆：<b>正数三码合一</b>（原 = 反 = 补），<b>只有负数才需要变换</b>。</p>
+          <div class="why"><b>影响解题：</b>补码加减（S/A 级）、IEEE754 阶码用移码（S 级）、求表示范围（A 级）—— 三类题都靠这套。特别注意 <b>−2ⁿ 的补码是 1000…0</b>，补码比原码多表示一个负数，这正是"补码整数范围是 −2ⁿ 到 2ⁿ−1"的原因。</div>
+        </div>
+
+        <div class="cbox">
+          <h3><span class="no">9</span>控制器术语：微命令 / 微操作 / 微指令 / 微程序</h3>
+          <ul>
+            <li><b>微命令</b> = 一个控制信号，如 <span class="eq">PCout</span>、<span class="eq">MARin</span>。</li>
+            <li><b>微操作</b> = 一个微命令引起的动作，如 PC→MAR。</li>
+            <li><b>微指令</b> = 同一节拍内并行发出的若干微命令的集合（即一条微指令字）。</li>
+            <li><b>微程序</b> = 完成一条机器指令所需的微指令序列。</li>
+            <li><b>微周期</b> = 执行一条微指令的时间。</li>
+            <li><b>相容性</b>微操作可并行；<b>相斥性</b>微操作不能并行（争用同一部件或同一总线）。</li>
+          </ul>
+          <div class="why"><b>影响解题：</b>写微操作序列时，<b>相斥的绝不能放在同一节拍</b>（都往总线送数就会撞车）；设计微指令格式时，<b>只有相斥类才能编进同一个字段</b>（同一字段一次只能出一个值）。第十章作业 13、14 题专门考这个方向，别弄反。</div>
+        </div>
+
+        <div class="cbox">
+          <h3><span class="no">10</span>存储器扩展术语：位扩展 / 字扩展 / 片选</h3>
+          <ul>
+            <li><b>位扩展</b>：字数够、位数不够 → 多片<b>并行拼位宽</b>，共用地址线和片选。</li>
+            <li><b>字扩展</b>：位数够、字数不够 → 多片<b>分地址段</b>，共用数据线，由译码器分配片选。</li>
+            <li><b>片选（CS/CE）</b>：决定这次访问选中哪一片。</li>
+            <li><b>74LS138</b>：3-8 译码器，3 根输入选出 8 个输出之一，专用于字扩展选址。</li>
+          </ul>
+          <p>芯片数一定拆成两个除法算：<span class="eq">总片数 = (总位数 ÷ 单片位数) × (总字数 ÷ 单片字数)</span></p>
+          <div class="why"><b>影响解题：</b>16K×32 用 4K×8 芯片 → (32÷8) × (16K÷4K) = 4 × 4 = <b>16 片</b>。如果你直接算"总容量 ÷ 单片容量"也能对，但<b>拆开算才知道里面有几组、怎么连线</b> —— 画图题要的正是这个。</div>
+        </div>
+
+      </div>
+
+      <h3 style="margin-top:30px">最容易卡住的三个点｜点开逐层追问</h3>
+      <p class="lead" style="margin-bottom:6px">下面三个窗口是给"看完还是不懂"准备的。点一次按钮追问一层，直到讲透为止。</p>
+
+      <!-- 问答窗口 1 -->
+      <div class="chat">
+        <div class="ttl">问答窗口 01 · 字 / 字节 / 字长</div>
+        <div class="rd on">
+          <div class="bub ask">字和字节到底有什么区别？为什么题目一会儿说字、一会儿说字节？</div>
+          <div class="bub ans"><b>字节是固定的，字是浮动的。</b>1 字节永远是 8 位，全世界统一；而 1 个字有多少位，取决于这台机器 —— 8 位机 1 字 = 8 位，32 位机 1 字 = 32 位。<br>所以题目说"每字 32 位"，其实是在告诉你<b>这台机器 1 个字 = 32 位 = 4 字节</b>。字是"这台机器一次吃得下多少"，字节是"大家约定的计量单位"。</div>
+        </div>
+        <div class="rd">
+          <div class="bub ask">还是有点绕，能不能打个比方？</div>
+          <div class="bub ans">把存储器想成<b>一栋楼</b>：<br>· <b>1 位</b> = 一个电灯开关（开 / 关）<br>· <b>1 字节</b> = 一排 8 个开关，捆绑成最小出租单位<br>· <b>1 个字</b> = 一间房，房里有几个这样的开关排，看楼盘规格（字长）<br>· <b>一个地址</b> = 房间号<br><br>按字节编址 = 每个开关排一个门牌号；按字编址 = 每间房一个门牌号。同一栋楼，门牌号数量当然不一样，这就是地址位数会变的原因。</div>
+        </div>
+        <div class="rd">
+          <div class="bub ask">那做题时我具体该怎么换算？给我一个固定动作。</div>
+          <div class="bub ans">看到"每字 X 位"，立刻做三件事：<br><b>①</b> 把字换成字节：X ÷ 8；<br><b>②</b> 把"每块 N 字"乘上去：N × (X÷8) = 块大小（字节）；<br><b>③</b> 取以 2 为底的对数 = 块内地址位数。<br><br>套 IMG5-13：每字 32 位 → 4 字节；每块 8 字 → 8×4 = 32 字节；32 = 2⁵ → <b>块内地址 5 位</b>。这三步走完，那 16 分里最容易丢的分已经拿到手了。</div>
+        </div>
+        <button class="nx">我还不懂，继续问 →</button>
+        <div class="end">已经问到最底层了。如果还卡，回到上面第 1 组概念重读一遍"1 字 = 字长 ÷ 8 字节"。</div>
+      </div>
+
+      <!-- 问答窗口 2 -->
+      <div class="chat">
+        <div class="ttl">问答窗口 02 · 编址方式与地址位数</div>
+        <div class="rd on">
+          <div class="bub ask">按字节编址和按字编址，到底差在哪里？为什么地址位数会变？</div>
+          <div class="bub ans">差在<b>"一个地址管多少内容"</b>。<br>同一块 4MB 的存储器：<br>· 按字节编址 → 每个地址管 1 字节 → 需要 4M = 2²² 个地址 → <b>22 位</b><br>· 按字编址（字长 32 位）→ 每个地址管 4 字节 → 只需要 1M = 2²⁰ 个地址 → <b>20 位</b><br>门牌号管得多，门牌号就可以少印几位。就这么简单。</div>
+        </div>
+        <div class="rd">
+          <div class="bub ask">那我做题时怎么知道题目是按哪种编址？</div>
+          <div class="bub ans">看三个地方，按顺序找：<br><b>①</b> 题目里直接写了"采用字节编址方式" → 就用它；<br><b>②</b> 只给了"主存容量 4MB"和"每字 32 位"，没提编址 → <b>默认按字节编址</b>（现实机器都这样）；<br><b>③</b> 题目说"存储字长等于指令字长""按字编址" → 按字算。<br><br>复习 PPT 那道 2MB / 每块 8 字 / 每字 32 位的题，就明写了"采用字节编址方式"，所以是 21 位。</div>
+        </div>
+        <div class="rd">
+          <div class="bub ask">万一题目按字节编址，但问的是"第几块"，我中间要做哪一步？</div>
+          <div class="bub ans">要做<b>一次除法转块号</b>：<br><span class="eq">块号 = 字节地址 ÷ 块大小（字节）</span><br>块大小必须是字节数，不能是字数 —— 这里最容易翻车。<br><br>举例：字节地址 0xABCDE、块大小 16 字节 → 块号 = 0xABCDE ÷ 16 = 0xABCB（就是右移 4 位）。这就是 IMG5-14 那题的算法核心：<b>右移块内地址位数，剩下的低位就是行号</b>。</div>
+        </div>
+        <button class="nx">我还不懂，继续问 →</button>
+        <div class="end">核心就一句：地址位数 = log₂(容量 ÷ 编址单位)，块号 = 地址 ÷ 块字节数。</div>
+      </div>
+
+      <!-- 问答窗口 3 -->
+      <div class="chat">
+        <div class="ttl">问答窗口 03 · 块 / 行 / 组 / 路</div>
+        <div class="rd on">
+          <div class="bub ask">块、行、组、路，这四个词老是搞混，怎么分？</div>
+          <div class="bub ans">一句话：<b>块和行是同一个东西的两种叫法，组和路是 Cache 内部的排列方式。</b><br>· 数据从主存搬进 Cache，一份一份地搬，这一份叫<b>块</b>（在主存里）／<b>行</b>（在 Cache 里），大小完全相同；<br>· Cache 里很多行，把它们分组，一组叫<b>组</b>；<br>· 每组里有几行，就叫<b>几路</b>。<br><br>所以"4 路组相联"= 每组 4 行。</div>
+        </div>
+        <div class="rd">
+          <div class="bub ask">那为什么直接映射叫"没有组"，全相联叫"只有一组"？</div>
+          <div class="bub ans">因为这两种其实是"每组几行"的两个极端：<br>· <b>直接映射</b>：每组只放 1 行 → 组数 = 行数，组号就等于行号，所以地址里干脆不叫"组地址"，直接叫"行号"；<br>· <b>全相联</b>：所有行都算一组 → 组数 = 1，只有一组就不需要组号了，地址里只剩"标记 + 块内地址"；<br>· <b>N 路组相联</b>：每组 N 行，既需要组号，也要标记。<br><br>记住这个链条，三种地址格式就不用背了 —— <b>结构决定字段</b>。</div>
+        </div>
+        <div class="rd">
+          <div class="bub ask">给我一个能直接套的算法，别讲原理了。</div>
+          <div class="bub ans"><b>五步走，四个数先算出来：</b><br>① 块大小（字节）= 每块字数 × 每字字节数<br>② 块内地址位数 = log₂(块大小)<br>③ Cache 块数 = Cache 容量 ÷ 块大小<br>④ 组数 = 块数 ÷ 路数 → 组地址位数 = log₂(组数)<br>⑤ 标记位数 = 总地址位数 − 组地址位数 − 块内地址位数<br><br>直接映射就把"路数"当 1 代进去；全相联把"组数"当 1 代进去（组地址位数 = 0）。<b>一套公式打三种映射</b>，不用记三套。</div>
+        </div>
+        <button class="nx">我还不懂，继续问 →</button>
+        <div class="end">这五步在下一节《第3章 Cache》里会用三遍：直接映射、全相联、组相联各一遍。</div>
+      </div>
+
+      <div class="note" style="margin-top:18px">
+        <b>建议动作：</b>读完这一章，先不急着做题，把第 6 组的三个公式（T = 1/f、MIPS = f ÷ (CPI×10⁶)、指令周期 = CPI × T）和第 5 组的五步法抄到一张纸上。整份复习资料里 80% 的计算题都在用这两组东西。
+      </div>
+    </section>
+
+    <!-- ============ ③ 知识图谱 ============ -->
+    <section id="graph">
+      <h2>③ 知识图谱</h2>
+      <p class="lead">点击任一章节节点，跳转到下方对应的章节主线。</p>
+
+      <div class="graphwrap">
+        <div class="graph-legend">
+          <span><i style="background:var(--s)"></i>S 级 必考大题</span>
+          <span><i style="background:var(--a)"></i>A 级 高频计算/简答</span>
+          <span><i style="background:var(--b)"></i>B 级 概念客观题</span>
+          <span><i style="background:#c3cbd4"></i>节点粗边 = 分值最重</span>
+        </div>
+
+        <svg viewBox="0 0 680 660" width="100%" style="max-width:760px; display:block; margin:0 auto" role="img" aria-label="计算机组成原理知识图谱">
+          <defs>
+            <marker id="ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+              <path d="M0,0 L10,5 L0,10 z" fill="#cbd3dc"/>
+            </marker>
+          </defs>
+
+          <!-- 连线 -->
+          <g stroke="#cbd3dc" stroke-width="1.6" fill="none">
+            <path d="M286,280 Q210,262 180,240"/>
+            <path d="M314,248 Q290,175 258,120"/>
+            <path d="M361,246 Q390,175 409,120"/>
+            <path d="M396,285 Q480,262 500,240"/>
+            <path d="M386,336 Q440,375 472,406"/>
+            <path d="M340,358 L340,490"/>
+          </g>
+
+          <!-- 中心 -->
+          <circle cx="340" cy="300" r="58" fill="#1f4e79"/>
+          <text x="340" y="293" text-anchor="middle" fill="#fff" font-size="14" font-weight="700">计组期末</text>
+          <text x="340" y="313" text-anchor="middle" fill="#cfe0f0" font-size="10.5">4 种题型 · 20 考点</text>
+
+          <!-- 第1章 -->
+          <g class="gn" onclick="location.hash='#ch1'">
+            <rect x="52" y="212" width="128" height="56" rx="11" fill="#fff" stroke="#5b7c99" stroke-width="1.6"/>
+            <rect x="52" y="212" width="5" height="56" rx="2.5" fill="#5b7c99"/>
+            <text x="70" y="235" font-size="12.5" font-weight="700" fill="#1b1f24">第1章 概论</text>
+            <text x="70" y="253" font-size="11" fill="#6b7480">性能评价 · 2 考点</text>
+            <circle cx="164" cy="226" r="7.5" fill="#2f6ea5"/>
+            <text x="164" y="230" text-anchor="middle" font-size="9.5" fill="#fff" font-weight="700">A</text>
+          </g>
+
+          <!-- 第2章 -->
+          <g class="gn" onclick="location.hash='#ch2'">
+            <rect x="186" y="64" width="132" height="56" rx="11" fill="#fff" stroke="#8a6bbf" stroke-width="2.6"/>
+            <rect x="186" y="64" width="5" height="56" rx="2.5" fill="#8a6bbf"/>
+            <text x="204" y="87" font-size="12.5" font-weight="700" fill="#1b1f24">第2章 运算方法</text>
+            <text x="204" y="105" font-size="11" fill="#6b7480">浮点 · ALU · 5 考点</text>
+            <circle cx="298" cy="78" r="7.5" fill="#c62828"/>
+            <text x="298" y="82" text-anchor="middle" font-size="9.5" fill="#fff" font-weight="700">S</text>
+          </g>
+
+          <!-- 第3章 -->
+          <g class="gn" onclick="location.hash='#ch3'">
+            <rect x="338" y="64" width="142" height="56" rx="11" fill="#fff" stroke="#2e8b8b" stroke-width="3.6"/>
+            <rect x="338" y="64" width="5" height="56" rx="2.5" fill="#2e8b8b"/>
+            <text x="356" y="87" font-size="12.5" font-weight="700" fill="#1b1f24">第3章 存储系统</text>
+            <text x="356" y="105" font-size="10.5" fill="#c62828" font-weight="600">最重 · 约 100 分</text>
+            <circle cx="462" cy="78" r="7.5" fill="#c62828"/>
+            <text x="462" y="82" text-anchor="middle" font-size="9.5" fill="#fff" font-weight="700">S</text>
+          </g>
+
+          <!-- 第4章 -->
+          <g class="gn" onclick="location.hash='#ch4'">
+            <rect x="500" y="212" width="128" height="56" rx="11" fill="#fff" stroke="#b0672f" stroke-width="1.6"/>
+            <rect x="500" y="212" width="5" height="56" rx="2.5" fill="#b0672f"/>
+            <text x="518" y="235" font-size="12.5" font-weight="700" fill="#1b1f24">第4章 指令系统</text>
+            <text x="518" y="253" font-size="11" fill="#6b7480">设计 · 格式 · 2 考点</text>
+            <circle cx="612" cy="226" r="7.5" fill="#d97706"/>
+            <text x="612" y="230" text-anchor="middle" font-size="9.5" fill="#fff" font-weight="700">A</text>
+          </g>
+
+          <!-- 第5章 -->
+          <g class="gn" onclick="location.hash='#ch5'">
+            <rect x="404" y="404" width="136" height="56" rx="11" fill="#fff" stroke="#3f7d4e" stroke-width="2.6"/>
+            <rect x="404" y="404" width="5" height="56" rx="2.5" fill="#3f7d4e"/>
+            <text x="422" y="427" font-size="12.5" font-weight="700" fill="#1b1f24">第5章 中央处理机</text>
+            <text x="422" y="445" font-size="10.5" fill="#6b7480">微操作 · 微程序 · 5 考点</text>
+            <circle cx="516" cy="418" r="7.5" fill="#d97706"/>
+            <text x="516" y="422" text-anchor="middle" font-size="9.5" fill="#fff" font-weight="700">A</text>
+          </g>
+
+          <!-- 第6章 -->
+          <g class="gn" onclick="location.hash='#ch6'">
+            <rect x="276" y="490" width="128" height="52" rx="11" fill="#fbfcfd" stroke="#9c5d7e" stroke-width="1.2" stroke-dasharray="4 3"/>
+            <rect x="276" y="505" width="5" height="52" rx="2.5" fill="#9c5d7e" opacity=".5"/>
+            <text x="294" y="512" font-size="12.5" font-weight="700" fill="#1b1f24">指令流水线</text>
+            <text x="294" y="529" font-size="10.5" fill="#6b7480">复习 PPT 未涉及</text>
+            <circle cx="388" cy="503" r="7.5" fill="#2f6ea5"/>
+            <text x="388" y="507" text-anchor="middle" font-size="9.5" fill="#fff" font-weight="700">B</text>
+          </g>
+
+          <!-- 地基：第0章基本概念 -->
+          <g class="gn" onclick="location.hash='#basics'">
+            <rect x="56" y="556" width="568" height="42" rx="10" fill="#eef4fa" stroke="#1f4e79" stroke-width="1.3" stroke-dasharray="6 4"/>
+            <text x="340" y="574" text-anchor="middle" font-size="12" font-weight="700" fill="#1f4e79">第 0 章 · 基本概念（术语地基）</text>
+            <text x="340" y="590" text-anchor="middle" font-size="10.5" fill="#5b7c99">位 / 字节 / 字 · 编址方式 · 块·组·路 · 时钟周期 · 微命令 · 位扩展</text>
+          </g>
+
+          <!-- 图注 -->
+          <text x="340" y="628" text-anchor="middle" font-size="10.5" fill="#9aa3ad">节点外圈越粗 = 该章分值越重 · 徽标为该章最高级考点 · 底部虚线为前置地基</text>
+        </svg>
+      </div>
+    </section>
+
+    <!-- ============ ④ 考点分级总表 ============ -->
+    <section id="levels">
+      <h2>④ 考点分级总表</h2>
+      <p class="lead">分级依据：① 在作业 / 复习 PPT 中出现的次数 ② 单题分值 ③ 是否属于画图或综合题。分值列为估计值，仅作优先级参考。</p>
+
+      <div class="filter">
+        <button class="on" data-f="all">全部 20 项</button>
+        <button data-f="s">只看 S 级</button>
+        <button data-f="a">只看 A 级</button>
+        <button data-f="b">只看 B 级</button>
+        <button data-f="draw">只看画图题</button>
+      </div>
+
+      <div class="card" style="padding:0; overflow:hidden">
+        <table id="levelTable">
+          <thead>
+            <tr>
+              <th style="width:44px" class="c">#</th>
+              <th>考点</th>
+              <th style="width:52px" class="c">级</th>
+              <th style="width:190px">出现位置</th>
+              <th style="width:120px">题型</th>
+              <th style="width:78px" class="c">预计分</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr data-lv="s"><td class="c">1</td><td>IEEE754 单精度：十进制 ↔ 32 位</td><td class="c"><span class="lv s">S</span></td><td class="src">IMG1-24/25、复习PPT</td><td class="tk">计算</td><td class="c pts">15</td></tr>
+            <tr data-lv="s"><td class="c">2</td><td>浮点数加减五步法（对阶→尾数→规格化→舍入→溢出）</td><td class="c"><span class="lv s">S</span></td><td class="src">IMG4-28、复习PPT例题</td><td class="tk">计算</td><td class="c pts">20</td></tr>
+            <tr data-lv="s draw"><td class="c">3</td><td>Cache 映射地址划分（直接 / 全相联 / 组相联）</td><td class="c"><span class="lv s">S</span></td><td class="src">IMG5-13/14、复习PPT</td><td class="tk">计算·画图</td><td class="c pts">16</td></tr>
+            <tr data-lv="s"><td class="c">4</td><td>Cache 命中率 / 平均访问时间 / 加速比</td><td class="c"><span class="lv s">S</span></td><td class="src">IMG5-13(3)/15、复习PPT</td><td class="tk">计算</td><td class="c pts">16</td></tr>
+            <tr data-lv="s draw"><td class="c">5</td><td>存储器扩展：芯片数量、地址范围、74LS138 连接图</td><td class="c"><span class="lv s">S</span></td><td class="src">IMG7-19/21、IMG5-16、复习PPT练习1</td><td class="tk">画图</td><td class="c pts">16</td></tr>
+            <tr data-lv="s draw"><td class="c">6</td><td>8 体低位交叉存储器连接与地址分配</td><td class="c"><span class="lv s">S</span></td><td class="src">IMG5-16</td><td class="tk">画图</td><td class="c pts">16</td></tr>
+            <tr data-lv="s draw"><td class="c">7</td><td>ALU 进位链：74LS181 + 74LS182 设计 32 位 ALU</td><td class="c"><span class="lv s">S</span></td><td class="src">IMG4-29、IMG3-1</td><td class="tk">画图·分析</td><td class="c pts">20</td></tr>
+            <tr data-lv="a"><td class="c">8</td><td>CPI / MIPS / 主频 / 指令周期 换算</td><td class="c"><span class="lv a">A</span></td><td class="src">复习PPT、第九章作业1-4</td><td class="tk">计算</td><td class="c pts">8</td></tr>
+            <tr data-lv="a"><td class="c">9</td><td>补码加减运算与溢出判断（双符号位）</td><td class="c"><span class="lv a">A</span></td><td class="src">复习PPT、IMG1 单选</td><td class="tk">计算</td><td class="c pts">8</td></tr>
+            <tr data-lv="a"><td class="c">10</td><td>数据表示范围（无符号 / 原码 / 补码 / 浮点四类边界）</td><td class="c"><span class="lv a">A</span></td><td class="src">复习PPT、IMG1 填空21-23</td><td class="tk">填空</td><td class="c pts">18</td></tr>
+            <tr data-lv="a"><td class="c">11</td><td>DRAM 三种刷新方式的时间计算</td><td class="c"><span class="lv a">A</span></td><td class="src">IMG7-20</td><td class="tk">计算</td><td class="c pts">16</td></tr>
+            <tr data-lv="a"><td class="c">12</td><td>指令系统设计（操作码扩展法）</td><td class="c"><span class="lv a">A</span></td><td class="src">复习PPT综合举例1</td><td class="tk">综合</td><td class="c pts">12</td></tr>
+            <tr data-lv="a"><td class="c">13</td><td>指令格式分析与寻址范围（7 小问）</td><td class="c"><span class="lv a">A</span></td><td class="src">复习PPT（4M×16位题）</td><td class="tk">简答</td><td class="c pts">12</td></tr>
+            <tr data-lv="a"><td class="c">14</td><td>水平型微指令格式设计（相斥类编码、下址位数）</td><td class="c"><span class="lv a">A</span></td><td class="src">复习PPT、第十章作业3/6</td><td class="tk">计算</td><td class="c pts">10</td></tr>
+            <tr data-lv="a"><td class="c">15</td><td>取指 / 执行微操作命令与节拍安排</td><td class="c"><span class="lv a">A</span></td><td class="src">复习PPT节拍表、第九/十章作业</td><td class="tk">简答</td><td class="c pts">12</td></tr>
+            <tr data-lv="b"><td class="c">16</td><td>指令周期 / 机器周期 / 时钟周期 三者关系</td><td class="c"><span class="lv b">B</span></td><td class="src">第九章作业1-3</td><td class="tk">单选·填空</td><td class="c pts">4</td></tr>
+            <tr data-lv="b"><td class="c">17</td><td>组合逻辑控制器 vs 微程序控制器</td><td class="c"><span class="lv b">B</span></td><td class="src">第十章作业7-16</td><td class="tk">单选</td><td class="c pts">4</td></tr>
+            <tr data-lv="b"><td class="c">18</td><td>相容性 / 相斥性微操作、直接编码 vs 字段编码</td><td class="c"><span class="lv b">B</span></td><td class="src">第十章作业12-14</td><td class="tk">单选</td><td class="c pts">4</td></tr>
+            <tr data-lv="b"><td class="c">19</td><td>单总线 CPU 的 ALU 连接方式</td><td class="c"><span class="lv b">B</span></td><td class="src">第九章作业13</td><td class="tk">单选</td><td class="c pts">2</td></tr>
+            <tr data-lv="b"><td class="c">20</td><td>指令流水线（时空图、加速比）</td><td class="c"><span class="lv b">B</span></td><td class="src">仅课件，复习PPT未涉及</td><td class="tk">了解</td><td class="c pts">—</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="note">
+        <b>S 级 7 项，合计约 119 分。</b>如果时间只够攻一块，就攻这 7 项——它们覆盖了全部 4 道画图题和大部分简答题。
+      </div>
+    </section>
+
+    <!-- ============ ⑤ 章主线 ============ -->
+    <section id="chapters">
+      <h2>⑤ 六条章主线</h2>
+      <p class="lead">点开每一章，看到的是「这一章考什么 / 必须背 / 必须会算 / 最容易错」。详细讲义在后续模块里展开。</p>
+
+      <div class="chap" id="ch1">
+        <header>
+          <span class="bar" style="background:var(--ch1)"></span>
+          <h3>第 1 章 计算机系统概论 <span class="sub">性能评价 · 全靠公式换算</span></h3>
+          <span class="arrow">▶</span>
+        </header>
+        <div class="body">
+          <dl class="rows">
+            <dt>这一章考什么</dt>
+            <dd>只有一个核心：<b>主频 f、时钟周期 T、CPI、MIPS、指令周期</b> 五个量之间的换算。复习 PPT 给了两道完整例题，作业第九章前 4 题全是这一族。</dd>
+            <dt>必须背</dt>
+            <dd><span class="kp a">T = 1/f</span><span class="kp a">MIPS = f / (CPI × 10⁶)</span><span class="kp a">指令周期 = CPI × 时钟周期</span><span class="kp a">CPI = Σ(各类指令CPI × 该类占比)</span></dd>
+            <dt>必须会算</dt>
+            <dd>给主频 + 各类指令比例求 MIPS；给 MIPS + 主频反求 CPI；两台机器片内逻辑相同则 CPI 相同，只按主频比缩放速度。</dd>
+            <dt>最容易错</dt>
+            <dd>单位！f 用 Hz、MIPS 用 10⁶ 条/秒、时钟周期常要换算成 μs 或 ns。复习 PPT 里 A 机 8MHz 那题，0.125μs 与 2.5μs 之间就靠单位对齐。</dd>
+          </dl>
+        </div>
+      </div>
+
+      <div class="chap" id="ch2">
+        <header>
+          <span class="bar" style="background:var(--ch2)"></span>
+          <h3>第 2 章 运算方法与运算器 <span class="sub">浮点 + ALU · 3 个 S 级考点在这里</span></h3>
+          <span class="arrow">▶</span>
+        </header>
+        <div class="body">
+          <dl class="rows">
+            <dt>这一章考什么</dt>
+            <dd>三块：<b>①数据表示</b>（原码反码补码移码、各种表示范围）、<b>②IEEE754 与浮点加减</b>、<b>③ALU 内部逻辑与进位链</b>。IMG1 整份作业 + IMG4 两道 20 分大题全在这里。</dd>
+            <dt>必须背</dt>
+            <dd><span class="kp s">IEEE754 单精度：1+8+23，偏置 127</span><span class="kp s">浮点加减五步顺序</span><span class="kp a">[X]补+[Y]补=[X+Y]补 (mod 2ⁿ⁺¹)</span><span class="kp b">移码偏置 128，与原码只差符号位翻转</span></dd>
+            <dt>必须会算</dt>
+            <dd>十进制带小数 ↔ IEEE754 32 位（双向）；浮点加减手算全套（对阶、尾数补码加、左规/右规、0舍1入）；四种表示法的最大/最小正负数。</dd>
+            <dt>最容易错</dt>
+            <dd>①对阶一定<b>小阶向大阶看齐</b>，尾数右移而不是左移；②规格化后阶码要跟着改；③求范围题里"尾数含 1 位符号位"会导致有效位少 1 位，别按 24 位算。</dd>
+          </dl>
+        </div>
+      </div>
+
+      <div class="chap open" id="ch3">
+        <header>
+          <span class="bar" style="background:var(--ch3)"></span>
+          <h3>第 3 章 存储系统 <span class="sub">分值最重 · 两道画图题 · 约 100 分</span></h3>
+          <span class="arrow">▶</span>
+        </header>
+        <div class="body">
+          <dl class="rows">
+            <dt>这一章考什么</dt>
+            <dd>四块：<b>①存储器扩展设计</b>（芯片数、地址范围、74LS138 连接图）、<b>②并行存储</b>（8 体低位交叉）、<b>③Cache 映射与地址划分</b>、<b>④Cache 性能</b>（命中率、平均访问时间、加速比）。另加 DRAM 刷新。</dd>
+            <dt>必须背</dt>
+            <dd><span class="kp s">芯片数 = (总容量 ÷ 单片容量) 分别算位扩展与字扩展</span><span class="kp s">直接映射：标记 = 主存地址位 − 行号位 − 块内位</span><span class="kp a">T<sub>a</sub> = h·t<sub>c</sub> + (1−h)·t<sub>m</sub></span><span class="kp a">e = t<sub>c</sub> / T<sub>a</sub></span><span class="kp a">集中 2ms / 分散 256×2t / 异步 2ms÷256</span></dd>
+            <dt>必须会算</dt>
+            <dd>给定主存容量、Cache 容量、块长、路数 → 画出地址字段各位；给主存地址 → 求它落在 Cache 哪一行；给命中次数与存取周期 → 求 h、T<sub>a</sub>、效率、提升倍数。</dd>
+            <dt>最容易错</dt>
+            <dd>①块长同时涉及"字"和"字节"，块内地址位数要算清（4 字 × 4 字节 = 16B = 4 位）；②组相联时组数 = Cache 块数 ÷ 每组块数，别直接用 Cache 容量；③命中率题里第一次冷启动全部失效，别漏掉。</dd>
+          </dl>
+          <p style="font-size:13.4px;margin:14px 0 0"><a href="#cache" style="color:var(--accent);font-weight:600;text-decoration:none">▶ 完整精讲（5 道例题 + 3 个问答窗口 + 3 张 SVG 图）已写好，点这里进入 ⑥ 第 3 章精讲</a></p>
+          <div class="note"><b>这是唯一建议"先攻"的一章。</b>4 道画图题里有 3 道在这里（存储器扩展两道 + 8 体交叉一道），加上 Cache 映射图，等于整个画图专项的主战场。</div>
+        </div>
+      </div>
+
+      <div class="chap" id="ch4">
+        <header>
+          <span class="bar" style="background:var(--ch4)"></span>
+          <h3>第 4 章 指令系统 <span class="sub">操作码扩展法 · 一题多问</span></h3>
+          <span class="arrow">▶</span>
+        </header>
+        <div class="body">
+          <dl class="rows">
+            <dt>这一章考什么</dt>
+            <dd>复习 PPT 给了两道大题：<b>①按寻址要求设计一套指令系统</b>（操作码扩展技术）、<b>②给机器参数反推指令格式并回答 7 个小问</b>。</dd>
+            <dt>必须背</dt>
+            <dd><span class="kp a">操作码位数 = ⌈log₂n⌉</span><span class="kp a">地址字段位数由寻址空间决定</span><span class="kp a">变址位移量 −64~+63 → 7 位补码</span></dd>
+            <dt>必须会算</dt>
+            <dd>逐层扩展操作码：高层用掉一部分编码，剩余编码再加位扩展出下一层，最后算"还剩多少可用编码"给零地址指令。</dd>
+            <dt>最容易错</dt>
+            <dd>直接寻址空间 128 字 = 7 位地址；但指令字长 16 位时要先扣操作码，剩下的位不够再考虑压缩。复习 PPT 那道题就是靠这个"位数预算"一步步挤出空间。</dd>
+          </dl>
+        </div>
+      </div>
+
+      <div class="chap" id="ch5">
+        <header>
+          <span class="bar" style="background:var(--ch5)"></span>
+          <h3>第 5 章 中央处理机 <span class="sub">数据通路 · 微操作 · 微程序</span></h3>
+          <span class="arrow">▶</span>
+        </header>
+        <div class="body">
+          <dl class="rows">
+            <dt>这一章考什么</dt>
+            <dd>四块：<b>①给指令写全部微操作与控制信号</b>（第九/十章作业主力）、<b>②节拍安排</b>（取指 c1~c10 那张表）、<b>③微指令格式设计</b>（相斥类编码 + 下址字段位数）、<b>④组合逻辑 vs 微程序控制器</b> 概念辨析。</dd>
+            <dt>必须背</dt>
+            <dd><span class="kp a">取指四步：PC→MAR，M→MDR，MDR→IR，PC+1</span><span class="kp a">字段直接编码：每组位数 = ⌈log₂(微命令数+1)⌉</span><span class="kp a">下址字段位数 = ⌈log₂微指令总数⌉</span><span class="kp b">微程序存放在控制存储器（CPU 内部）</span></dd>
+            <dt>必须会算</dt>
+            <dd>给定微命令数与相斥分组 → 算控制字段总位数 → 扣掉测试条件位 → 得下址字段位数 → 得控存容量。</dd>
+            <dt>最容易错</dt>
+            <dd>①每组要<b>额外加一种"不发命令"</b>状态，所以是 ⌈log₂(n+1)⌉ 不是 ⌈log₂n⌉；②相容微操作可并行、相斥微操作不可并行，这个方向别弄反（第十章作业 13、14 题就是专门坑这个）。</dd>
+          </dl>
+        </div>
+      </div>
+
+      <div class="chap" id="ch6">
+        <header>
+          <span class="bar" style="background:var(--ch6); opacity:.6"></span>
+          <h3>指令流水线 <span class="sub">复习 PPT 未涉及 · 只做了解</span></h3>
+          <span class="arrow">▶</span>
+        </header>
+        <div class="body">
+          <dl class="rows">
+            <dt>状态</dt>
+            <dd>文件夹里有《指令流水线原理》课件，但老师复习 PPT 里<b>完全没有出现</b>，作业里也没有对应简答题。判断为低优先级。</dd>
+            <dt>最低要求</dt>
+            <dd>知道流水线的时空图画法、加速比与吞吐率公式、三类相关（结构/数据/控制）及各自解决手段。这部分会放在 B 级作为"看一眼就够"处理。</dd>
+          </dl>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ ⑥ Cache 精讲 ============ -->
+    <section id="cache">
+      <h2>⑥ 第 3 章精讲 · Cache 映射与性能 <span class="sub2">S3 + S4 · 约 35 分</span></h2>
+      <p class="lead">这一节把 5 道真实考题讲完：复习 PPT 的三种映射对比题、IMG5 的三道 16 分题、复习 PPT 的 LRU 加速比题。每道题都按同一套五步法走，走顺了就不怕换参数。</p>
+
+      <div class="card">
+        <h3 style="margin-top:0">开工五步法（每道题都从这里开始）</h3>
+        <ol class="sol" style="counter-reset:s2">
+          <li><b>算总地址位数</b>　<span class="eq">log₂(主存容量 ÷ 编址单位)</span>　字节编址就是 log₂(容量字节数)。这一步错了全盘皆错。</li>
+          <li><b>算块大小（字节）</b>　每块字数 × 每字字节数。这一步最容易栽在"字 → 字节"的换算上。</li>
+          <li><b>块内地址位数</b>　<span class="eq">log₂(块大小)</span>。三种映射里这一项<b>永远相同</b>。</li>
+          <li><b>算 Cache 块数 → 组数</b>　<span class="eq">块数 = Cache 容量 ÷ 块大小</span>，<span class="eq">组数 = 块数 ÷ 路数</span>。</li>
+          <li><b>扣减法求标记</b>　<span class="eq">标记位数 = 总位数 − 组地址位数 − 块内地址位数</span>，最后验算三段相加是否等于总位数。</li>
+        </ol>
+        <div class="note" style="margin-top:4px">三种映射的区别只体现在第 4 步：<b>直接映射</b>把路数当 1（组数 = 块数，此时"组地址"改叫"行号"）；<b>全相联</b>把组数当 1（组地址位数 = 0）；<b>N 路组相联</b>照实算。</div>
+      </div>
+
+      <!-- ======== 例题 1 ======== -->
+      <div class="ex">
+        <h3 style="margin-top:0">例题 1｜三种映射一次性对比 <span class="sub2">复习 PPT 第 30 页原题</span></h3>
+        <div class="q"><em>题目</em>某系统的存储器为 2MB，每字块为 8 个字，每字 32 位，若 Cache 为 16KB，采用字节编址方式。问：(1) 直接映射的主存地址格式？(2) 全相联映射的主存地址格式？(3) 16 路组相联映射的主存地址格式？</div>
+
+        <ol class="sol">
+          <li><b>总地址位数</b>：2MB = 2 × 2²⁰ = 2²¹ 字节，字节编址 → <b>21 位</b>。</li>
+          <li><b>块大小</b>：8 字 × 32 位 = 8 × 4 字节 = 32 字节 = 2⁵ → <b>块内地址 5 位</b>。</li>
+          <li><b>Cache 块数</b>：16KB ÷ 32B = 2¹⁴ ÷ 2⁵ = 2⁹ = <b>512 块</b>。</li>
+          <li><b>分三种情况</b>：
+            <br>· 直接映射：路数 = 1 → 行数 = 512 = 2⁹ → 行号 9 位，标记 = 21 − 9 − 5 = <b>7 位</b>
+            <br>· 全相联：组数 = 1 → 无组号无行号，标记 = 21 − 5 = <b>16 位</b>
+            <br>· 16 路组相联：组数 = 512 ÷ 16 = 32 = 2⁵ → 组号 5 位，标记 = 21 − 5 − 5 = <b>11 位</b>
+          </li>
+          <li><b>验算</b>：7 + 9 + 5 = 21 ✓　16 + 5 = 21 ✓　11 + 5 + 5 = 21 ✓</li>
+        </ol>
+
+        <div style="overflow-x:auto; margin:16px 0 6px">
+          <svg viewBox="0 0 680 400" width="100%" style="max-width:740px;display:block;margin:0 auto" role="img" aria-label="21位地址在三种映射下的字段划分彩带图">
+            <text x="70" y="26" font-size="12.5" font-weight="700" fill="#1b1f24">同一块 2MB 主存 · 21 位地址 · 三种切法</text>
+
+            <text x="70" y="62" font-size="11.5" fill="#6b7480">① 直接映射（每组 1 行，组数 = 块数）</text>
+            <rect x="70" y="72" width="186.7" height="42" fill="#8a6bbf"/>
+            <rect x="256.7" y="72" width="240" height="42" fill="#2e8b8b"/>
+            <rect x="496.7" y="72" width="133.3" height="42" fill="#d97706"/>
+            <text x="163.4" y="98" text-anchor="middle" font-size="12" fill="#fff" font-weight="600">标记 7 位</text>
+            <text x="376.7" y="98" text-anchor="middle" font-size="12" fill="#fff" font-weight="600">行号 9 位</text>
+            <text x="563.4" y="98" text-anchor="middle" font-size="12" fill="#fff" font-weight="600">块内 5 位</text>
+            <text x="70" y="130" font-size="10.5" fill="#9aa3ad">7 + 9 + 5 = 21</text>
+
+            <text x="70" y="162" font-size="11.5" fill="#6b7480">② 全相联（全体一组，无组号）</text>
+            <rect x="70" y="172" width="426.7" height="42" fill="#8a6bbf"/>
+            <rect x="496.7" y="172" width="133.3" height="42" fill="#d97706"/>
+            <text x="283.3" y="198" text-anchor="middle" font-size="12" fill="#fff" font-weight="600">标记 16 位</text>
+            <text x="563.4" y="198" text-anchor="middle" font-size="12" fill="#fff" font-weight="600">块内 5 位</text>
+            <text x="70" y="230" font-size="10.5" fill="#9aa3ad">16 + 5 = 21</text>
+
+            <text x="70" y="262" font-size="11.5" fill="#6b7480">③ 16 路组相联（组数 = 512 ÷ 16 = 32）</text>
+            <rect x="70" y="272" width="293.3" height="42" fill="#8a6bbf"/>
+            <rect x="363.3" y="272" width="133.3" height="42" fill="#2e8b8b"/>
+            <rect x="496.7" y="272" width="133.3" height="42" fill="#d97706"/>
+            <text x="216.7" y="298" text-anchor="middle" font-size="12" fill="#fff" font-weight="600">标记 11 位</text>
+            <text x="430" y="298" text-anchor="middle" font-size="12" fill="#fff" font-weight="600">组号 5 位</text>
+            <text x="563.4" y="298" text-anchor="middle" font-size="12" fill="#fff" font-weight="600">块内 5 位</text>
+            <text x="70" y="330" font-size="10.5" fill="#9aa3ad">11 + 5 + 5 = 21</text>
+
+            <line x1="496.7" y1="60" x2="496.7" y2="340" stroke="#c62828" stroke-width="1.2" stroke-dasharray="4 3"/>
+            <text x="340" y="368" text-anchor="middle" font-size="10.5" fill="#c62828">红色虚线：三种映射的「块内地址」都固定在最末 5 位 —— 因为块大小都是 32B</text>
+            <text x="340" y="386" text-anchor="middle" font-size="10.5" fill="#9aa3ad">紫色 = 标记　青色 = 行号 / 组号　橙色 = 块内地址</text>
+          </svg>
+        </div>
+
+        <div class="final"><b>答：</b>(1) 标记 7 位 | 行号 9 位 | 块内地址 5 位　(2) 标记 16 位 | 块内地址 5 位　(3) 标记 11 位 | 组号 5 位 | 块内地址 5 位</div>
+        <div class="warn"><b>采分点：</b>这题只要求写位数，不要求写含义。三个小题各约 1/3 分。写完一定做第 5 步验算 —— 三段加起来不等于 21 位，直接说明前面某一步错了，能当场自救。</div>
+      </div>
+
+      <!-- ======== 例题 2 ======== -->
+      <div class="ex">
+        <h3 style="margin-top:0">例题 2｜四路组相联 + 命中率 + 加速比 <span class="sub2">IMG5-13 · 16 分</span></h3>
+        <div class="q"><em>题目</em>设某机主存容量为 4MB，Cache 容量为 16KB，每字块有 8 个字，每字 32 位，设计一个四路组相联映射的 Cache 组织。<br>(1) 画出主存地址字段中各段的位数；(2) 设 Cache 的初态为空，CPU 依次从主存第 0,1,2,…,89 号单元读出 90 个字（主存一次读出一个字），重复按此次序读 8 次，问命中率是多少？(3) 若 Cache 的速度是主存的 6 倍，试问有 Cache 和无 Cache 相比，速度约提高多少倍？</div>
+
+        <p style="font-size:13.4px;margin:14px 0 6px;font-weight:600;color:var(--accent)">第 (1) 问：画地址字段</p>
+        <ol class="sol">
+          <li>4MB = 4 × 2²⁰ = 2²² 字节 → <b>22 位</b>（字节编址，题目未特别说明就默认字节编址）。</li>
+          <li>块大小 = 8 字 × 4 字节 = 32B = 2⁵ → <b>块内地址 5 位</b>。</li>
+          <li>Cache 块数 = 16KB ÷ 32B = 2¹⁴ ÷ 2⁵ = 2⁹ = 512 块。</li>
+          <li>四路 → 组数 = 512 ÷ 4 = 128 = 2⁷ → <b>组地址 7 位</b>。</li>
+          <li>标记 = 22 − 7 − 5 = <b>10 位</b>。验算 10 + 7 + 5 = 22 ✓</li>
+        </ol>
+
+        <div style="overflow-x:auto; margin:10px 0 6px">
+          <svg viewBox="0 0 680 200" width="100%" style="max-width:740px;display:block;margin:0 auto" role="img" aria-label="例题2的22位地址字段划分">
+            <text x="70" y="24" font-size="12" font-weight="700" fill="#1b1f24">4MB 主存 · 22 位地址 · 四路组相联（128 组）</text>
+            <rect x="70" y="38" width="254.5" height="42" fill="#8a6bbf"/>
+            <rect x="324.5" y="38" width="178.2" height="42" fill="#2e8b8b"/>
+            <rect x="502.7" y="38" width="127.3" height="42" fill="#d97706"/>
+            <text x="197.3" y="64" text-anchor="middle" font-size="12" fill="#fff" font-weight="600">标记 10 位</text>
+            <text x="413.6" y="64" text-anchor="middle" font-size="12" fill="#fff" font-weight="600">组地址 7 位</text>
+            <text x="566.4" y="64" text-anchor="middle" font-size="12" fill="#fff" font-weight="600">块内 5 位</text>
+            <text x="70" y="96" font-size="10.5" fill="#9aa3ad">10 + 7 + 5 = 22</text>
+            <text x="70" y="122" font-size="11" fill="#6b7480">· 组数 = Cache 块数 512 ÷ 4 路 = 128 = 2⁷ → 组地址 7 位</text>
+            <text x="70" y="142" font-size="11" fill="#6b7480">· 块内 5 位 = 3 位块内字地址（8 字 = 2³）+ 2 位字节地址（4 字节 = 2²）</text>
+            <text x="70" y="162" font-size="11" fill="#6b7480">· 标记 10 位 = 22 − 7 − 5，靠扣减法得到，不要单独去"数"</text>
+            <text x="70" y="184" font-size="10.5" fill="#c62828">注意：块内 5 位里其实含 2 位字节地址，别漏掉「每字 32 位 = 4 字节」这一层</text>
+          </svg>
+        </div>
+
+        <p style="font-size:13.4px;margin:18px 0 6px;font-weight:600;color:var(--accent)">第 (2) 问：命中率</p>
+        <ol class="sol">
+          <li><b>先数块</b>：90 个字 ÷ 每块 8 字 = 11.25 → 跨 <b>12 个块</b>（块 0~块 11，其中块 11 只含字 88、89 两个字）。</li>
+          <li><b>再判冲突</b>：主存块号 mod 128 = 组号。块 0~11 分别落进组 0~11，每组只用 1 路（共 4 路）→ <b>全程不发生冲突替换</b>。</li>
+          <li><b>第 1 遍</b>：每块第一次访问必然失效，共 <b>12 次失效</b>，块内其余 78 次访问命中。</li>
+          <li><b>第 2~8 遍</b>：12 块都还在 Cache 里，<b>全部命中</b>。</li>
+          <li><b>算总账</b>：总访问 = 90 × 8 = 720 次，失效 12 次 → 命中率 = (720 − 12) ÷ 720 = 708 ÷ 720 = <b>98.33%</b>。</li>
+        </ol>
+
+        <p style="font-size:13.4px;margin:18px 0 6px;font-weight:600;color:var(--accent)">第 (3) 问：加速比</p>
+        <ol class="sol">
+          <li><b>设基准</b>：主存存取周期记作 t，则 Cache 周期 = t/6（"Cache 是主存的 6 倍速"）。</li>
+          <li><b>无 Cache</b>：720 次全部访主存 → 总时间 = <b>720t</b>。</li>
+          <li><b>有 Cache</b>：命中 708 次各花 t/6 → 118t；失效 12 次各花 (t + t/6) → 14t；合计 <b>132t</b>。</li>
+          <li><b>加速比</b> = 720t ÷ 132t ≈ <b>5.45 倍</b>。</li>
+        </ol>
+        <div class="final"><b>答：</b>(1) 标记 10 位 | 组地址 7 位 | 块内地址 5 位　(2) 命中率 98.33%　(3) 约提高 5.45 倍</div>
+        <div class="warn"><b>采分点：</b>第 (3) 问的失效时间口径有讲究。本解按「失效时先访 Cache 再访主存」，计 (t + t/6)。若题目或教材规定「块替换时间忽略、失效只计主存访问」，则分母变 118t + 12t = 130t，加速比 ≈ 5.54 倍。<b>答题时把假设写出来，两种都能拿分；不写假设还跟标准答案不一致才扣分。</b></div>
+      </div>
+
+      <!-- ======== 例题 3 ======== -->
+      <div class="ex">
+        <h3 style="margin-top:0">例题 3｜给一个地址，求它落在哪一行 <span class="sub2">IMG5-14 · 16 分</span></h3>
+        <div class="q"><em>题目</em>设主存容量为 1MB，采用直接映射方式的 Cache 容量为 16KB，块长为 4，每字 32 位，试问主存地址为 ABCDE H 的单元在 Cache 中的什么位置？</div>
+
+        <ol class="sol">
+          <li>1MB = 2²⁰ 字节 → <b>20 位</b>地址。</li>
+          <li>块大小 = 4 字 × 4 字节 = 16 字节 = 2⁴ → <b>块内地址 4 位</b>。</li>
+          <li>Cache 行数（直接映射中行数 = 块数）= 16KB ÷ 16B = 2¹⁴ ÷ 2⁴ = 2¹⁰ = <b>1024 行</b> → 行号 10 位。</li>
+          <li>标记 = 20 − 10 − 4 = <b>6 位</b>。验算 6 + 10 + 4 = 20 ✓</li>
+          <li><b>把十六进制展开成二进制再切</b>：ABCDE H = <span class="eq">1010 1011 1100 1101 1110</span>（20 位）。从<b>最低位往高位</b>切：<br>块内 4 位 = 1110 = <b>E H</b>　→　行号 10 位 = 1111001101 = <b>3CD H = 973</b>　→　标记 6 位 = 101010 = <b>2A H</b></li>
+        </ol>
+
+        <div style="overflow-x:auto; margin:12px 0 4px">
+          <svg viewBox="0 0 680 168" width="100%" style="max-width:740px;display:block;margin:0 auto" role="img" aria-label="地址ABCDEH的二十位切分">
+            <text x="70" y="24" font-size="12" font-weight="700" fill="#1b1f24">主存地址 ABCDE H = 1010 1011 1100 1101 1110（20 位）</text>
+            <rect x="70" y="38" width="168" height="42" fill="#8a6bbf"/>
+            <rect x="238" y="38" width="280" height="42" fill="#2e8b8b"/>
+            <rect x="518" y="38" width="112" height="42" fill="#d97706"/>
+            <text x="154" y="64" text-anchor="middle" font-size="12" fill="#fff" font-weight="600">标记 6 位</text>
+            <text x="378" y="64" text-anchor="middle" font-size="12" fill="#fff" font-weight="600">行号 10 位</text>
+            <text x="574" y="64" text-anchor="middle" font-size="12" fill="#fff" font-weight="600">块内 4 位</text>
+            <text x="154" y="100" text-anchor="middle" font-size="11.5" fill="#1b1f24" font-weight="600">101010 = 2A H</text>
+            <text x="378" y="100" text-anchor="middle" font-size="11.5" fill="#1b1f24" font-weight="600">1111001101 = 3CD H = 973</text>
+            <text x="574" y="100" text-anchor="middle" font-size="11.5" fill="#1b1f24" font-weight="600">1110 = E H</text>
+            <text x="70" y="128" font-size="11" fill="#6b7480">切法：从最低位起，先切 4 位块内 → 再切 10 位行号 → 剩下全给标记</text>
+            <text x="70" y="150" font-size="11.5" fill="#1f5d33" font-weight="600">答：落在 Cache 第 973 行（3CD H）的第 E H 个字节</text>
+          </svg>
+        </div>
+
+        <div class="final"><b>答：</b>该单元映射到 Cache 的第 <b>973 行</b>（行号 3CD H），在该行的第 E H 个字节位置；主存标记为 2A H。</div>
+        <div class="warn"><b>关于你作业里的答案：</b>你写的是「3CDEH」。这其实是把「行号 3CD」和「块内 E」连写了 —— <b>结论是对的</b>。更规范的写法是分开写成「行号 3CD H，块内偏移 E H」，避免阅卷老师误读成 3CDE。这题你不需要重做，只需要改写法。</div>
+      </div>
+
+      <!-- ======== 例题 4 ======== -->
+      <div class="ex">
+        <h3 style="margin-top:0">例题 4｜命中率、平均访问时间、效率 <span class="sub2">IMG5-15 · 16 分</span></h3>
+        <div class="q"><em>题目</em>假设 CPU 执行某段程序时共访问 Cache 命中 4800 次，访问主存 200 次，已知 Cache 的存取周期为 30ns，主存为 150ns，求 Cache 的命中率以及 Cache—主存系统的平均访问时间和效率，试问该系统的性能提高了多少？</div>
+
+        <ol class="sol">
+          <li><b>先明确分母</b>：题目里的「访问主存 200 次」指<b>未命中（缺失）次数</b>。总访问次数 = 4800 + 200 = 5000 次。这一步理解错了，命中率会算成 4800/5000 之外的怪数。</li>
+          <li><b>命中率</b> h = 4800 ÷ 5000 = <b>96%</b>。</li>
+          <li><b>平均访问时间</b> T<sub>a</sub> = h·t<sub>c</sub> + (1−h)·t<sub>m</sub> = 0.96 × 30 + 0.04 × 150 = 28.8 + 6 = <b>34.8 ns</b>。</li>
+          <li><b>效率</b> e = t<sub>c</sub> ÷ T<sub>a</sub> = 30 ÷ 34.8 = <b>86.2%</b>。</li>
+          <li><b>性能提高</b> = 不用 Cache 的时间 ÷ 用 Cache 的时间 = t<sub>m</sub> ÷ T<sub>a</sub> = 150 ÷ 34.8 ≈ <b>4.31 倍</b>。</li>
+        </ol>
+        <div class="final"><b>答：</b>命中率 96%，平均访问时间 34.8 ns，效率 86.2%，系统性能约为原来的 4.31 倍（即提高了约 3.31 倍）。</div>
+        <div class="warn"><b>「提高多少倍」的两种问法别混：</b>「提高到 4.31 倍」= 新速度是原来的 4.31 倍；「提高了 3.31 倍」= 增量是原来的 3.31 倍。答题时把语句写完整，避免被扣表述分。</div>
+      </div>
+
+      <!-- ======== 例题 5 ======== -->
+      <div class="ex">
+        <h3 style="margin-top:0">例题 5｜LRU 替换、冷启动与加速比 <span class="sub2">复习 PPT 第 32 页</span></h3>
+        <div class="q"><em>题目</em>计算机系统包含 32K 字的主存，Cache 容量 4K 字，每组 4 块，每块 64 个字。假设 Cache 开始是空的，CPU 顺序从存储单元 0,1,2,…,4351 中读取字，Cache 速度是主存速度的 10 倍，采用 LRU 替换算法，假定块替换的时间忽略不计，计算采用 Cache 后的速度提高多少倍？</div>
+
+        <ol class="sol">
+          <li><b>结构</b>：组数 = 4K ÷ (64 × 4) = 4096 ÷ 256 = <b>16 组</b>；Cache 块数 = 4096 ÷ 64 = <b>64 块</b>；路数 = 4。</li>
+          <li><b>主存地址</b>：32K = 2¹⁵ → 15 位；块内 = log₂64 = 6 位；组号 = log₂16 = 4 位；标记 = 15 − 4 − 6 = <b>5 位</b>。</li>
+          <li><b>数块</b>：4352 个字 ÷ 每块 64 字 = <b>68 个块</b>（块 0~块 67），最后一个块只用了 64 个字中的一小部分也要算一块。</li>
+          <li><b>判失效</b>：程序是<b>顺序单遍</b>读，每块被连续访问 64 次。第一次访问该块时失效并从主存调入，之后 63 次全部命中 → 每块恰好失效 1 次，共 <b>68 次失效</b>，4284 次命中。</li>
+          <li><b>判替换</b>：块号 mod 16 = 组号。组 0~3 各要容纳 5 个块（g、g+16、g+32、g+48、g+64），而只有 4 路 → 这 4 个组各发生 1 次替换；组 4~15 各只装 4 个块，刚好装满、不替换。因为程序是顺序单遍读，被替换掉的块（块 0~3）<b>之后再也不会被访问</b>，所以不会产生额外失效。</li>
+          <li><b>命中率</b> = 1 − 68/4352 = 4284 ÷ 4352 = <b>98.44%</b>（正好等于 63/64）。</li>
+          <li><b>加速比</b>：设 Cache 周期为 S，主存为 10S。无 Cache 时间 = 4352 × 10S = 43520S；有 Cache 时间 = 68 × 10S + 4284 × S = 4964S。<br>加速比 = 43520S ÷ 4964S ≈ <b>8.77 倍</b>。</li>
+        </ol>
+        <div class="final"><b>答：</b>命中率 98.44%，速度约提高 8.77 倍。</div>
+        <div class="warn"><b>这题的关键不是算，是判断。</b>「块替换时间忽略不计」这句话的作用，是允许你把失效只按一次主存访问时间计，不必再叠一次写回或替换开销。看到这句话，第 4、5 步才有意义；没看到这句话就要问清楚替换代价。</div>
+      </div>
+
+      <!-- ======== 问答窗口 ======== -->
+      <h3 style="margin-top:34px">这一章最容易卡住的三个点｜点开逐层追问</h3>
+
+      <div class="chat">
+        <div class="ttl">问答窗口 04 · 为什么第一次访问全部不命中</div>
+        <div class="rd on">
+          <div class="bub ask">为什么例题 2 里第 1 遍读 90 个字会有 12 次不命中，而不是每块只算 1 次、也不是 90 次全都算不命中？</div>
+          <div class="bub ans">因为 <b>Cache 搬运的单位是"块"，不是"字"</b>。<br>CPU 每读一个字，Cache 先查：这个字所在的块在不在？<br>· 不在 → 失效，把<b>整块</b>（8 个字）从主存搬进来。搬进来之后，这块里的 8 个字全都在了，接下来读这块内的其他字就是命中。<br>· 在 → 直接命中。<br><br>所以 90 个字跨 12 块 → 只有 12 次失效，剩下 90 − 12 = 78 次是这个块"顺带"带进来的命中。</div>
+        </div>
+        <div class="rd">
+          <div class="bub ask">那为什么第 2 遍开始就全命中了？中间没有被替换掉吗？</div>
+          <div class="bub ans">因为<b>没有冲突</b>。这块 Cache 有 128 个组、每组 4 路，而这一遍只用到 12 个块。<br>块 0~11 的组号分别是 0~11，<b>每块各自占一个不同的组</b>，每组只占 1 路，还剩 3 路空着。<br>没有任何两块抢同一个组，自然没有任何块被挤出去。<br><br>反过来说：如果这 12 个块都映射到同一个组、而组里只有 4 路，那才会发生替换。所以做命中率题，<b>第二件事永远是判冲突</b>。</div>
+        </div>
+        <div class="rd">
+          <div class="bub ask">那什么情况下第 2 遍会不命中？给我一个判断标准。</div>
+          <div class="bub ans">一句话：<b>看同一个组里要装多少块、够不够装。</b><br>把一个遍历序列里用到的所有主存块，按组号归类：<br>· 每组块数 ≤ 路数 → 一遍装得下，第 2 遍起全命中；<br>· 每组块数 &gt; 路数 → 一定会替换，被替换的块下次访问又失效。<br><br>例题 5 就是第二种：组 0~3 各要装 5 个块（g、g+16、g+32、g+48、g+64），只有 4 路，所以这 4 个组必有替换。<br>但它仍然只失效 68 次 —— 因为程序只跑一遍，被挤出去的块再也用不上了。<b>「装不下」和「会不会重复失败」是两个独立的问题，要分开判。</b></div>
+        </div>
+        <button class="nx">我还不懂，继续问 →</button>
+        <div class="end">记住两句：块是搬运单位（所以失效按块算）；组内容量够不够（决定第二遍是否命中）。</div>
+      </div>
+
+      <div class="chat">
+        <div class="ttl">问答窗口 05 · 块内地址为什么要拆成两层</div>
+        <div class="rd on">
+          <div class="bub ask">例题 2 里块内地址明明是 5 位，为什么又说它是"3 位字地址 + 2 位字节地址"？直接写 5 位不行吗？</div>
+          <div class="bub ans"><b>答题时写 5 位就够，但你要知道这 5 位是怎么来的。</b><br>块内有 8 个字，每个字 4 个字节：<br>· 选第几个字 → 8 个字要 3 位（2³ = 8）<br>· 选字第几个字节 → 4 个字节要 2 位（2² = 4）<br>· 合起来 3 + 2 = 5 位<br><br>这 5 位 = log₂(8 × 4) = log₂32 = 5，一次也算得出来。分两层只是帮你理解结构，不是必须分两段写。</div>
+        </div>
+        <div class="rd">
+          <div class="bub ask">那我什么时候必须分开写？</div>
+          <div class="bub ans">两种情况必须分开：<br><b>①</b> 题目问的是"第几个字"而不是字节地址。比如问"A 地址落在块内第几个字"，你就只用那 3 位，丢掉最后 2 位字节地址。<br><b>②</b> 题目给的块长单位是"字"，但主存容量是"字节"。这时必须先把字换算成字节，再算块内位数 —— 例题 3 的块长 4 字 = 16 字节 = 2⁴ → 4 位，就是走的这条。<br><br>反过来，如果题目直接说"块大小 32 字节"，那 5 位一步就出来了，不用拆。</div>
+        </div>
+        <div class="rd">
+          <div class="bub ask">最容易在这里犯的错是什么？</div>
+          <div class="bub ans">最常见的两个错：<br><b>错法一：把"块长 4 字"当成 4 字节</b> → 块内 2 位，整题崩。每字 32 位 = 4 字节，4 字 = <b>16 字节</b>。<br><b>错法二：忘记按字编址还是字节编址</b> → 例题 3 如果按字编址（1MB / 4 字节 = 2¹⁸ 字），主存地址就是 18 位而不是 20 位，整个切分全变。<br><br>防错动作只有一条：<b>每道题开头先写一行「每字 X 位 = X/8 字节」</b>，把换算固定下来，后面就不会临时算错。</div>
+        </div>
+        <button class="nx">我还不懂，继续问 →</button>
+        <div class="end">核心：块内位数 = log₂(块字节数)；块长给"字"就先乘 4（或字长÷8）化成字节。</div>
+      </div>
+
+      <div class="chat">
+        <div class="ttl">问答窗口 06 · 加速比分母到底该算哪几项</div>
+        <div class="rd on">
+          <div class="bub ask">例题 2 第 (3) 问，失效的那 12 次我到底该算 t + t/6 还是只算 t？为什么两种写法差 5.45 和 5.54？</div>
+          <div class="bub ans">差别就在<b>"失效时要不要付访问 Cache 的那一次时间"</b>。<br>· 物理上真实发生的是：先查 Cache（花 t/6），发现没有，再去访主存（花 t）。所以是 t + t/6。<br>· 但很多教材为了简化，把"查 Cache"和"访主存"合并成一个等效的 t，于是只写 t。<br><br>两种都是教材里的合法口径，差别只有 1.6%，<b>不影响得分，前提是你把假设写明</b>。</div>
+        </div>
+        <div class="rd">
+          <div class="bub ask">那考试时我该选哪种？有没有更保险的写法？</div>
+          <div class="bub ans">有，<b>三步保险写法</b>：<br><b>①</b> 先把文字假设写出来：「设主存存取周期为 t，Cache 周期为 t/6，失效时计 t + t/6」<br><b>②</b> 再列式：T<sub>有</sub> = 708 × t/6 + 12 × (t + t/6) = 132t<br><b>③</b> 最后给结果并补一句：「若按失效只计 t，则为 720/130 ≈ 5.54 倍」<br><br>这样无论标准答案用哪种口径，你的式子都对得上。<b>阅卷时公式分和结果分是分开给的，把式子写清楚比死磕一个数更重要。</b></div>
+        </div>
+        <div class="rd">
+          <div class="bub ask">除了这个，加速比题还有什么通用坑？</div>
+          <div class="bub ans">三个：<br><b>①</b> 分子写错。加速比的分子永远是<b>「不用 Cache 的总时间」</b> = 总访问次数 × 主存周期，不是"总访问次数"本身。<br><b>②</b> 分母漏项。分母要包含<b>全部的</b>命中次数 × Cache 周期 + 全部失效次数 × 失效代价，一项都不能少。<br><b>③</b> 主存周期用错。题目说"Cache 是主存的 6 倍"，意思是主存周期 = 6 × Cache 周期，别反过来写成 Cache = 6 × 主存。例题 2 里如果你设 Cache = 6t，分母会变成 708×6t + …，结果差 36 倍。<br><br>口诀：<b>「倍数看谁快，快的那边除」</b>——Cache 快，所以 Cache 周期 = 主存 ÷ 倍数。</div>
+        </div>
+        <button class="nx">我还不懂，继续问 →</button>
+        <div class="end">加速比 = 无 Cache 总时间 ÷ 有 Cache 总时间；分子只看主存周期，分母按命中/失效分别累加。</div>
+      </div>
+
+      <!-- ======== 采分点清单 ======== -->
+      <div class="card" style="margin-top:26px">
+        <h3 style="margin-top:0">这一章的 9 条采分纪律</h3>
+        <ol class="sol">
+          <li><b>先写「每字 X 位 = X/8 字节」这一行。</b>这行不占分，但能救掉后面每一个 16 分。例题 2、3 都吃这一口。</li>
+          <li><b>总地址位数一定先算，且写明编址方式。</b>题目没说明就当字节编址，并把这句判断写出来。</li>
+          <li><b>块内地址位数用 log₂(块字节数)。</b>块长给的是"字"就先乘 4（或字长 ÷ 8）。</li>
+          <li><b>组数 = Cache 块数 ÷ 路数。</b>绝不能用 Cache 容量 ÷ 路数 —— 中间必须先除块大小。</li>
+          <li><b>标记位数一律用扣减法，写完必验算。</b>三段相加 ≠ 总位数就是前面错了，能当场自救。</li>
+          <li><b>命中率的分母是总访问次数，不是字数、不是块数。</b>例题 2 是 720，例题 5 是 4352。</li>
+          <li><b>加速比要把假设写出来。</b>失效时间算 t 还是 t + t<sub>c</sub>，两种都合法，写明即可。</li>
+          <li><b>映射类型先看清「直接 / 全相联 / N 路」。</b>直接映射答"行号"，全相联只答"标记"，别混着写。题目说"四路"就一定要除 4，不能跳过。</li>
+          <li><b>命中率题第二件事是判冲突。</b>把遍历用到的所有块按组号归类，看每组块数有没有超过路数 —— 这一步决定第 2 遍是否全命中，比算什么数都关键。</li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- ============ ⑦ 第3章精讲：存储器扩展 ============ -->
+    <section id="mem">
+      <h2>⑦ 第 3 章精讲 · 存储器扩展与并行存储 <span class="sub2">S5 + S6 · 两道画图题 · 约 32 分</span></h2>
+      <p class="lead">这是画图题的主战场。5 道例题：74LS138 字扩展、ROM+RAM 混合译码、8 体低位交叉、芯片数量、DRAM 刷新。两张 SVG 图给出标准接线，每道题后面都附连线要点清单。</p>
+
+      <div class="card">
+        <h3 style="margin-top:0">画图题的四步画法（对每一道都适用）</h3>
+        <ol class="sol">
+          <li><b>定片数</b>　<span class="eq">片数 = (总字数 ÷ 单片字数) × (总位数 ÷ 单片位数)</span>。前一个除法是字扩展，后一个是位扩展。</li>
+          <li><b>分地址</b>　低位给片内地址（位数 = log₂ 单片字数），剩下的高位给片选。</li>
+          <li><b>选译码器</b>　剩下的高位要用几根？3 根就用 74LS138，2 根就用 2:4 译码器，1 根直接用某根地址线（或加非门）。</li>
+          <li><b>连线</b>　依次连四组线：<b>地址线</b>（低位并联到所有片）、<b>数据线</b>（并联到所有片）、<b>片选线</b>（译码器输出一对一）、<b>读写线</b>（R/W 或 WE 并联到所有片）。</li>
+        </ol>
+        <div class="note" style="margin-top:4px">看图时按这四组线去数，就不会漏。判卷也是按这四组线给分 —— <b>漏连数据线、漏连读写线是丢分重灾区</b>。</div>
+      </div>
+
+      <!-- ======== 例题 1 ======== -->
+      <div class="ex">
+        <h3 style="margin-top:0">例题 1｜74LS138 字扩展（8 片） <span class="sub2">IMG7-21 · 16 分</span></h3>
+        <div class="q"><em>题目</em>设 CPU 共有 16 根地址线，8 根数据线，并用 MREQ（低电平有效）作访存控制信号，R/W 作读写命令信号（高电平为读，低电平为写）。现有 8K×8 位的 RAM 芯片与 CPU 相连，试回答：(1) 用 74LS138 译码器画出 CPU 与存储芯片的连接图；(2) 写出每片 RAM 的地址范围。</div>
+
+        <ol class="sol">
+          <li><b>定片数</b>：16 根地址线 → 空间 2¹⁶ = 64KB；单片 8K×8。字扩展 64K ÷ 8K = 8 片，位扩展 8 ÷ 8 = 1 → <b>8 片</b>。</li>
+          <li><b>分地址</b>：单片 8K = 2¹³ → 片内地址 <b>A12~A0（13 根）</b>；剩下 <b>A15~A13（3 根）</b> 给片选。</li>
+          <li><b>选译码器</b>：剩 3 根，正好用 <b>74LS138</b>（3-8 译码器），8 个输出对应 8 片。</li>
+          <li><b>连线</b>：A12~A0 并联到 8 片；D7~D0 并联到 8 片；A15A14A13 接 138 的 C、B、A；Y0~Y7 一对一接 8 片的 CS；R/W 并联到 8 片的 WE；MREQ 接 138 的 G2A、G2B，G1 接高电平。</li>
+        </ol>
+
+        <div style="overflow-x:auto; margin:14px 0 4px">
+          <svg viewBox="0 0 680 566" width="100%" style="max-width:760px;display:block;margin:0 auto" role="img" aria-label="74LS138字扩展连接框图">
+            <text x="10" y="20" font-size="12" font-weight="700" fill="#1b1f24">8 片 8K×8 组成 64KB：74LS138 字扩展接线</text>
+
+            <!-- CPU -->
+            <rect x="10" y="208" width="66" height="118" rx="6" fill="#1f4e79"/>
+            <text x="43" y="262" text-anchor="middle" font-size="13" font-weight="700" fill="#fff">CPU</text>
+            <text x="43" y="280" text-anchor="middle" font-size="9" fill="#cfe0f0">16 地址 / 8 数据</text>
+
+            <!-- 三条总线 -->
+            <line x1="76" y1="232" x2="400" y2="232" stroke="#8a6bbf" stroke-width="2.4"/>
+            <line x1="76" y1="266" x2="400" y2="266" stroke="#d97706" stroke-width="2.4"/>
+            <line x1="76" y1="300" x2="400" y2="300" stroke="#2e8b8b" stroke-width="2.4"/>
+            <text x="80" y="226" font-size="10" fill="#8a6bbf" font-weight="600">地址总线 A15~A0（16 根）</text>
+            <text x="80" y="260" font-size="10" fill="#d97706" font-weight="600">数据总线 D7~D0（8 根）</text>
+            <text x="80" y="294" font-size="10" fill="#2e8b8b" font-weight="600">控制总线 MREQ、R/W</text>
+
+            <!-- 74LS138 -->
+            <rect x="196" y="56" width="112" height="104" rx="6" fill="#fff" stroke="#1f4e79" stroke-width="1.8"/>
+            <text x="252" y="86" text-anchor="middle" font-size="12" font-weight="700" fill="#1f4e79">74LS138</text>
+            <text x="252" y="102" text-anchor="middle" font-size="9" fill="#6b7480">3-8 译码器</text>
+            <text x="252" y="140" text-anchor="middle" font-size="9" fill="#9aa3ad">C B A → Y0…Y7</text>
+
+            <!-- A15~A13 输入 -->
+            <line x1="238" y1="232" x2="238" y2="164" stroke="#8a6bbf" stroke-width="1.8"/>
+            <polygon points="238,158 234,168 242,168" fill="#8a6bbf"/>
+            <text x="244" y="200" font-size="9.5" fill="#8a6bbf">A15 A14 A13 → C B A</text>
+
+            <!-- MREQ 输入 -->
+            <line x1="212" y1="300" x2="212" y2="164" stroke="#2e8b8b" stroke-width="1.8"/>
+            <polygon points="212,158 208,168 216,168" fill="#2e8b8b"/>
+            <text x="168" y="250" font-size="9.5" fill="#2e8b8b">MREQ</text>
+
+            <!-- G1 接 +5V -->
+            <line x1="296" y1="56" x2="296" y2="40" stroke="#2e8b8b" stroke-width="1.6"/>
+            <polygon points="296,34 292,44 300,44" fill="#2e8b8b"/>
+            <text x="302" y="42" font-size="9.5" fill="#2e8b8b">+5V</text>
+
+            <!-- Y0~Y7 输出与片选分配线 -->
+            <line x1="308" y1="108" x2="340" y2="108" stroke="#c62828" stroke-width="2"/>
+            <text x="308" y="100" font-size="9.5" fill="#c62828" font-weight="600">Y0~Y7</text>
+            <line x1="340" y1="38" x2="340" y2="504" stroke="#c62828" stroke-width="1.6"/>
+
+            <!-- 地址/数据/读写 并联线 -->
+            <line x1="400" y1="232" x2="400" y2="488" stroke="#6b7480" stroke-width="1.6"/>
+
+            <!-- 8 片 RAM -->
+            <g id="chips">
+              <rect x="442" y="22" width="228" height="48" rx="5" fill="#f4f7fa" stroke="#2e8b8b" stroke-width="1.3"/>
+              <text x="452" y="42" font-size="10.5" font-weight="700" fill="#1b1f24">RAM0　8K×8</text>
+              <text x="452" y="60" font-size="9" fill="#6b7480">0000H–1FFFH　CS←Y0</text>
+
+              <rect x="442" y="84" width="228" height="48" rx="5" fill="#f4f7fa" stroke="#2e8b8b" stroke-width="1.3"/>
+              <text x="452" y="104" font-size="10.5" font-weight="700" fill="#1b1f24">RAM1　8K×8</text>
+              <text x="452" y="122" font-size="9" fill="#6b7480">2000H–3FFFH　CS←Y1</text>
+
+              <rect x="442" y="146" width="228" height="48" rx="5" fill="#f4f7fa" stroke="#2e8b8b" stroke-width="1.3"/>
+              <text x="452" y="166" font-size="10.5" font-weight="700" fill="#1b1f24">RAM2　8K×8</text>
+              <text x="452" y="184" font-size="9" fill="#6b7480">4000H–5FFFH　CS←Y2</text>
+
+              <rect x="442" y="208" width="228" height="48" rx="5" fill="#f4f7fa" stroke="#2e8b8b" stroke-width="1.3"/>
+              <text x="452" y="228" font-size="10.5" font-weight="700" fill="#1b1f24">RAM3　8K×8</text>
+              <text x="452" y="246" font-size="9" fill="#6b7480">6000H–7FFFH　CS←Y3</text>
+
+              <rect x="442" y="270" width="228" height="48" rx="5" fill="#f4f7fa" stroke="#2e8b8b" stroke-width="1.3"/>
+              <text x="452" y="290" font-size="10.5" font-weight="700" fill="#1b1f24">RAM4　8K×8</text>
+              <text x="452" y="308" font-size="9" fill="#6b7480">8000H–9FFFH　CS←Y4</text>
+
+              <rect x="442" y="332" width="228" height="48" rx="5" fill="#f4f7fa" stroke="#2e8b8b" stroke-width="1.3"/>
+              <text x="452" y="352" font-size="10.5" font-weight="700" fill="#1b1f24">RAM5　8K×8</text>
+              <text x="452" y="370" font-size="9" fill="#6b7480">A000H–BFFFH　CS←Y5</text>
+
+              <rect x="442" y="394" width="228" height="48" rx="5" fill="#f4f7fa" stroke="#2e8b8b" stroke-width="1.3"/>
+              <text x="452" y="414" font-size="10.5" font-weight="700" fill="#1b1f24">RAM6　8K×8</text>
+              <text x="452" y="432" font-size="9" fill="#6b7480">C000H–DFFFH　CS←Y6</text>
+
+              <rect x="442" y="456" width="228" height="48" rx="5" fill="#f4f7fa" stroke="#2e8b8b" stroke-width="1.3"/>
+              <text x="452" y="476" font-size="10.5" font-weight="700" fill="#1b1f24">RAM7　8K×8</text>
+              <text x="452" y="494" font-size="9" fill="#6b7480">E000H–FFFFH　CS←Y7</text>
+            </g>
+
+            <!-- 片选箭头 + 并联箭头 -->
+            <g stroke="#c62828" stroke-width="1.4" fill="#c62828">
+              <line x1="340" y1="38" x2="440" y2="38"/><polygon points="442,38 432,34 432,42"/>
+              <line x1="340" y1="100" x2="440" y2="100"/><polygon points="442,100 432,96 432,104"/>
+              <line x1="340" y1="162" x2="440" y2="162"/><polygon points="442,162 432,158 432,166"/>
+              <line x1="340" y1="224" x2="440" y2="224"/><polygon points="442,224 432,220 432,228"/>
+              <line x1="340" y1="286" x2="440" y2="286"/><polygon points="442,286 432,282 432,290"/>
+              <line x1="340" y1="348" x2="440" y2="348"/><polygon points="442,348 432,344 432,352"/>
+              <line x1="340" y1="410" x2="440" y2="410"/><polygon points="442,410 432,406 432,414"/>
+              <line x1="340" y1="472" x2="440" y2="472"/><polygon points="442,472 432,468 432,476"/>
+            </g>
+            <g stroke="#6b7480" stroke-width="1.4" fill="#6b7480">
+              <line x1="400" y1="54" x2="440" y2="54"/><polygon points="442,54 432,50 432,58"/>
+              <line x1="400" y1="116" x2="440" y2="116"/><polygon points="442,116 432,112 432,120"/>
+              <line x1="400" y1="178" x2="440" y2="178"/><polygon points="442,178 432,174 432,182"/>
+              <line x1="400" y1="240" x2="440" y2="240"/><polygon points="442,240 432,236 432,244"/>
+              <line x1="400" y1="302" x2="440" y2="302"/><polygon points="442,302 432,298 432,306"/>
+              <line x1="400" y1="364" x2="440" y2="364"/><polygon points="442,364 432,360 432,368"/>
+              <line x1="400" y1="426" x2="440" y2="426"/><polygon points="442,426 432,422 432,434"/>
+              <line x1="400" y1="488" x2="440" y2="488"/><polygon points="442,488 432,484 432,492"/>
+            </g>
+
+            <!-- 图注 -->
+            <text x="10" y="526" font-size="9.5" fill="#c62828">红色：Y0~Y7 一对一接各片 CS</text>
+            <text x="10" y="542" font-size="9.5" fill="#6b7480">灰色：A12~A0（13 根）+ D7~D0 + WE←R/W 并联到全部 8 片</text>
+            <text x="10" y="558" font-size="9.5" fill="#9aa3ad">紫 = 地址　橙 = 数据　青 = 控制</text>
+          </svg>
+        </div>
+
+        <p style="font-size:13.4px;margin:16px 0 6px;font-weight:600;color:var(--accent)">第 (2) 问：每片的地址范围</p>
+        <p style="font-size:13.2px;color:var(--ink-2);margin:0 0 8px">每片 8KB = 2000H。从 0000H 开始，每片递增 2000H，依次排到 FFFFH 正好 8 片、64KB。片 i 的高三位 A15A14A13 就等于 i 的二进制。</p>
+        <div style="overflow-x:auto">
+          <table style="font-size:13px">
+            <thead><tr><th style="width:80px">芯片</th><th style="width:170px">地址范围</th><th style="width:120px">A15A14A13</th><th>片选</th></tr></thead>
+            <tbody>
+              <tr><td>RAM0</td><td><b>0000H – 1FFFH</b></td><td>000</td><td>Y0</td></tr>
+              <tr><td>RAM1</td><td><b>2000H – 3FFFH</b></td><td>001</td><td>Y1</td></tr>
+              <tr><td>RAM2</td><td><b>4000H – 5FFFH</b></td><td>010</td><td>Y2</td></tr>
+              <tr><td>RAM3</td><td><b>6000H – 7FFFH</b></td><td>011</td><td>Y3</td></tr>
+              <tr><td>RAM4</td><td><b>8000H – 9FFFH</b></td><td>100</td><td>Y4</td></tr>
+              <tr><td>RAM5</td><td><b>A000H – BFFFH</b></td><td>101</td><td>Y5</td></tr>
+              <tr><td>RAM6</td><td><b>C000H – DFFFH</b></td><td>110</td><td>Y6</td></tr>
+              <tr><td>RAM7</td><td><b>E000H – FFFFH</b></td><td>111</td><td>Y7</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="warn"><b>为什么 MREQ 要接 G2A、G2B 而不是随便接？</b>74LS138 的 G1 高有效、G2A 与 G2B 低有效。把低有效的 MREQ 接到两个低有效的使能端，这样只在这条指令确实要访存（MREQ = 0）时译码器才工作，否则 8 片全不选中，避免误写。G1 接 +5V 恒为高。<b>这一步是采分点，很多答案漏掉使能端连接。</b></div>
+      </div>
+
+      <!-- ======== 例题 2 ======== -->
+      <div class="ex">
+        <h3 style="margin-top:0">例题 2｜ROM + RAM 混合，两种译码方案 <span class="sub2">复习 PPT 课堂练习 1</span></h3>
+        <div class="q"><em>题目</em>设某 CPU 地址总线 16 根，数据总线 16 根。ROM 区为 0000H–3FFFH，RAM 区起始地址为 6000H、容量 24K×16 位。现有 16K×16 位 ROM 芯片、8K×16 位 RAM 芯片。求：(1) 所需 8K×16 位 RAM 芯片的个数？(2) 分析每个芯片的地址范围并说明译码方案。(3) 画出存储器组成逻辑框图。</div>
+
+        <ol class="sol">
+          <li><b>算片数</b>：ROM 区 4000H = 16KB → 16K×16 ÷ 16K×16 = <b>1 片 ROM</b>；RAM 24K×16 ÷ 8K×16 = <b>3 片 RAM</b>（位宽都是 16，只做字扩展）。</li>
+          <li><b>算地址范围</b>：每片 8KB = 2000H，从 6000H 起连续排 3 片。</li>
+          <li><b>归纳高位</b>：把每个区的起始地址写成二进制，取前 3 位 A15A14A13 —— 这就是译码的依据。</li>
+        </ol>
+
+        <div style="overflow-x:auto;margin:10px 0">
+          <table style="font-size:13px">
+            <thead><tr><th style="width:90px">区域</th><th style="width:170px">地址范围</th><th style="width:190px">起始地址二进制</th><th>A15A14A13</th></tr></thead>
+            <tbody>
+              <tr><td>ROM</td><td><b>0000H – 3FFFH</b></td><td>00 00 0000 0000 0000</td><td>000 或 001</td></tr>
+              <tr><td>RAM1</td><td><b>6000H – 7FFFH</b></td><td>011 0 0000 0000 0000</td><td>011</td></tr>
+              <tr><td>RAM2</td><td><b>8000H – 9FFFH</b></td><td>100 0 0000 0000 0000</td><td>100</td></tr>
+              <tr><td>RAM3</td><td><b>A000H – BFFFH</b></td><td>101 0 0000 0000 0000</td><td>101</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="warn" style="background:#fff8e6;border-color:#f3e0b0;color:#7a5a12"><b>这里有个陷阱：</b>ROM 区 0000H–3FFFH 跨了两个 8K 段（000 段和 001 段），因为它是 16K 而译码器一个输出只管 8K。所以 ROM 的片选需要 <b>Y0 和 Y1 两个输出合并</b>（用或门/异或门），不能只接 Y0。这是本题最容易漏的地方。</div>
+
+        <p style="font-size:13.4px;margin:16px 0 6px;font-weight:600;color:var(--accent)">两种译码方案（考试任选其一，都对）</p>
+        <div class="cg" style="grid-template-columns:repeat(auto-fit,minmax(300px,1fr))">
+          <div class="cbox" style="border-color:#cfe0f0">
+            <h3 style="margin-bottom:6px"><span class="no" style="background:#2f6ea5">1</span>方案一：3:8 译码器（A15A14A13）</h3>
+            <ul style="margin-bottom:6px">
+              <li>用 A15、A14、A13 接 3:8 译码器的 C、B、A</li>
+              <li><b>Y0 与 Y1 相或</b> → ROM 的片选（覆盖 000 与 001 两段）</li>
+              <li><b>Y3</b> → RAM1（6000–7FFF）</li>
+              <li><b>Y4</b> → RAM2（8000–9FFF）</li>
+              <li><b>Y5</b> → RAM3（A000–BFFF）</li>
+              <li>Y2、Y6、Y7 空置不用</li>
+            </ul>
+            <div class="why"><b>优点：</b>一路译码搞定，片选信号干净，不依赖 A13 参与再判断。<b>本题首选。</b></div>
+          </div>
+          <div class="cbox" style="border-color:#cfe0f0">
+            <h3 style="margin-bottom:6px"><span class="no" style="background:#2f6ea5">2</span>方案二：2:4 译码器（A15A14）</h3>
+            <ul style="margin-bottom:6px">
+              <li>用 A15、A14 接 2:4 译码器</li>
+              <li><b>Y0</b> → ROM 片选（A14A15 = 00 恰好就是 16K 的 ROM 区）</li>
+              <li>Y1 = 0 且 <b>A13 = 1</b> → RAM1（011 段）</li>
+              <li>Y2 = 0 且 <b>A13 = 0</b> → RAM2（100 段）</li>
+              <li>Y2 = 0 且 <b>A13 = 1</b> → RAM3（101 段）</li>
+              <li>Y1 = 0 且 A13 = 0（010 段）空置</li>
+            </ul>
+            <div class="why"><b>注意：</b>这个方案里 A13 要单独参与组合，是"译码器 + 地址线"混合选片，多用了门电路，但也是标准答案之一。</div>
+          </div>
+        </div>
+        <div class="final"><b>答：</b>RAM 需 <b>3 片</b> 8K×16、ROM 需 1 片 16K×16。地址范围：ROM 0000H–3FFFH，RAM1 6000H–7FFFH，RAM2 8000H–9FFFH，RAM3 A000H–BFFFH。译码方案如上，二者任一均可。</div>
+      </div>
+
+      <!-- ======== 例题 3 ======== -->
+      <div class="ex">
+        <h3 style="margin-top:0">例题 3｜64KB 的 8 体低位交叉存储 <span class="sub2">IMG5-16 · 16 分</span></h3>
+        <div class="q"><em>题目</em>设 CPU 共有 16 根地址线，8 根数据线，并用 M/IO（高电平为访存，低电平为 I/O）、WR（低电平有效）为写命令、RD（低电平有效）为读命令。设计一个容量为 64KB 的采用低位交叉编址的 8 体并行结构存储器。现有存储器芯片和 138 译码器。画出 CPU 和存储器芯片（芯片容量自定）的连接图，并写出每个存储芯片的地址范围。</div>
+
+        <ol class="sol">
+          <li><b>定容量与片数</b>：总容量 64KB，8 体 → <b>每体 8KB</b>。数据线 8 根 → 字长 8 位。选 8K×8 芯片 → <b>每体 1 片，共 8 片</b>。</li>
+          <li><b>分地址（低位交叉的关键）</b>：8 个体需要 3 位体号，<b>低位交叉把体号放在最低 3 位 A2A1A0</b>；剩下的 A15~A3 共 13 位是体内地址，正好对应每体 8K = 2¹³。</li>
+          <li><b>连线</b>：A2A1A0 接 74LS138 的 C、B、A，Y0~Y7 一对一接 8 片的 CS；A15~A3 并联到 8 片的片内地址端；D7~D0 并联；WR、RD 及 M/IO 接各片的读写控制。</li>
+          <li><b>写地址范围</b>：因为体号取最低 3 位，<b>每体的地址是"跳着"的</b> —— 体 i 包含所有低 3 位等于 i 的地址。</li>
+        </ol>
+
+        <div style="overflow-x:auto; margin:14px 0 4px">
+          <svg viewBox="0 0 680 316" width="100%" style="max-width:760px;display:block;margin:0 auto" role="img" aria-label="低位交叉与高位交叉的地址字段对比">
+            <text x="10" y="20" font-size="12" font-weight="700" fill="#1b1f24">同样是 8 体 64KB，体号放低位还是高位，结果完全不同</text>
+
+            <text x="70" y="46" font-size="11" fill="#6b7480">① 低位交叉编址（体号 = A2~A0，本题采用）</text>
+            <rect x="70" y="54" width="455" height="44" fill="#2e8b8b"/>
+            <rect x="525" y="54" width="105" height="44" fill="#c62828"/>
+            <text x="297" y="82" text-anchor="middle" font-size="11.5" fill="#fff" font-weight="600">体内地址 A15~A3（13 位）</text>
+            <text x="577" y="82" text-anchor="middle" font-size="10" fill="#fff" font-weight="600">体号 A2~A0</text>
+            <text x="70" y="116" font-size="10.5" fill="#1f5d33">连续地址轮流落到 8 个体 → 可并行预取，带宽提升约 8 倍</text>
+
+            <text x="70" y="150" font-size="11" fill="#6b7480">② 高位交叉编址（体号 = A15~A13，对比用）</text>
+            <rect x="70" y="158" width="105" height="44" fill="#c62828"/>
+            <rect x="175" y="158" width="455" height="44" fill="#2e8b8b"/>
+            <text x="122" y="186" text-anchor="middle" font-size="9.5" fill="#fff" font-weight="600">体号 A15~A13</text>
+            <text x="402" y="186" text-anchor="middle" font-size="11.5" fill="#fff" font-weight="600">体内地址 A12~A0（13 位）</text>
+            <text x="70" y="220" font-size="10.5" fill="#8a2018">连续地址全部落在同一个体 → 连续访问永远撞一体，无法并行</text>
+
+            <line x1="70" y1="238" x2="630" y2="238" stroke="#e3e6ea" stroke-width="1"/>
+            <text x="70" y="258" font-size="10.5" fill="#6b7480" font-weight="600">同一块 64KB 存储器的地址分配对比：</text>
+            <text x="70" y="276" font-size="10" fill="#1f5d33">低位：体0 = 0000H / 0008H / 0010H … FFF8H　体1 = 0001H / 0009H … FFF9H　（交错）</text>
+            <text x="70" y="294" font-size="10" fill="#8a2018">高位：体0 = 0000H–1FFFH　体1 = 2000H–3FFFH　体2 = 4000H–5FFFH …　（连续成段）</text>
+            <text x="70" y="310" font-size="9.5" fill="#9aa3ad">口诀：低位交叉「跳绳」，高位交叉「切段」</text>
+          </svg>
+        </div>
+
+        <p style="font-size:13.4px;margin:16px 0 6px;font-weight:600;color:var(--accent)">各芯片地址范围（低位交叉，8 行都要写）</p>
+        <div style="overflow-x:auto">
+          <table style="font-size:12.8px">
+            <thead><tr><th style="width:70px">体</th><th style="width:120px">体号 A2A1A0</th><th>地址序列（列举首、次、末）</th><th style="width:90px">容量</th></tr></thead>
+            <tbody>
+              <tr><td>体0</td><td>000</td><td>0000H, 0008H, 0010H, …, <b>FFF8H</b></td><td>8K 个</td></tr>
+              <tr><td>体1</td><td>001</td><td>0001H, 0009H, 0011H, …, <b>FFF9H</b></td><td>8K 个</td></tr>
+              <tr><td>体2</td><td>010</td><td>0002H, 000AH, 0012H, …, <b>FFFAH</b></td><td>8K 个</td></tr>
+              <tr><td>体3</td><td>011</td><td>0003H, 000BH, 0013H, …, <b>FFFBH</b></td><td>8K 个</td></tr>
+              <tr><td>体4</td><td>100</td><td>0004H, 000CH, 0014H, …, <b>FFFCH</b></td><td>8K 个</td></tr>
+              <tr><td>体5</td><td>101</td><td>0005H, 000DH, 0015H, …, <b>FFFDH</b></td><td>8K 个</td></tr>
+              <tr><td>体6</td><td>110</td><td>0006H, 000EH, 0016H, …, <b>FFFEH</b></td><td>8K 个</td></tr>
+              <tr><td>体7</td><td>111</td><td>0007H, 000FH, 0017H, …, <b>FFFFH</b></td><td>8K 个</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="warn"><b>如果不想写这么长，还有一个等价的答法：</b>每片芯片的地址范围都写作 <b>0000H–FFFFH</b>，但注明"芯片 i 只响应 A2A1A0 = i 的地址，即每 8 个地址中取 1 个"。这个写法在多数教材里同样给满分，因为低位交叉的本质就是"地址交错"。<b>两种写法选一种，不要混着写。</b></div>
+        <div class="warn" style="background:#fdecea;border-color:#f6cfcb;color:#8a2018"><b>画图最容易丢分的两点：</b>① 把 A15~A13 接译码器（那是高位交叉的接法，直接判错）；② 忘了把 M/IO 参与片选使能 —— 本题 M/IO 高电平为访存，必须让它参与，否则 I/O 操作会误选存储芯片。</div>
+      </div>
+
+      <!-- ======== 例题 4 ======== -->
+      <div class="ex">
+        <h3 style="margin-top:0">例题 4｜芯片数量计算（6 种芯片）<span class="sub2">IMG7-19</span></h3>
+        <div class="q"><em>题目</em>某存储器容量为 16K×32 位，分别用 1K×4、2K×8、4K×4、16K×1、4K×8、8K×8 六种芯片构成，各需多少片？</div>
+        <ol class="sol">
+          <li><b>套公式</b>：<span class="eq">片数 = (16K ÷ 单片字数) × (32 ÷ 单片位数)</span>。前半是字扩展倍数，后半是位扩展倍数。</li>
+          <li>逐个代入，得到下表。</li>
+        </ol>
+        <div style="overflow-x:auto;margin:10px 0">
+          <table style="font-size:13px">
+            <thead><tr><th style="width:110px">芯片型号</th><th style="width:150px">字扩展 16K÷?</th><th style="width:150px">位扩展 32÷?</th><th>片数</th></tr></thead>
+            <tbody>
+              <tr><td>1K×4</td><td>16K ÷ 1K = 16</td><td>32 ÷ 4 = 8</td><td><b>128 片</b></td></tr>
+              <tr><td>2K×8</td><td>16K ÷ 2K = 8</td><td>32 ÷ 8 = 4</td><td><b>32 片</b></td></tr>
+              <tr><td>4K×4</td><td>16K ÷ 4K = 4</td><td>32 ÷ 4 = 8</td><td><b>32 片</b></td></tr>
+              <tr><td>16K×1</td><td>16K ÷ 16K = 1</td><td>32 ÷ 1 = 32</td><td><b>32 片</b></td></tr>
+              <tr><td>4K×8</td><td>16K ÷ 4K = 4</td><td>32 ÷ 8 = 4</td><td><b>16 片</b></td></tr>
+              <tr><td>8K×8</td><td>16K ÷ 8K = 2</td><td>32 ÷ 8 = 4</td><td><b>8 片</b></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="final"><b>答：</b>依次为 128、32、32、32、16、8 片。这与你作业里的手写答案完全一致。</div>
+        <div class="warn"><b>这题的真正用途：</b>它不只考乘法。算完之后要能回答"这片数是几组几位"—— 比如 1K×4 要 128 片，就是 <b>16 组字扩展 × 8 片位扩展</b>：16 组由 4 根地址线经译码器选，8 片位扩展共用同一组地址与片选、并联拼成 32 位数据。画图题的第一步就是这个拆分。</div>
+      </div>
+
+      <!-- ======== 例题 5 ======== -->
+      <div class="ex">
+        <h3 style="margin-top:0">例题 5｜DRAM 三种刷新方式 <span class="sub2">IMG7-20 · 16 分</span></h3>
+        <div class="q"><em>题目</em>一个 8K×8 位的动态 RAM 芯片，其内部结构排列成 256×256 形式，存取周期为 0.1μs。试问采用集中刷新、分散刷新和异步刷新三种方式的刷新间隔各为多少？（假设刷新周期为 2ms）</div>
+
+        <ol class="sol">
+          <li><b>先看懂"256×256"</b>：内部是 256 行 × 256 列，DRAM 按<b>行</b>刷新 → 一共要刷 <b>256 次</b>，每次刷一行，每次占一个存取周期 0.1μs。</li>
+          <li><b>集中刷新</b>：在一个刷新周期 2ms 内，把这 256 次集中在一段时间里做完，占 256 × 0.1μs = <b>25.6μs</b>（这段时间叫"死区"，不能读写）。其余时间全部给读写。<br>→ <b>刷新间隔 = 2ms</b></li>
+          <li><b>分散刷新</b>：每完成一次读写（0.1μs）就紧接着刷一行（0.1μs），一轮 = 0.2μs。刷完 256 行需要 256 × 0.2μs = <b>51.2μs</b>。<br>→ <b>刷新间隔 = 51.2μs</b>（无死区，但系统存取周期被拉长成 0.2μs，整体变慢）</li>
+          <li><b>异步刷新</b>：把 256 次刷新<b>均匀分散</b>在 2ms 里，每两行之间隔 2ms ÷ 256。<br>→ <b>刷新间隔 = 2000μs ÷ 256 ≈ 7.8μs</b>（每次只死 0.1μs，死区被摊薄）</li>
+        </ol>
+        <div class="final"><b>答：</b>集中刷新间隔 <b>2ms</b>；分散刷新间隔 <b>51.2μs</b>；异步刷新间隔约 <b>7.8μs</b>。</div>
+        <div class="warn"><b>你作业里写的是"集中 2ms / 分散 51.2μs / 异步 2ms"，第三问错了。</b>异步刷新的要点是"把刷新<b>均匀撒开</b>"，所以间隔必须是 2ms ÷ 256，不是 2ms。可以这样记：<b>集中 = 攒着一次干完（间隔最长）；分散 = 干一次活刷一行（间隔 51.2μs）；异步 = 均匀撒开（间隔 2ms/行数）</b>。异步是集中与分散的折中，间隔必然介于两者之间。</div>
+      </div>
+
+      <!-- ======== 问答窗口 ======== -->
+      <h3 style="margin-top:34px">这一章最容易卡住的两个点｜点开逐层追问</h3>
+
+      <div class="chat">
+        <div class="ttl">问答窗口 07 · 位扩展和字扩展怎么分</div>
+        <div class="rd on">
+          <div class="bub ask">位扩展和字扩展我一直分不清，题目给个芯片让我组存储器，我怎么知道是哪种？</div>
+          <div class="bub ans">看<b>数据线宽度</b>就知道。<br>· 芯片的"位数"（如 8K×<b>8</b> 里的 8）比 CPU 数据线窄 → 必须<b>位扩展</b>，几片并联拼出更宽的数据。<br>· 芯片的"字数"（如 <b>8K</b>×8 里的 8K）不够总容量 → 必须<b>字扩展</b>，多片分管不同地址段。<br>· 两个都不够 → 两种一起做。<br><br>例题 1 里 CPU 是 8 根数据线、芯片也是 8 位 → 位扩展倍数是 1，只做字扩展。例题 4 里 16K×32 用 1K×4 芯片 → 两个都不够，所以 128 片 = 16 组 × 8 片。</div>
+        </div>
+        <div class="rd">
+          <div class="bub ask">两种扩展在连线上有什么区别？画图时怎么体现？</div>
+          <div class="bub ans">连线差别很大，这是判卷的重点：<br><b>位扩展（并联拼宽）</b>：几片<b>共用同一组地址线、共用同一个片选</b>，但每片只贡献数据线的一段。<br>例：两片 8K×4 拼成 8K×8 → 两片地址都接 A12~A0，两片 CS 连在一起，第一片接 D0~D3，第二片接 D4~D7。<br><br><b>字扩展（分管地址段）</b>：几片<b>共用同一组数据线</b>，但地址高位经译码器分别给片选。<br>例：例题 1 的 8 片 → 8 片都接 D7~D0、都接 A12~A0，但 CS 分别接 Y0~Y7。<br><br>口诀：<b>位扩展「同址同选、分数据」；字扩展「同数据、分片选」。</b></div>
+        </div>
+        <div class="rd">
+          <div class="bub ask">那都有的时候，画图的顺序是什么？</div>
+          <div class="bub ans">先画位、再画字，从内往外画：<br><b>①</b> 先把同一组内并联的那几片画成一个"位扩展小单元"（共用地址、共片选、分数据线）；<br><b>②</b> 再把这个小单元当成一片，画字扩展（译码器输出接每个小单元的片选）；<br><b>③</b> 最后补三根共用线：片内地址线、数据线、读写控制线。<br><br>例题 4 的 1K×4 芯片就是：每 8 片拼成 1K×32（位扩展），再 16 组分管 16K 地址（字扩展）。画图上就是 8 个竖排芯片组成一列，共 16 列。</div>
+        </div>
+        <button class="nx">我还不懂，继续问 →</button>
+        <div class="end">一句话：位扩展看数据线窄不窄，字扩展看容量够不够；同址同选分数据是位扩展，同数据分片选是字扩展。</div>
+      </div>
+
+      <div class="chat">
+        <div class="ttl">问答窗口 08 · 低位交叉为什么能提速</div>
+        <div class="rd on">
+          <div class="bub ask">为什么低位交叉能并行提速，高位交叉就不能？明明都是 8 个体。</div>
+          <div class="bub ans">关键在于 <b>CPU 访问地址是连续的</b>。<br>· <b>低位交叉</b>：体号由最低 3 位决定。地址 0 在体0、地址 1 在体1、地址 2 在体2……<b>连续地址自动分到不同体</b>，所以 8 个体可以同时各读一个字，一次凑出 8 个字。<br>· <b>高位交叉</b>：体号由最高 3 位决定。地址 0~1FFFH 全在体0、2000H~3FFFH 全在体1……<b>连续地址一直待在同一个体</b>，另外 7 个体全在空闲。<br><br>所以：<b>低位交叉是"轮流用"，高位交叉是"分块用"</b>。程序局部性好、地址连续，自然吃低位交叉的便宜。</div>
+        </div>
+        <div class="rd">
+          <div class="bub ask">那高位交叉还有什么用？听起来一无是处。</div>
+          <div class="bub ans">有用，用途完全不同：<b>扩容，而不是提速。</b><br>· 高位交叉的意义是"用多个便宜的体拼出大容量"，比如 8 个体拼 64KB，访问时只用一个体，其他体闲置 —— 它解决的是<b>容量</b>问题。<br>· 低位交叉解决的是<b>带宽</b>问题，容量和单体差不多，但连续访问快 8 倍。<br><br>还有一点：低位交叉要求 8 个体<b>同时启动、时序严格同步</b>，硬件成本高；高位交叉各体独立，实现简单。所以实际的存储系统常用低位交叉做"多体并行"，用高位交叉做"存储扩展"。</div>
+        </div>
+        <div class="rd">
+          <div class="bub ask">做题时怎么一眼看出该用哪种？地址范围怎么写才不会被扣分？</div>
+          <div class="bub ans"><b>看题目关键词</b>：<br>· 出现"低位交叉编址""并行""交叉存储""带宽" → 低位交叉，体号在 <b>A2A1A0</b>；<br>· 出现"高位交叉""顺序编址" → 体号在 <b>A15A13</b>。<br>· 只说"8 体并行结构存储器" → 一般指低位交叉（因为并行的目的是提速）。<br><br><b>地址范围的两种合法写法</b>：<br>① 交错写法：体 i 写作「i, i+8, i+16, …, FFF8+i」；<br>② 全覆盖写法：每体都写 0000H–FFFFH，并注明"只响应 A2A1A0 = i"。<br>两种都对，但<b>千万别写成 0000H–1FFFH 这种连续段</b> —— 那是高位交叉，一看就错。</div>
+        </div>
+        <button class="nx">我还不懂，继续问 →</button>
+        <div class="end">记忆锚点：低位交叉「跳绳」（跳着取址、轮流用体）；高位交叉「切段」（一段一个体、拼容量）。</div>
+      </div>
+
+      <!-- ======== 采分点清单 ======== -->
+      <div class="card" style="margin-top:26px">
+        <h3 style="margin-top:0">这一章的 8 条采分纪律</h3>
+        <ol class="sol">
+          <li><b>片数一定拆成两个除法写。</b>只写一个总数，阅卷看不出你是字扩展还是位扩展，画图分容易连带丢。</li>
+          <li><b>片内地址位数 = log₂(单片字数)。</b>用 8K 芯片就是 13 位（A12~A0），不是 8 位。</li>
+          <li><b>译码器的使能端必须连。</b>MREQ / M/IO 接 G2A、G2B，G1 接高电平。漏这一步是常见失分点。</li>
+          <li><b>四组线一组不能少。</b>片内地址线并联、数据线并联、片选线一对一连译码器输出、读写线并联。缺任何一组读图题就拿不到满分。</li>
+          <li><b>ROM 跨段要合并片选。</b>16K 的 ROM 面对 8K 的译码输出，必须用 Y0 或 Y1，不能只接 Y0。</li>
+          <li><b>低位交叉的体号一定在最低位。</b>写 A2A1A0 接译码器；接成 A15A13 就等于答成了高位交叉，实质错误。</li>
+          <li><b>低位交叉的地址范围写成"跳着"的。</b>每体写「i, i+8, …, FFF8+i」，或统一写 0000H–FFFFH 并注明只响应低 3 位等于 i。</li>
+          <li><b>DRAM 刷新的间隔三种三个数，别混。</b>集中 = 刷新周期本身；分散 = 行数 × 2 × 存取周期；异步 = 刷新周期 ÷ 行数。</li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- ============ ⑧ 第2章精讲 ============ -->
+    <section id="fp">
+      <h2>⑧ 第 2 章精讲 · 浮点表示、浮点加减与 ALU <span class="sub2">S1 + S2 + S7 · 约 55 分</span></h2>
+      <p class="lead">这一章是全卷最集中的 S 级考点聚集地：IEEE754 双向转换、浮点加减五步法、ALU 进位链（最后一道画图题）。另外补上 A 级的补码溢出与数据表示范围。</p>
+
+      <!-- ======== 例题 1 ======== -->
+      <div class="ex">
+        <h3 style="margin-top:0">例题 1｜十进制 → IEEE754 32 位 <span class="sub2">IMG1-24 + 复习 PPT 例2</span></h3>
+        <div class="q"><em>题目</em>(1) 将十进制数 <b>5</b> 转换成 IEEE754 标准的 32 位二进制数存储内容。(2) 将十进制数 <b>20.59375</b> 转换成 32 位 IEEE754 格式的二进制内容。</div>
+
+        <p style="font-size:13.4px;margin:14px 0 8px;font-weight:600;color:var(--accent)">先记住这条"三刀切"格式</p>
+        <div style="overflow-x:auto; margin:8px 0 10px">
+          <svg viewBox="0 0 680 236" width="100%" style="max-width:740px;display:block;margin:0 auto" role="img" aria-label="IEEE754单精度32位格式与两个实例">
+            <text x="10" y="20" font-size="12" font-weight="700" fill="#1b1f24">IEEE754 单精度：1 + 8 + 23 = 32 位</text>
+
+            <text x="70" y="46" font-size="10.5" fill="#6b7480">格式</text>
+            <rect x="70" y="54" width="17.5" height="40" fill="#c62828"/>
+            <rect x="87.5" y="54" width="140" height="40" fill="#8a6bbf"/>
+            <rect x="227.5" y="54" width="402.5" height="40" fill="#2e8b8b"/>
+            <text x="122" y="48" font-size="9.5" fill="#c62828">S</text>
+            <text x="157.5" y="79" text-anchor="middle" font-size="11.5" fill="#fff" font-weight="600">阶码 E（8 位，偏置 127）</text>
+            <text x="428" y="79" text-anchor="middle" font-size="11.5" fill="#fff" font-weight="600">尾数 M（23 位，隐含最高位 1）</text>
+            <text x="70" y="110" font-size="9.5" fill="#9aa3ad">S = 0 正、1 负　｜　E = e + 127　｜　真值 = (−1)^S × 1.M × 2^(E−127)</text>
+
+            <line x1="70" y1="122" x2="630" y2="122" stroke="#e3e6ea" stroke-width="1"/>
+
+            <text x="70" y="144" font-size="10.5" fill="#6b7480">例：5 = 1.01 × 2²　→　e=2, E=129, M=0100…</text>
+            <rect x="70" y="152" width="17.5" height="34" fill="#c62828"/>
+            <rect x="87.5" y="152" width="140" height="34" fill="#8a6bbf"/>
+            <rect x="227.5" y="152" width="402.5" height="34" fill="#2e8b8b"/>
+            <text x="78" y="174" text-anchor="middle" font-size="10" fill="#fff" font-weight="700">0</text>
+            <text x="157.5" y="174" text-anchor="middle" font-size="11" fill="#fff" font-weight="600">10000001</text>
+            <text x="428" y="174" text-anchor="middle" font-size="11" fill="#fff" font-weight="600">01000000000000000000000</text>
+            <text x="70" y="204" font-size="10.5" fill="#1f5d33" font-weight="600">= 0100 0000 1010 0000 … 0000 = 40A00000H</text>
+
+            <text x="70" y="228" font-size="10.5" fill="#8a2018">20.59375 = 10100.10011 = 1.010010011 × 2⁴ → E=131 → 41A4C000H</text>
+          </svg>
+        </div>
+
+        <ol class="sol">
+          <li><b>化成二进制小数</b>：5 = 101B；20.59375 = 10100.10011B（0.59375 = 1/2 + 1/16 + 1/32）。</li>
+          <li><b>规格化成 1.M 形式</b>：5 = 1.01 × 2²　→　e = 2；20.59375 = 1.010010011 × 2⁴　→　e = 4。</li>
+          <li><b>求阶码 E = e + 127</b>：E = 2 + 127 = <b>129 = 10000001</b>；E = 4 + 127 = <b>131 = 10000011</b>。</li>
+          <li><b>取尾数 M（去掉前导的那个 1，不足 23 位补 0）</b>：M = 0100000…（23 位）；M = 010010011 后补 0 到 23 位。</li>
+          <li><b>拼成 32 位、按 4 位一组写成十六进制</b>。</li>
+        </ol>
+        <div class="final"><b>答：</b>(1) 5 → <span class="eq">0 10000001 01000000000000000000000</span> = <b>40A00000H</b><br>(2) 20.59375 → <span class="eq">0 10000011 01001001100000000000000</span> = <b>41A4C000H</b></div>
+        <div class="warn"><b>你作业 IMG1-24 写的是「0100 0000 0000 0000 …」，错在阶码。</b>5 = 1.01 × 2²，阶码必须是 129 = 10000001，你写成了 00000000（相当于 e = −127）。这题答案是 <b>40A00000H</b>。<br>自查方法：算出 E 立刻检查它是否在 1~254 之间、且等于 e+127。阶码全 0 或全 1 是特殊值（0 和无穷大），正常数绝不会出现。</div>
+      </div>
+
+      <!-- ======== 例题 2 ======== -->
+      <div class="ex">
+        <h3 style="margin-top:0">例题 2｜IEEE754 → 十进制（反向） <span class="sub2">IMG1-25</span></h3>
+        <div class="q"><em>题目</em>若浮点数 X 的 IEEE754 标准的 32 位二进制数存储内容为 (C2540000)₁₆，求其对应的浮点数的十进制值。</div>
+        <ol class="sol">
+          <li><b>展开成二进制</b>：C2540000H = <span class="eq">1100 0010 0101 0100 0000 0000 0000 0000</span></li>
+          <li><b>切三段</b>：S = <b>1</b>（负数）；E = <span class="eq">10000100</span> = 132；M = <span class="eq">1010100…</span></li>
+          <li><b>求真实阶码</b>：e = E − 127 = 132 − 127 = <b>5</b>。</li>
+          <li><b>还原尾数</b>：加上隐含的 1 → 1.M = <span class="eq">1.10101</span>₂ = 1 + 1/2 + 1/8 + 1/32 = <b>1.65625</b>。</li>
+          <li><b>乘起来</b>：1.65625 × 2⁵ = 1.65625 × 32 = <b>53</b>，S = 1 → <b>−53</b>。</li>
+        </ol>
+        <div class="final"><b>答：</b>X = <b>−53</b>。这题你作业里答对了。</div>
+        <div class="warn"><b>反向题最容易漏的两步：</b>① 忘了给尾数补回隐含的 1（写成 0.10101 就差一倍）；② 忘了 E 要减 127。这两步走完再乘，基本不会错。</div>
+      </div>
+
+      <!-- ======== 例题 3 ======== -->
+      <div class="ex">
+        <h3 style="margin-top:0">例题 3｜浮点加减五步法完整演示 <span class="sub2">复习 PPT 例1 · 最有代表性</span></h3>
+        <div class="q"><em>题目</em>设 x = 2<sup>010</sup> × 0.11011011，y = 2<sup>100</sup> × (−0.10101100)，求 x + y。<br>（格式约定：阶码 5 位 = 2 位符号 + 3 位数值；尾数 10 位 = 2 位符号 + 8 位小数。中间运算时尾数临时扩展到 2 位符号 + 10 位小数。）</div>
+
+        <div style="overflow-x:auto; margin:10px 0 12px">
+          <svg viewBox="0 0 680 232" width="100%" style="max-width:760px;display:block;margin:0 auto" role="img" aria-label="浮点数加减运算五步流程图">
+            <text x="10" y="20" font-size="12" font-weight="700" fill="#1b1f24">浮点加减运算的五步流程（顺序不能换）</text>
+
+            <rect x="14" y="42" width="112" height="58" rx="8" fill="#8a6bbf"/>
+            <text x="70" y="66" text-anchor="middle" font-size="12" font-weight="700" fill="#fff">1 对阶</text>
+            <text x="70" y="86" text-anchor="middle" font-size="9.5" fill="#e8e0f5">小阶向大阶看齐</text>
+
+            <rect x="146" y="42" width="112" height="58" rx="8" fill="#2e8b8b"/>
+            <text x="202" y="66" text-anchor="middle" font-size="12" font-weight="700" fill="#fff">2 尾数加减</text>
+            <text x="202" y="86" text-anchor="middle" font-size="9.5" fill="#d6eeee">用补码做定点运算</text>
+
+            <rect x="278" y="42" width="112" height="58" rx="8" fill="#d97706"/>
+            <text x="334" y="66" text-anchor="middle" font-size="12" font-weight="700" fill="#fff">3 规格化</text>
+            <text x="334" y="86" text-anchor="middle" font-size="9.5" fill="#fbe8cd">左规 / 右规</text>
+
+            <rect x="410" y="42" width="112" height="58" rx="8" fill="#5b7c99"/>
+            <text x="466" y="66" text-anchor="middle" font-size="12" font-weight="700" fill="#fff">4 舍入</text>
+            <text x="466" y="86" text-anchor="middle" font-size="9.5" fill="#dbe5ee">0 舍 1 入</text>
+
+            <rect x="542" y="42" width="112" height="58" rx="8" fill="#c62828"/>
+            <text x="598" y="66" text-anchor="middle" font-size="12" font-weight="700" fill="#fff">5 溢出判断</text>
+            <text x="598" y="86" text-anchor="middle" font-size="9.5" fill="#f8d7d5">看阶码双符号</text>
+
+            <g stroke="#9aa3ad" stroke-width="1.5" fill="#9aa3ad">
+              <line x1="126" y1="71" x2="142" y2="71"/><polygon points="146,71 138,67 138,75"/>
+              <line x1="258" y1="71" x2="274" y2="71"/><polygon points="278,71 270,67 270,75"/>
+              <line x1="390" y1="71" x2="406" y2="71"/><polygon points="410,71 402,67 402,75"/>
+              <line x1="522" y1="71" x2="538" y2="71"/><polygon points="542,71 534,67 534,75"/>
+            </g>
+
+            <path d="M334,100 L334,118 L70,118 L70,100" fill="none" stroke="#d97706" stroke-width="1.3" stroke-dasharray="4 3"/>
+            <text x="200" y="134" text-anchor="middle" font-size="9.5" fill="#d97706">若规格化时发生了「右规」（尾数溢出），阶码要 +1，此时要回到第 5 步复查溢出</text>
+
+            <line x1="14" y1="150" x2="666" y2="150" stroke="#e3e6ea" stroke-width="1"/>
+
+            <text x="14" y="172" font-size="10" fill="#6b7480"><tspan font-weight="700" fill="#8a6bbf">① 对阶</tspan>　固定「小阶向大阶看齐」：阶小的那个数，尾数右移、阶码加大，直到两边阶码相同。</text>
+            <text x="14" y="190" font-size="10" fill="#6b7480"><tspan font-weight="700" fill="#2e8b8b">② 尾数</tspan>　按定点补码加减法算，注意双符号位（00 或 11）。</text>
+            <text x="14" y="208" font-size="10" fill="#6b7480"><tspan font-weight="700" fill="#d97706">③ 规格化</tspan>　补码规格化 = 符号位与最高数值位相反（正数 0.1…、负数 1.0…）。不满足就左规；尾数进位溢出（01/10）就右规。</text>
+            <text x="14" y="226" font-size="10" fill="#6b7480"><tspan font-weight="700" fill="#5b7c99">④ 舍入</tspan>　右规和对阶时被移出的低位，按「0 舍 1 入」处理　<tspan font-weight="700" fill="#c62828">⑤ 溢出</tspan>　只看阶码双符号位是否相同，相同=无溢出。</text>
+          </svg>
+        </div>
+
+        <p style="font-size:13.4px;margin:16px 0 6px;font-weight:600;color:var(--accent)">先写成补码</p>
+        <p style="font-size:13.3px;color:var(--ink-2);margin:0 0 8px">
+          [x]<sub>补</sub> = <span class="eq">00 010，00.11011011</span>　（正数，原码补码相同）<br>
+          [y]<sub>补</sub> = <span class="eq">00 100，11.01010100</span>　（负数 −0.10101100 的补码：符号位外按位取反再 +1）
+        </p>
+
+        <p style="font-size:13.4px;margin:16px 0 6px;font-weight:600;color:var(--accent)">第 1 步：对阶</p>
+        <ol class="sol">
+          <li>求阶差：[ΔE]<sub>补</sub> = [E<sub>x</sub>]<sub>补</sub> + [−E<sub>y</sub>]<sub>补</sub> = 00010 + 11100 = <b>11110</b> = <b>−2</b>。说明 E<sub>x</sub> 比 E<sub>y</sub> 小 2。</li>
+          <li>x 是小阶，所以 <b>x 的尾数右移 2 位、阶码加 2</b>，让两边阶码都变成 00100。<br>右移 2 位后：[x]<sub>补</sub> = <span class="eq">00 100，00.0011011011</span>（尾数临时扩到 2 符号 + 10 位小数）</li>
+        </ol>
+
+        <p style="font-size:13.4px;margin:16px 0 6px;font-weight:600;color:var(--accent)">第 2 步：尾数相加</p>
+        <p style="font-size:13.3px;color:var(--ink-2);margin:0 0 8px">
+          <span class="eq">　00.0011011011</span><br>
+          + <span class="eq">　11.0101010000</span>　←　注意补足到 10 位小数<br>
+          = <span class="eq">　11.1000101011</span>
+        </p>
+
+        <p style="font-size:13.4px;margin:16px 0 6px;font-weight:600;color:var(--accent)">第 3 步：规格化（这里要左规）</p>
+        <ol class="sol">
+          <li>结果 11.1000101011 的双符号位是 11，最高数值位是 <b>1</b> —— 负数补码的规格化形式应该是 1.0…，现在不满足，需要<b>左规</b>。</li>
+          <li>左移 1 位、阶码减 1：[x+y]<sub>补</sub> = <span class="eq">00 011，11.0001010110</span></li>
+        </ol>
+
+        <p style="font-size:13.4px;margin:16px 0 6px;font-weight:600;color:var(--accent)">第 4 步：舍入（0 舍 1 入）</p>
+        <ol class="sol">
+          <li>尾数字段只保留 2 符号 + 8 位小数，现在有 10 位小数，要丢弃末尾两位 <b>10</b>。</li>
+          <li>被丢弃的最高位是 <b>1</b> → 按"1 入"在保留部分末位加 1：<span class="eq">11.00010101 + 1 = 11.00010110</span></li>
+        </ol>
+
+        <p style="font-size:13.4px;margin:16px 0 6px;font-weight:600;color:var(--accent)">第 5 步：溢出判断</p>
+        <p style="font-size:13.3px;color:var(--ink-2);margin:0 0 8px">阶码双符号位是 <b>00</b>，两符号位相同 → <b>无溢出</b>。</p>
+
+        <div class="final"><b>答：</b>x + y = <b>−0.11101010 × 2<sup>011</sup></b>（把 11.00010110 取反加 1 得真值 0.11101010）。<br>验算：精确值 3.421875 + (−10.75) = −7.328125；结果 −0.11101010 × 8 = −7.3125，两者相差 2⁻⁶，正是丢弃 2 位尾数造成的舍入误差 —— <b>误差量级对得上，说明过程没错</b>。</div>
+        <div class="warn"><b>这题能救命的地方：</b>一定要用"精确值验算"。浮点加减手算极容易在某一位上错一位，但只要把最终结果换算成十进制，与精确和比一比，误差应该在 2 的（阶码 − 尾数位数）次方量级。差太多就是算错了，能当场发现。</div>
+      </div>
+
+      <!-- ======== 例题 4 ======== -->
+      <div class="ex">
+        <h3 style="margin-top:0">例题 4｜浮点加减的真题变体（float 寄存器内容）<span class="sub2">IMG4-28 · 20 分</span></h3>
+        <div class="q"><em>题目</em>已知两个实数 x = −68，y = −8.25，它们在 C 语言中定义为 float 型变量，分别存放在寄存器 A 和 B 中；另有寄存器 C 和 D，都是 32 位。请回答：<br>① 寄存器 A 和 B 中的内容分别是什么？② x 和 y 相加后的结果存放在 C 中，则 C 的内容是什么？③ x − y 的结果存放在 D 中，则 D 的内容是什么？</div>
+
+        <ol class="sol">
+          <li><b>先把 x 化成 IEEE754</b>：68 = 1000100B = 1.0001 × 2⁶ → S=1，E = 6+127 = 133 = 10000101，M = 0001…<br>[x]<sub>float</sub> = 1 10000101 00010000000000000000000 = <b>C2880000H</b></li>
+          <li><b>再把 y 化成 IEEE754</b>：8.25 = 1000.01B = 1.00001 × 2³ → S=1，E = 3+127 = 130 = 10000010，M = 00001…<br>[y]<sub>float</sub> = 1 10000010 00001000000000000000000 = <b>C1040000H</b></li>
+          <li><b>算 x + y = −76.25</b>：76.25 = 1001100.01B = 1.00110001 × 2⁶ → S=1，E = 133，M = 0011000100…<br>= 1 10000101 00110001000000000000000 = <b>C2988000H</b></li>
+          <li><b>算 x − y = −68 + 8.25 = −59.75</b>：59.75 = 111011.11B = 1.1101111 × 2⁵ → S=1，E = 5+127 = 132 = 10000100，M = 11011110…<br>= 1 10000100 11011110000000000000000 = <b>C26F0000H</b></li>
+        </ol>
+        <div class="final"><b>答：</b>A = <b>C2880000H</b>　B = <b>C1040000H</b>　C = <b>C2988000H</b>　D = <b>C26F0000H</b></div>
+        <div class="warn"><b>这道题的正确做法是「直接算十进制再转 IEEE754」，不是「用浮点加减法一步步对阶」。</b>因为这里精度足够（都是简单小数，尾数没有丢失），两种做法结果一致，但直接算快得多、错得少。只有题目要求"写出对阶、规格化过程"时，才必须走例题 3 的五步法。<b>看清题目问的是"结果内容"还是"运算过程"。</b><br>另外提醒：作业里的参考答案把 C 写成 C2960000H、D 写成 C2D6F000H，是扫描件识别误差，按上面的数值为准。可以用 Python 一行验证：<code>struct.pack('&gt;f', -76.25).hex()</code> 得 <code>c2988000</code>。</div>
+      </div>
+
+      <!-- ======== 例题 5 ======== -->
+      <div class="ex">
+        <h3 style="margin-top:0">例题 5｜数据表示范围（4 类边界值）<span class="sub2">复习 PPT 考点5 + IMG1 填空21~23</span></h3>
+        <div class="q"><em>题目</em>(1) 16 位无符号整数；(2) 16 位原码定点小数；(3) 16 位补码定点整数；(4) 基 2、阶码 8 位（移码、偏置 128）、尾数 8 位（含 1 位尾符，规格化）的浮点数 —— 上述四种情况所能表示的数的范围分别是什么？</div>
+
+        <div style="overflow-x:auto;margin:10px 0">
+          <table style="font-size:13px">
+            <thead><tr><th style="width:190px">情况</th><th>范围</th><th style="width:210px">推导要点</th></tr></thead>
+            <tbody>
+              <tr><td>16 位无符号整数</td><td><b>0 ~ 2¹⁶−1</b>，即 0 ~ 65535</td><td>16 位全给数值，无符号位</td></tr>
+              <tr><td>16 位原码定点小数</td><td><b>−(1−2⁻¹⁵) ~ +(1−2⁻¹⁵)</b></td><td>1 位符号 + 15 位小数，最大 0.111…1</td></tr>
+              <tr><td>16 位补码定点整数</td><td><b>−2¹⁵ ~ +(2¹⁵−1)</b>，即 −32768 ~ 32767</td><td>补码比原码多一个负数 −2¹⁵</td></tr>
+              <tr><td>规格化浮点（原码尾数）</td><td>见下表</td><td>尾数 7 位数值，阶码移码偏置 128</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p style="font-size:13.4px;margin:16px 0 6px;font-weight:600;color:var(--accent)">浮点数的四个边界值（这是本题真正考的地方）</p>
+        <div style="overflow-x:auto;margin:8px 0">
+          <table style="font-size:13px">
+            <thead><tr><th style="width:110px">边界</th><th style="width:230px">尾数用原码</th><th>尾数用补码</th></tr></thead>
+            <tbody>
+              <tr><td>最大正数</td><td><b>(1 − 2⁻⁷) × 2¹²⁷</b></td><td><b>(1 − 2⁻⁷) × 2¹²⁷</b>（相同）</td></tr>
+              <tr><td>最小正数</td><td><b>2⁻¹ × 2⁻¹²⁸ = 2⁻¹²⁹</b></td><td><b>2⁻¹ × 2⁻¹²⁸ = 2⁻¹²⁹</b>（相同）</td></tr>
+              <tr><td>最大负数</td><td><b>−2⁻¹ × 2⁻¹²⁸ = −2⁻¹²⁹</b></td><td><b>−2⁻⁷ × 2⁻¹²⁸ = −2⁻¹³⁵</b>（更接近 0）</td></tr>
+              <tr><td>最小负数</td><td><b>−(1 − 2⁻⁷) × 2¹²⁷</b></td><td><b>−1 × 2¹²⁷ = −2¹²⁷</b>（绝对值更大）</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="final"><b>答（原码尾数）：</b>最大正数 (1−2⁻⁷)×2¹²⁷；最小正数 2⁻¹²⁹；最大负数 −2⁻¹²⁹；最小负数 −(1−2⁻⁷)×2¹²⁷。<br>若尾数用补码、且规格化：最大负数变成 −2⁻¹³⁵，最小负数变成 −2¹²⁷。</div>
+        <div class="warn"><b>为什么补码尾数能多出两个极端值？</b>因为补码比原码多表示一个"−1"（编码 1.0000000），所以最小负数能达到 −1×2¹²⁷；又因为补码的规格化负数最小绝对值是 0.0000001（即 2⁻⁷），比原码的 0.1000000（即 2⁻¹）小得多，所以最大负数能到 −2⁻¹³⁵。<b>记法：原码关于原点对称，补码不对称、负方向多伸出一截。</b></div>
+      </div>
+
+      <!-- ======== 例题 6 ======== -->
+      <div class="ex">
+        <h3 style="margin-top:0">例题 6｜补码加减与溢出判断（双符号位法）<span class="sub2">复习 PPT 考点2 + A 级</span></h3>
+        <div class="q"><em>题目</em>(1) 已知 X = +10010，Y = −10101，求 X + Y。(2) 8 位机器上 X = +100、Y = +80，判断 X + Y 是否溢出。</div>
+
+        <p style="font-size:13.4px;margin:14px 0 6px;font-weight:600;color:var(--accent)">核心公式</p>
+        <p style="font-size:13.3px;color:var(--ink-2);margin:0 0 10px">
+          <span class="eq">[X + Y]<sub>补</sub> = [X]<sub>补</sub> + [Y]<sub>补</sub> (mod 2<sup>n+1</sup>)</span>　——　换句话说：<b>补码的加法就是把两个补码直接相加，连符号位一起加，最高位的进位丢掉不要。</b>
+        </p>
+
+        <ol class="sol">
+          <li><b>(1) 求补码</b>：X = +10010 → [X]<sub>补</sub> = <span class="eq">0 10010</span>；Y = −10101 → 符号位 1、数值取反加 1 → [Y]<sub>补</sub> = <span class="eq">1 01011</span>。</li>
+          <li><b>相加</b>：<span class="eq">0 10010 + 1 01011 = 1 11101</span>。</li>
+          <li><b>还原真值</b>：1 11101 是补码且符号位为 1 → 取反加 1 → 0 00011 → <b>X+Y = −00011（即 −3）</b>。<br>验算：+18 + (−21) = −3 ✓</li>
+          <li><b>(2) 用双符号位判断溢出</b>：把符号位复制一份，变成 2 位：
+            <br>[X]<sub>补</sub> = <span class="eq">00 1100100</span>（+100）
+            <br>[Y]<sub>补</sub> = <span class="eq">00 1010000</span>（+80）
+            <br>相加 = <span class="eq">01 0110100</span> → <b>双符号位是 01</b> → <b>正溢出</b>（两个正数相加得到"负数"，实际是 180 超出了 −128~127 的范围）。</li>
+        </ol>
+        <div class="final"><b>答：</b>(1) X + Y = <b>−00011</b>（−3）。(2) 结果 <span class="eq">01 0110100</span>，双符号位 <b>01</b>，<b>发生正溢出</b>，真实和 180 超出 8 位补码范围。</div>
+        <div class="warn"><b>双符号位判断溢出的三条结论，背这三句就够：</b><br>· 双符号位 <b>00</b> → 结果为正，<b>无溢出</b><br>· 双符号位 <b>11</b> → 结果为负，<b>无溢出</b><br>· 双符号位 <b>01</b> → <b>正溢出</b>（两个正数相加）　<b>10</b> → <b>负溢出</b>（两个负数相加）<br>口诀：<b>「相同不溢，不同必溢；01 正、10 负」</b>。<br>另外注意：这个例子说明"双符号位相同就一定不溢出、不同就一定溢出"，其中 01 只可能由两个正数相加产生、10 只可能由两个负数相加产生 —— 同号相加才会溢出，异号相加永不溢出。</div>
+      </div>
+
+      <!-- ======== 例题 7 ======== -->
+      <div class="ex">
+        <h3 style="margin-top:0">例题 7｜32 位 ALU 进位链设计（最后一道画图题）<span class="sub2">IMG4-29 · 20 分</span></h3>
+        <div class="q"><em>题目</em>试用 74LS181 和 74LS182 设计成以下两种方案的 32 位 ALU（只需画出进位之间的联络），并比较两种方案的速度及集成电路片数：(1) 采用双重分组（组内并行进位、组间串行进位）或 (2) 采用双重分组（组内并行、组间先行进位）结构。</div>
+
+        <p style="font-size:13.4px;margin:14px 0 8px;font-weight:600;color:var(--accent)">先认识两片集成电路</p>
+        <div class="cg" style="grid-template-columns:repeat(auto-fit,minmax(280px,1fr))">
+          <div class="cbox" style="border-color:#cfe0f0">
+            <h3 style="margin-bottom:6px"><span class="no" style="background:#2e8b8b">181</span>74LS181：4 位 ALU</h3>
+            <p>做 4 位算术/逻辑运算。对外除了运算结果，还引出<b>三个进位相关信号</b>：</p>
+            <ul>
+              <li><b>P</b>（进位传播）＝ A + B</li>
+              <li><b>G</b>（进位产生）＝ A · B</li>
+              <li><b>C<sub>n+4</sub></b>：本片向高 4 位的进位输出</li>
+            </ul>
+            <div class="why">32 位需要 <b>8 片</b> 181（8 × 4 = 32 位）。</div>
+          </div>
+          <div class="cbox" style="border-color:#cfe0f0">
+            <h3 style="margin-bottom:6px"><span class="no" style="background:#d97706">182</span>74LS182：先行进位发生器</h3>
+            <p>输入 4 组 (P, G) 和一个 C<sub>0</sub>，<b>不用等低位算完</b>就并行算出 4 个进位：</p>
+            <p style="font-family:ui-monospace,Consolas,monospace;font-size:12px;line-height:1.9;color:#1f4e79">
+              C₁ = G₁ + P₁C₀<br>
+              C₂ = G₂ + P₂G₁ + P₂P₁C₀<br>
+              C₃ = G₃ + P₃G₂ + P₃P₂G₁ + P₃P₂P₁C₀<br>
+              C₄ = G₄ + P₄G₃ + P₄P₃G₂ + P₄P₃P₂G₁ + P₄P₃P₂P₁C₀
+            </p>
+            <div class="why">同时还输出本级的总 P、总 G，供更高一级先行使用。</div>
+          </div>
+        </div>
+
+        <div style="overflow-x:auto; margin:14px 0 6px">
+          <svg viewBox="0 0 680 348" width="100%" style="max-width:780px;display:block;margin:0 auto" role="img" aria-label="32位ALU双重分组先行进位结构图">
+            <text x="10" y="20" font-size="12" font-weight="700" fill="#1b1f24">方案二：组内并行 + 组间先行（8 片 181 + 3 片 182）</text>
+
+            <!-- 顶层 182 -->
+            <rect x="286" y="34" width="108" height="50" rx="6" fill="#d97706"/>
+            <text x="340" y="56" text-anchor="middle" font-size="11.5" font-weight="700" fill="#fff">74LS182</text>
+            <text x="340" y="73" text-anchor="middle" font-size="9" fill="#fbe8cd">组间先行</text>
+            <line x1="340" y1="34" x2="340" y2="30" stroke="#c62828" stroke-width="1.8"/>
+            <text x="348" y="28" font-size="9.5" fill="#c62828">C₃₂ → 溢出判断</text>
+
+            <!-- 两个组内 182 -->
+            <rect x="124" y="122" width="100" height="48" rx="6" fill="#d97706" opacity=".85"/>
+            <text x="174" y="142" text-anchor="middle" font-size="10.5" font-weight="700" fill="#fff">74LS182</text>
+            <text x="174" y="158" text-anchor="middle" font-size="8.5" fill="#fbe8cd">位 0~15 先行</text>
+
+            <rect x="456" y="122" width="100" height="48" rx="6" fill="#d97706" opacity=".85"/>
+            <text x="506" y="142" text-anchor="middle" font-size="10.5" font-weight="700" fill="#fff">74LS182</text>
+            <text x="506" y="158" text-anchor="middle" font-size="8.5" fill="#fbe8cd">位 16~31 先行</text>
+
+            <!-- 组内 PG 汇总条 -->
+            <line x1="46" y1="196" x2="302" y2="196" stroke="#8a6bbf" stroke-width="1.6"/>
+            <line x1="174" y1="196" x2="174" y2="172" stroke="#8a6bbf" stroke-width="1.6"/>
+            <polygon points="174,170 170,178 178,178" fill="#8a6bbf"/>
+            <line x1="378" y1="196" x2="634" y2="196" stroke="#8a6bbf" stroke-width="1.6"/>
+            <line x1="506" y1="196" x2="506" y2="172" stroke="#8a6bbf" stroke-width="1.6"/>
+            <polygon points="506,170 502,178 510,178" fill="#8a6bbf"/>
+
+            <!-- 组总 PG 上行 -->
+            <line x1="174" y1="122" x2="174" y2="100" stroke="#2e8b8b" stroke-width="1.6"/>
+            <line x1="174" y1="100" x2="506" y2="100" stroke="#2e8b8b" stroke-width="1.6"/>
+            <line x1="506" y1="100" x2="506" y2="122" stroke="#2e8b8b" stroke-width="1.6"/>
+            <line x1="340" y1="100" x2="340" y2="86" stroke="#2e8b8b" stroke-width="1.6"/>
+            <polygon points="340,84 336,92 344,92" fill="#2e8b8b"/>
+            <text x="256" y="94" font-size="8.5" fill="#2e8b8b">组总 P、G 上送</text>
+
+            <!-- 8 片 181 -->
+            <rect x="24" y="214" width="66" height="54" rx="5" fill="#2e8b8b"/>
+            <text x="57" y="236" text-anchor="middle" font-size="9.5" font-weight="700" fill="#fff">181</text>
+            <text x="57" y="252" text-anchor="middle" font-size="8" fill="#d6eeee">位3~0</text>
+            <rect x="100" y="214" width="66" height="54" rx="5" fill="#2e8b8b"/>
+            <text x="133" y="236" text-anchor="middle" font-size="9.5" font-weight="700" fill="#fff">181</text>
+            <text x="133" y="252" text-anchor="middle" font-size="8" fill="#d6eeee">位7~4</text>
+            <rect x="176" y="214" width="66" height="54" rx="5" fill="#2e8b8b"/>
+            <text x="209" y="236" text-anchor="middle" font-size="9.5" font-weight="700" fill="#fff">181</text>
+            <text x="209" y="252" text-anchor="middle" font-size="8" fill="#d6eeee">位11~8</text>
+            <rect x="252" y="214" width="66" height="54" rx="5" fill="#2e8b8b"/>
+            <text x="285" y="236" text-anchor="middle" font-size="9.5" font-weight="700" fill="#fff">181</text>
+            <text x="285" y="252" text-anchor="middle" font-size="8" fill="#d6eeee">位15~12</text>
+
+            <rect x="356" y="214" width="66" height="54" rx="5" fill="#2e8b8b"/>
+            <text x="389" y="236" text-anchor="middle" font-size="9.5" font-weight="700" fill="#fff">181</text>
+            <text x="389" y="252" text-anchor="middle" font-size="8" fill="#d6eeee">位19~16</text>
+            <rect x="432" y="214" width="66" height="54" rx="5" fill="#2e8b8b"/>
+            <text x="465" y="236" text-anchor="middle" font-size="9.5" font-weight="700" fill="#fff">181</text>
+            <text x="465" y="252" text-anchor="middle" font-size="8" fill="#d6eeee">位23~20</text>
+            <rect x="508" y="214" width="66" height="54" rx="5" fill="#2e8b8b"/>
+            <text x="541" y="236" text-anchor="middle" font-size="9.5" font-weight="700" fill="#fff">181</text>
+            <text x="541" y="252" text-anchor="middle" font-size="8" fill="#d6eeee">位27~24</text>
+            <rect x="584" y="214" width="66" height="54" rx="5" fill="#2e8b8b"/>
+            <text x="617" y="236" text-anchor="middle" font-size="9.5" font-weight="700" fill="#fff">181</text>
+            <text x="617" y="252" text-anchor="middle" font-size="8" fill="#d6eeee">位31~28</text>
+
+            <!-- 181 到汇总条的竖线 -->
+            <g stroke="#8a6bbf" stroke-width="1.1">
+              <line x1="57" y1="214" x2="57" y2="196"/>
+              <line x1="133" y1="214" x2="133" y2="196"/>
+              <line x1="209" y1="214" x2="209" y2="196"/>
+              <line x1="285" y1="214" x2="285" y2="196"/>
+              <line x1="389" y1="214" x2="389" y2="196"/>
+              <line x1="465" y1="214" x2="465" y2="196"/>
+              <line x1="541" y1="214" x2="541" y2="196"/>
+              <line x1="617" y1="214" x2="617" y2="196"/>
+            </g>
+
+            <!-- 组间进位下行 -->
+            <path d="M150,170 L150,182" stroke="#c62828" stroke-width="1.2" fill="none"/>
+            <path d="M482,170 L482,182" stroke="#c62828" stroke-width="1.2" fill="none"/>
+            <text x="24" y="290" font-size="9.5" fill="#8a6bbf">紫线：各片 181 的 P、G 上送给本组的 182</text>
+            <text x="24" y="306" font-size="9.5" fill="#2e8b8b">青线：两个组的组总 P、G 上送给顶层 182，产生组间进位</text>
+            <text x="24" y="322" font-size="9.5" fill="#c62828">红线：进位数从 182 下行，直接送进各片 181 的 C<tspan font-size="7">n</tspan> 端</text>
+            <text x="24" y="340" font-size="9.5" fill="#9aa3ad">片数：8 片 74LS181 + 3 片 74LS182 = 11 片</text>
+          </svg>
+        </div>
+
+        <p style="font-size:13.4px;margin:16px 0 6px;font-weight:600;color:var(--accent)">两种方案对比（这就是答题要点）</p>
+        <div style="overflow-x:auto">
+          <table style="font-size:13px">
+            <thead><tr><th style="width:150px">对比项</th><th>方案一：组内并行、组间串行</th><th>方案二：组内并行、组间先行</th></tr></thead>
+            <tbody>
+              <tr><td>片数</td><td><b>8 片 74LS181</b>（不用 182）</td><td><b>8 片 181 + 3 片 182 = 11 片</b></td></tr>
+              <tr><td>进位联络</td><td>各片 181 的 C<sub>n+4</sub> 直接串到下一片的 C<sub>n</sub>，逐片传下去</td><td>每 4 片 181 的 P、G 送给一片 182 产生 16 位内部进位；两组的总 P、G 再送顶层 182 产生组间进位</td></tr>
+              <tr><td>最长进位路径</td><td>要依次穿过 <b>8 片</b> 181 的进位链</td><td>只需穿过 <b>2~3 级</b> 先行逻辑</td></tr>
+              <tr><td>速度</td><td><b>慢</b>（进位是串行等待）</td><td><b>快</b>（进位并行产生，与位数基本无关）</td></tr>
+              <tr><td>代价</td><td>片数少、连线简单、成本低</td><td>多 3 片集成块、连线复杂</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="final"><b>答：</b>方案一用 8 片 74LS181，组间进位逐片串联，速度慢但片数少；方案二用 8 片 74LS181 + 3 片 74LS182，组内与组间都采用先行进位，速度显著提高，代价是多 3 片集成电路且连线更复杂。</div>
+        <div class="warn"><b>画图采分点（只画联络线，不画运算部分）：</b><br>① 8 片 181 要画出来，并标出位段（位3~0 … 位31~28）；<br>② 每片 181 的 <b>P、G 必须引出来</b>送给 182 —— 这是本题的核心，只画 C 进位的直接串接就只拿到方案一的分；<br>③ 182 要画两级：2 片做 16 位组内先行，1 片做组间先行；<br>④ 最后一句话要写出「速度快、片数多」的定性比较，这一句 2~3 分。<br><b>注意：</b>182 的具体用量取决于你课本图 6.36 的接法，判分主要看"是否画出 P/G 引出 + 两级先行"这个结构，片数写 3 片（8+3=11）是最常见的标准答案。</div>
+      </div>
+
+      <!-- ======== 例题 8 ======== -->
+      <div class="ex">
+        <h3 style="margin-top:0">例题 8｜74181 内部逻辑图分析（读图写表达式）<span class="sub2">IMG3-1 · 16 分</span></h3>
+        <div class="q"><em>题目</em>图 2.1 为某 ALU 部件的内部逻辑图，其中 S₀~S₃ 为功能选择控制器，C<sub>in</sub> 为最低位的进位输入端，A(A₀~A₃) 与 B(B₀~B₃) 是参与运算的两个数，F(F₀~F₃) 为输出结果。试分析在 S₀~S₃、C<sub>in</sub> 各种组合的条件下，输出 F 和输入 A、B、C<sub>in</sub> 的算术运算关系。</div>
+
+        <div class="warn" style="background:#fff8e6;border-color:#f3e0b0;color:#7a5a12"><b>先说明一件事：</b>IMG3 那张截图里的图 2.1 分辨率不足，我无法逐根门电路线辨认。所以下面给的是<b>通用解题方法</b>（这才是能迁移到考场上的东西）＋ 教材标准的 74181 功能结论。<b>你考前请对照课本上的图 2.1 核对一遍门级连接</b>，如果课本图与本页的标准结构一致，结论可直接用。</div>
+
+        <p style="font-size:13.4px;margin:16px 0 6px;font-weight:600;color:var(--accent)">读图三步法（考场上的固定动作）</p>
+        <ol class="sol">
+          <li><b>从输出往输入倒推，逐级写表达式。</b>先写出最后一级门的输出（通常是 F 的异或门），再把它用到的前一级门的输出代进去，一直到只剩下 A、B、S、C<sub>in</sub> 这些原始输入。<b>不要正着从输入往输出推</b>，容易写出一堆中间变量理不清。</li>
+          <li><b>合并同类项、化成最少项。</b>重点看有没有形如 <span class="eq">S₀·B̄ + S₁·B</span> 或 <span class="eq">S₁B + S₀B̄</span> 的选择器结构 —— 这就是"由 S 选 B、B̄、0、1"的典型形式。</li>
+          <li><b>列表格</b>：把 S₃S₂S₁S₀ 的 16 种取值（或题目指定的几种）代进表达式，算出 F(A,B,C<sub>in</sub>) 的运算关系，填成功能表。这一步就是最终答案。</li>
+        </ol>
+
+        <p style="font-size:13.4px;margin:16px 0 6px;font-weight:600;color:var(--accent)">你作业里写的答案（对照用）</p>
+        <p style="font-size:13.3px;color:var(--ink-2);margin:0 0 10px">
+          你手写的两行是：<span class="eq">Y = S₁·B + S₀·B̄</span>　和　<span class="eq">F = A ⊕ Y + C<sub>in</sub></span>
+        </p>
+        <p style="font-size:13.3px;color:var(--ink-2);margin:0 0 10px">
+          这两行<b>方向是对的</b> —— 它正是"先用 S₀S₁ 从 B 里选出 Y，再把 Y 与 A、C<sub>in</sub> 做异或"这个标准结构。但有两点要改：<br>
+          ① <span class="eq">F = A ⊕ Y + C<sub>in</sub></span> 里的 "+" 应该是<b>异或</b>（⊕），写成加号会被判成算术加法；<br>
+          ② 你只用了 S₀、S₁，而题目要求对 <b>S₀~S₃ 各种组合</b>作答，S₂、S₃ 控制的是 Y 的另一层选择，必须一并分析。
+        </p>
+
+        <p style="font-size:13.4px;margin:16px 0 6px;font-weight:600;color:var(--accent)">标准结构的结论（供对照，以课本图为准）</p>
+        <div style="overflow-x:auto">
+          <table style="font-size:12.8px">
+            <thead><tr><th style="width:150px">S₃S₂S₁S₀</th><th style="width:170px">Y 的取值</th><th>F 与 A、B、C<sub>in</sub> 的关系</th></tr></thead>
+            <tbody>
+              <tr><td>1 0 0 1</td><td>Y = B̄</td><td>F = A ⊕ B̄ ⊕ C<sub>in</sub>　→　逻辑功能：A 与 B 异或（配合进位做减法）</td></tr>
+              <tr><td>0 1 1 0</td><td>Y = B</td><td>F = A ⊕ B ⊕ C<sub>in</sub>　→　逻辑功能：A 与 B 异或（配合进位做加法）</td></tr>
+              <tr><td>0 1 1 1</td><td>Y = 0</td><td>F = A ⊕ C<sub>in</sub></td></tr>
+              <tr><td>1 0 0 0</td><td>Y = B</td><td>F = A + B（与运算）</td></tr>
+              <tr><td>1 1 1 0</td><td>Y = 0</td><td>F = A + B（或运算）</td></tr>
+              <tr><td>0 1 1 0 且 C<sub>in</sub>=0</td><td>Y = B</td><td>F = A ⊕ B → <b>全加器的和</b>，配合进位链实现 4 位加法</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="final"><b>答题结构建议：</b>① 写出逐级逻辑表达式（2~3 行）；② 化简成 Y 与 F 的形式；③ 列 8 行（或题目指定行数）的功能表，每行注明"这是什么运算"；④ 结论一句话："该 ALU 在 S₃S₂S₁S₀ 不同取值下可完成与、或、异或、加、减等运算。"</div>
+        <div class="warn"><b>这类"读图题"的通杀思路：</b>它考的不是记忆，是<b>会不会顺着门电路写表达式</b>。所以平时练习要练"给一个门电路图，5 分钟内写出输出表达式并化简"。练过 3~5 张图，考场上任何一张图都能应付 —— 因为你不需要认识它是什么芯片，只需要会写布尔式。</div>
+      </div>
+
+      <!-- ======== 问答窗口 ======== -->
+      <h3 style="margin-top:34px">这一章最容易卡住的三个点｜点开逐层追问</h3>
+
+      <div class="chat">
+        <div class="ttl">问答窗口 09 · 对阶为什么必须"小阶向大阶看齐"</div>
+        <div class="rd on">
+          <div class="bub ask">对阶的时候，为什么一定要把小的阶码调大、尾数右移？反过来把大阶调小不行吗？</div>
+          <div class="bub ans">不行，<b>反过来会丢精度</b>。<br>尾数右移会丢掉最低位。如果让大阶向小阶看齐，大阶那个数的阶码要减小、尾数要<b>左移</b>腾位置 —— 左移会溢出高位，等于直接改变数值大小，错得更严重。<br>而"小阶向大阶看齐"是尾数<b>右移</b>，丢掉的只是最低的几位，损失最小且可预期（后续用舍入补救）。<br><br>一句话：<b>右移只丢低位，左移会丢高位。所以只能让步给阶小的那个。</b></div>
+        </div>
+        <div class="rd">
+          <div class="bub ask">那对阶之后阶码统一成了大的那个，会不会超出阶码能表示的范围？</div>
+          <div class="bub ans">不会超出，因为对阶后的阶码就是原来两个阶码中较大的那个，本来就在范围内。<br>真正可能溢出的是<b>后面尾数相加进位</b>的时候：同号相加尾数可能进位，导致尾数需要右规、阶码再加 1，<b>这一次 +1 才可能超范围</b>。<br><br>所以溢出判断放在第 5 步、而且要看"右规时阶码双符号位是否变化"，就是这个原因。</div>
+        </div>
+        <div class="rd">
+          <div class="bub ask">对阶右移的时候，补进来的位补 0 还是补 1？</div>
+          <div class="bub ans"><b>补符号位</b>（算术右移），不是补 0。<br>· 正数（补码符号位 0）→ 高位补 0；<br>· 负数（补码符号位 1）→ 高位补 1。<br><br>这跟整数补码算术右移完全一样。如果给负数补 0，就等于把一个负数变成了正数，整题报废。<br>但<b>被移出的低位不要直接扔掉</b> —— 它们要留到最后第 4 步做"0 舍 1 入"。例题 3 里 x 的尾数右移 2 位后写成 <span class="eq">00.0011011011</span>，比原来的 8 位小数多了 2 位，就是把这些"移出来的位"暂存着。</div>
+        </div>
+        <button class="nx">我还不懂，继续问 →</button>
+        <div class="end">三句话：只能小阶向大阶；溢出风险在第 3 步右规；右移补符号位、移出的位留着做舍入。</div>
+      </div>
+
+      <div class="chat">
+        <div class="ttl">问答窗口 10 · 左规和右规到底什么时候用</div>
+        <div class="rd on">
+          <div class="bub ask">规格化这一步，什么时候左规、什么时候右规？我总是分不清。</div>
+          <div class="bub ans"><b>先看结果是否"已经规格化"，不满足才动。</b><br>补码规格化的标准形式：<b>符号位与最高数值位相反</b>。<br>· 正数：<b>0.1</b>xxxx（符号 0，最高数值位 1）<br>· 负数：<b>1.0</b>xxxx（符号 1，最高数值位 0）<br><br>判完就知道：<br>· 结果是 <b>0.0</b>xxx 或 <b>1.1</b>xxx → <b>未规格化，要左规</b>（尾数左移、阶码减）；<br>· 结果的符号位自己就溢出了（双符号位变成 <b>01</b> 或 <b>10</b>）→ <b>尾数真溢出，要右规</b>（尾数右移一位、阶码加）。</div>
+        </div>
+        <div class="rd">
+          <div class="bub ask">为什么 01/10 就叫"尾数溢出"？</div>
+          <div class="bub ans">因为双符号位本来是"11"或"00"两个相同的符号，一旦变成 01 或 10，说明<b>数值部分进位顶到符号位去了</b> —— 尾数的绝对值 ≥ 1 了，超出了定点小数的表示范围。<br>补救办法就是右规：尾数右移一位（绝对值减半，回到 < 1），阶码加 1（补偿回来，值不变）。<br><br>注意：<b>右规之后双符号位会自动恢复成 00 或 11</b>，同时阶码加了 1 —— 这才是唯一可能真正溢出的地方。</div>
+        </div>
+        <div class="rd">
+          <div class="bub ask">那"溢出"到底是尾数溢出还是阶码溢出？题目问的溢出指哪个？</div>
+          <div class="bub ans"><b>题目问的"溢出"永远指阶码溢出</b>，也就是浮点数整体太大、超出表示范围。判据只有一个：<b>阶码的双符号位是否相同</b>。相同（00 或 11）= 无溢出；不同（01 正溢出、10 负溢出）= 溢出。<br><br>尾数溢出（01/10）只是<b>中间过程</b>的临时现象，右规一下就解决了，不算最终溢出。很多人把这两个混在一起，导致判断结论写反。<br><br>顺序记牢：<b>尾数溢出 → 右规修好 → 再看阶码是否溢出 → 这才是最终结论。</b></div>
+        </div>
+        <button class="nx">我还不懂，继续问 →</button>
+        <div class="end">记法：0.0/1.1 要左规（阶减）；01/10 要右规（阶加）；最终溢出只看阶码双符号。</div>
+      </div>
+
+      <div class="chat">
+        <div class="ttl">问答窗口 11 · 求范围时"尾数含 1 位符号位"到底少几位</div>
+        <div class="rd on">
+          <div class="bub ask">题目说"尾数 24 位，含 1 位尾符"，那我算最大正数时到底该用 2⁻²³ 还是 2⁻²⁴？</div>
+          <div class="bub ans"><b>用 2⁻²³。</b><br>尾数 24 位里，1 位是符号位，剩下 <b>23 位</b>才是数值位。所以最大尾数是 <span class="eq">0.111…1</span>（23 个 1）＝ <b>1 − 2⁻²³</b>。<br><br>这个 2⁻²³ 的指数就是"数值位数"，不是"总位数"。同理：<br>· 32 位浮点、尾数 24 位含 1 位尾符 → 用 2⁻²³<br>· 尾数 8 位含 1 位尾符（7 位数值）→ 用 2⁻⁷<br><br>口诀：<b>减 1 是符号，剩下才算位数。</b></div>
+        </div>
+        <div class="rd">
+          <div class="bub ask">阶码那边也有符号位，是不是也要减 1？</div>
+          <div class="bub ans">要，但结果取决于阶码用的是什么码：<br>· 阶码用<b>移码</b>（偏置 128，8 位）→ 范围 −128 ~ +127，<b>最大阶就是 127</b>，直接用，不需要再减。<br>· 阶码用<b>补码</b>（8 位含 1 位符号）→ 7 位数值 → 范围 −128 ~ +127，同样最大是 127。<br>· 阶码用<b>原码</b>（8 位含 1 位符号）→ 7 位数值 → 范围 −127 ~ +127。<br><br>所以关键是看题目说"移码/补码"还是"原码"。<b>移码和补码的最大阶都是 2⁷−1 = 127，原码也是 127；差别只在负方向（补码/移码能到 −128，原码只能到 −127）。</b></div>
+        </div>
+        <div class="rd">
+          <div class="bub ask">那"最小正数"为什么是 2⁻¹ × 2⁻¹²⁸，而不是 2⁻²³ × 2⁻¹²⁸？</div>
+          <div class="bub ans">因为题目要求<b>规格化</b>。<br>规格化的尾数，正数最高数值位必须是 1，也就是尾数最小只能到 <span class="eq">0.100…0</span> = <b>2⁻¹</b>。不能更小了 —— 再小就说明没规格化，应该左规并把阶码减 1。<br><br>所以"最小正数"的最小值来自<b>尾数取下限 2⁻¹</b>、<b>阶码取下限 −128</b>，两者相乘 = 2⁻¹²⁹。<br><br>而 <b>2⁻²³</b> 只在算"最大正数"时用到（尾数取下限的 1−2⁻²³）。<b>同一个尾数，算最大值用 1−2⁻⁷ 那头，算最小值用 2⁻¹ 这头</b> —— 一头一尾，别搞反。</div>
+        </div>
+        <button class="nx">我还不懂，继续问 →</button>
+        <div class="end">两个数记牢：算最大值用 (1−2⁻ⁿ)，算最小值用 2⁻¹。n = 尾数总位数 − 1。</div>
+      </div>
+
+      <!-- ======== 采分点清单 ======== -->
+      <div class="card" style="margin-top:26px">
+        <h3 style="margin-top:0">这一章的 10 条采分纪律</h3>
+        <ol class="sol">
+          <li><b>IEEE754 一定先算出 E = e + 127 再动手拼位。</b>阶码写成全 0 或全 1 一定是错的（那是 0 和无穷大的特殊编码）。</li>
+          <li><b>反向转换别忘补回隐含的 1，也别忘 E 减 127。</b>这两步各占一半分。</li>
+          <li><b>浮点加减五步顺序不能换，且每步都要写出依据。</b>对阶写"小阶向大阶"，规格化写"符号位与最高数值位相反"。</li>
+          <li><b>对阶右移补符号位，移出的位留着做舍入。</b>给负数补 0 是致命错。</li>
+          <li><b>算完用十进制验算。</b>误差应在 2^(阶码−尾数位数) 量级，能当场发现算错。</li>
+          <li><b>题目问"结果内容"就直接算十进制再转，问"运算过程"才走五步法。</b>IM04-28 属于前者。</li>
+          <li><b>求范围题：算最大值用 (1−2⁻ⁿ)，算最小值用 2⁻¹，n = 尾数位数 − 1。</b>这两个式子是一头一尾。</li>
+          <li><b>补码加减直接加、丢掉最高进位。</b>溢出判断只看双符号位：相同不溢、01 正溢、10 负溢。</li>
+          <li><b>ALU 进位链画图必须把 P、G 引出来。</b>只画 C 进位串接，只能得方案一的分。</li>
+          <li><b>读图题先写表达式、再化简、最后列表格。</b>别在图上"看"出结论，一定落笔写布尔式。</li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- ============ ⑨ A级考点精讲 ============ -->
+    <section id="acore">
+      <h2>⑨ A 级考点精讲 · 性能评价 / 指令系统 / 微操作与微程序 <span class="sub2">第 1、4、5 章 · 约 60 分</span></h2>
+      <p class="lead">S 级考点已经全部讲完。这一节补 A 级：第 1 章的性能换算、第 4 章的指令系统设计与指令格式分析、第 5 章的微操作节拍与微指令格式。这四块都是"给条件套流程"的类型，学会了分就稳。</p>
+
+      <!-- ======== 例题 1 ======== -->
+      <div class="ex">
+        <h3 style="margin-top:0">例题 1｜主频 / CPI / MIPS / 指令周期 五连问 <span class="sub2">第 1 章 · 复习 PPT + 第九章作业</span></h3>
+        <div class="q"><em>题目</em>(a) 某机主频 1GHz，目标代码含 2×10⁵ 条指令，分 4 类，CPI 与比例见下表，求程序 MIPS。<br>(b) A、B 两机片内逻辑电路完全相同，A 主频 8MHz、B 为 12MHz。① A 的时钟周期？② 若 A 的平均指令执行速度为 0.4MIPS，A 的平均指令周期？③ B 的平均指令执行速度？<br>(c) CPU 主频 8MHz，每个机器周期平均含 2 个时钟周期，每条指令平均含 4 个机器周期，求 MIPS；若改成每个机器周期含 4 个时钟周期，MIPS 又是多少？能得出什么结论？<br>(d) CPU 主频 10MHz，每个机器周期含 4 个时钟周期，平均速度 1MIPS。求平均指令周期、每个指令周期含几个机器周期；若改用时钟周期 0.4μs 的芯片，速度是多少；若要 0.8MIPS，需多高主频？</div>
+
+        <div style="overflow-x:auto;margin:10px 0">
+          <table style="font-size:13px">
+            <thead><tr><th style="width:170px">指令类型</th><th style="width:100px">CPI</th><th>指令混合比例</th></tr></thead>
+            <tbody>
+              <tr><td>算术和逻辑</td><td>1</td><td>60%</td></tr>
+              <tr><td>Load / Store</td><td>2</td><td>18%</td></tr>
+              <tr><td>转移</td><td>4</td><td>12%</td></tr>
+              <tr><td>Cache 缺失访存</td><td>8</td><td>10%</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p style="font-size:13.4px;margin:16px 0 6px;font-weight:600;color:var(--accent)">必备的三行公式</p>
+        <p style="font-size:13.3px;color:var(--ink-2);margin:0 0 10px">
+          <span class="eq">T = 1 / f</span>　（时钟周期 = 1 ÷ 主频）<br>
+          <span class="eq">MIPS = f ÷ (CPI × 10⁶)</span>　（f 用 Hz，结果才是"百万条/秒"）<br>
+          <span class="eq">指令周期 = CPI × T</span>　（一条指令平均花几个时钟周期）<br>
+          另加一条求 CPI 的：<span class="eq">CPI = Σ(各类 CPI × 该类比例)</span>
+        </p>
+        <p style="font-size:13.3px;color:var(--ink-2);margin:0 0 10px">
+          反求 CPI 时直接把公式翻转：<span class="eq">CPI = f ÷ (MIPS × 10⁶)</span>。这个"翻转"在 (b)(d) 两问里都要用。
+        </p>
+
+        <p style="font-size:13.4px;margin:16px 0 6px;font-weight:600;color:var(--accent)">(a) 求 MIPS</p>
+        <ol class="sol">
+          <li>先算平均 CPI：CPI = 1×0.6 + 2×0.18 + 4×0.12 + 8×0.10 = 0.6 + 0.36 + 0.48 + 0.80 = <b>2.24</b></li>
+          <li>再求 MIPS：MIPS = f ÷ (CPI × 10⁶) = 10⁹ ÷ (2.24 × 10⁶) = <b>446.4</b></li>
+        </ol>
+        <div class="final">(a) <b>MIPS ≈ 446.4</b>（注意：题目给的"2×10⁵ 条指令"在这个问法里用不上，它是干扰信息，求 MIPS 只需要 f 和 CPI）</div>
+
+        <p style="font-size:13.4px;margin:18px 0 6px;font-weight:600;color:var(--accent)">(b) 两台机器的对比</p>
+        <ol class="sol">
+          <li>① A 的时钟周期 T<sub>A</sub> = 1 ÷ 8MHz = <b>0.125 μs</b></li>
+          <li>② 先反求 CPI：CPI = f ÷ (MIPS × 10⁶) = 8×10⁶ ÷ (0.4×10⁶) = <b>20</b><br>平均指令周期 = CPI × T<sub>A</sub> = 20 × 0.125μs = <b>2.5 μs</b></li>
+          <li>③ <b>关键一句话：片内逻辑电路完全相同 → 两机的 CPI 相同，仍是 20。</b><br>B 的 T<sub>B</sub> = 1 ÷ 12MHz，指令周期 = 20 × (1/12)μs = 5/3 ≈ 1.667μs<br>MIPS<sub>B</sub> = 1 ÷ 1.667μs ≈ <b>0.6</b>（也就是 12 ÷ 20 = 0.6）</li>
+        </ol>
+        <div class="final">(b) ① 0.125μs　② CPI = 20，平均指令周期 2.5μs　③ B 机 <b>0.6 MIPS</b><br><b>巧解：</b>CPI 相同时速度与主频成正比，主频 8→12 是 1.5 倍，所以 0.4 × 1.5 = 0.6 MIPS，一步得出。</div>
+
+        <p style="font-size:13.4px;margin:18px 0 6px;font-weight:600;color:var(--accent)">(c) 主频不变、CPI 变化</p>
+        <ol class="sol">
+          <li>每条指令含 4 个机器周期，每机器周期 2 个时钟周期 → CPI = 4 × 2 = <b>8</b><br>MIPS = 8×10⁶ ÷ (8×10⁶) = <b>1 MIPS</b></li>
+          <li>每机器周期改为 4 个时钟周期 → CPI = 4 × 4 = <b>16</b><br>MIPS = 8×10⁶ ÷ (16×10⁶) = <b>0.5 MIPS</b></li>
+          <li><b>结论</b>：主频不变时，CPI 翻倍则执行速度减半。想提速只有两条路 —— <b>提高主频</b> 或 <b>降低 CPI</b>（改进结构、减少访存次数、增加并行）。</li>
+        </ol>
+        <div class="final">(c) 1 MIPS 与 0.5 MIPS。结论：同一主频下，速度与 CPI 成反比。</div>
+
+        <p style="font-size:13.4px;margin:18px 0 6px;font-weight:600;color:var(--accent)">(d) 反求与改型</p>
+        <ol class="sol">
+          <li>反求 CPI：CPI = 10 ÷ 1 = <b>10</b>；T = 1 ÷ 10MHz = 0.1μs<br>平均指令周期 = 10 × 0.1μs = <b>1 μs</b></li>
+          <li>机器周期 = 4 × 0.1μs = 0.4μs → 每个指令周期含 1μs ÷ 0.4μs = <b>2.5 个机器周期</b></li>
+          <li>改用时钟周期 0.4μs 的芯片：f = 1 ÷ 0.4μs = 2.5MHz，CPI 仍为 10<br>MIPS = 2.5 ÷ 10 = <b>0.25 MIPS</b></li>
+          <li>要 0.8MIPS（80 万次/秒）：f = CPI × MIPS × 10⁶ = 10 × 0.8 × 10⁶ = <b>8 MHz</b></li>
+        </ol>
+        <div class="final">(d) 平均指令周期 1μs，含 2.5 个机器周期；改用 0.4μs 芯片后 0.25 MIPS；要 0.8MIPS 需主频 8MHz。</div>
+        <div class="warn"><b>这一族题的三个必错点：</b><br>① <b>单位不统一。</b>f 用 MHz、T 却要写 μs、MIPS 里又除 10⁶。先把 f 统一成 Hz、T 统一成 s，再代数，最后按需换算。<br>② <b>机器周期数和时钟周期数搞混。</b>"每条指令含 4 个机器周期，每机器周期含 2 个时钟周期" → CPI = 4×2 = 8，不是 4 也不是 6。<br>③ <b>"片内逻辑相同"这句话不能漏。</b>它的唯一含义就是"CPI 相同"，是解题的钥匙。</div>
+      </div>
+
+      <!-- ======== 例题 2 ======== -->
+      <div class="ex">
+        <h3 style="margin-top:0">例题 2｜指令系统设计（操作码扩展法）<span class="sub2">第 4 章 · 复习 PPT 综合举例 1</span></h3>
+        <div class="q"><em>题目</em>设某机字长 16 位，直接寻址空间为 128 字，变址时的位移量为 −64~+63，16 个通用寄存器都可以作为变址寄存器。请设计一套指令系统，满足：(1) 直接寻址的二地址指令 3 条；(2) 变址寻址的一地址指令 6 条；(3) 寄存器寻址的二地址指令 8 条；(4) 直接寻址的一地址指令 12 条；(5) 零地址指令 32 条。</div>
+
+        <p style="font-size:13.4px;margin:14px 0 6px;font-weight:600;color:var(--accent)">第 0 步：先把所有"位数"从题面抠出来</p>
+        <div style="overflow-x:auto;margin:8px 0">
+          <table style="font-size:13px">
+            <thead><tr><th style="width:250px">题面这句话</th><th style="width:150px">含义</th><th>需要几位</th></tr></thead>
+            <tbody>
+              <tr><td>字长 16 位</td><td>指令字长 = 16 位</td><td>总预算 <b>16 位</b></td></tr>
+              <tr><td>直接寻址空间 128 字</td><td>直接地址范围 0~127</td><td>log₂128 = <b>7 位</b></td></tr>
+              <tr><td>变址位移量 −64~+63</td><td>补码范围 2⁷</td><td><b>7 位</b>（含符号位）</td></tr>
+              <tr><td>16 个通用寄存器可作变址寄存器</td><td>寄存器编号 0~15</td><td>log₂16 = <b>4 位</b></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p style="font-size:13.4px;margin:16px 0 6px;font-weight:600;color:var(--accent)">五层扩展（每一层的"可用编码数"就是预算）</p>
+        <div style="overflow-x:auto; margin:10px 0 6px">
+          <svg viewBox="0 0 680 444" width="100%" style="max-width:780px;display:block;margin:0 auto" role="img" aria-label="操作码扩展的编码空间分配图">
+            <text x="10" y="20" font-size="12" font-weight="700" fill="#1b1f24">操作码扩展：每用掉一部分编码，剩下的"翻一倍"给下一层</text>
+
+            <!-- 第1层 -->
+            <text x="10" y="60" font-size="10" fill="#6b7480" font-weight="600">① OP = 2 位</text>
+            <rect x="110" y="44" width="397.5" height="36" fill="#2e8b8b"/>
+            <rect x="507.5" y="44" width="132.5" height="36" fill="#d97706"/>
+            <text x="308" y="68" text-anchor="middle" font-size="11" fill="#fff" font-weight="600">00　01　10　→　3 条二地址</text>
+            <text x="573.5" y="68" text-anchor="middle" font-size="11" fill="#fff" font-weight="600">11 → 扩展</text>
+            <text x="110" y="96" font-size="9.5" fill="#6b7480">地址1（7 位）+ 地址2（7 位），2+7+7 = 16 ✓</text>
+
+            <!-- 第2层 -->
+            <text x="10" y="140" font-size="10" fill="#6b7480" font-weight="600">② OP = 5 位</text>
+            <rect x="110" y="124" width="397.5" height="36" fill="#2e8b8b"/>
+            <rect x="507.5" y="124" width="132.5" height="36" fill="#d97706"/>
+            <text x="308" y="148" text-anchor="middle" font-size="11" fill="#fff" font-weight="600">11 000 ~ 11 101　→　6 条变址一地址</text>
+            <text x="573.5" y="148" text-anchor="middle" font-size="9.5" fill="#fff" font-weight="600">11 110 / 11 111</text>
+            <text x="110" y="176" font-size="9.5" fill="#6b7480">变址寄存器（4 位）+ 偏移量（7 位），5+4+7 = 16 ✓　「11」再扩 3 位得 8 个编码，用 6 剩 2</text>
+
+            <!-- 第3层 -->
+            <text x="10" y="220" font-size="10" fill="#6b7480" font-weight="600">③ OP = 8 位</text>
+            <rect x="110" y="204" width="530" height="36" fill="#2e8b8b"/>
+            <text x="375" y="228" text-anchor="middle" font-size="11" fill="#fff" font-weight="600">11 110 xxx 全用掉　→　8 条寄存器二地址</text>
+            <text x="110" y="256" font-size="9.5" fill="#6b7480">寄存器1（4 位）+ 寄存器2（4 位），8+4+4 = 16 ✓　「11 110」扩 3 位得 8 个，刚好用完</text>
+
+            <!-- 第4层 -->
+            <text x="10" y="300" font-size="10" fill="#6b7480" font-weight="600">④ OP = 9 位</text>
+            <rect x="110" y="284" width="397.5" height="36" fill="#2e8b8b"/>
+            <rect x="507.5" y="284" width="132.5" height="36" fill="#d97706"/>
+            <text x="308" y="308" text-anchor="middle" font-size="11" fill="#fff" font-weight="600">11 111 0000 ~ 1011　→　12 条一地址</text>
+            <text x="573.5" y="308" text-anchor="middle" font-size="9.5" fill="#fff" font-weight="600">剩 4 个</text>
+            <text x="110" y="336" font-size="9.5" fill="#6b7480">直接地址（7 位），9+7 = 16 ✓　「11 111」扩 4 位得 16 个，用 12 剩 4</text>
+
+            <!-- 第5层 -->
+            <text x="10" y="380" font-size="10" fill="#6b7480" font-weight="600">⑤ OP = 16 位</text>
+            <rect x="110" y="364" width="132.5" height="36" fill="#2e8b8b"/>
+            <rect x="242.5" y="364" width="397.5" height="36" fill="#f0f3f7" stroke="#cbd3dc" stroke-dasharray="4 3"/>
+            <text x="176" y="388" text-anchor="middle" font-size="10.5" fill="#fff" font-weight="600">32 条零地址</text>
+            <text x="441" y="388" text-anchor="middle" font-size="10" fill="#6b7480">还可再扩 96 个（未用）</text>
+            <text x="110" y="416" font-size="9.5" fill="#6b7480">「11 111 1100」再扩 7 位，共 128 个编码；用 32 个，16+0 = 16 ✓</text>
+            <text x="110" y="436" font-size="9.5" fill="#9aa3ad">绿 = 已被指令占用　橙 = 留作继续扩展　灰虚线 = 扩展后未用完的编码</text>
+          </svg>
+        </div>
+
+        <p style="font-size:13.4px;margin:16px 0 6px;font-weight:600;color:var(--accent)">最终指令格式</p>
+        <div style="overflow-x:auto">
+          <table style="font-size:12.8px">
+            <thead><tr><th style="width:110px">指令类型</th><th>格式（位数）</th><th>操作码编码</th></tr></thead>
+            <tbody>
+              <tr><td>直接二地址</td><td>OP(2) + 地址1(7) + 地址2(7) = 16</td><td>00、01、10（3 条）</td></tr>
+              <tr><td>变址一地址</td><td>OP(5) + 变址寄存器(4) + 偏移量(7) = 16</td><td>11 000 ~ 11 101（6 条）</td></tr>
+              <tr><td>寄存器二地址</td><td>OP(8) + 寄存器1(4) + 寄存器2(4) = 16</td><td>11 110 000 ~ 11 110 111（8 条）</td></tr>
+              <tr><td>直接一地址</td><td>OP(9) + 直接地址(7) = 16</td><td>11 111 0000 ~ 11 111 1011（12 条）</td></tr>
+              <tr><td>零地址</td><td>OP(16)</td><td>11 111 1100 0000000 ~ 11 111 1100 0011111（32 条）</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="final"><b>答：</b>按上表设计。核心思想是<b>操作码长度可变</b>：短操作码给地址字段多留位，长操作码给短指令（零地址）留空间，靠"已用编码之外剩下的编码"一层层扩展。</div>
+        <div class="warn"><b>这题唯一的难点是"账要算平"。</b>每扩展一层，必须回答两个数：<b>这一层可用几个编码</b>、<b>用掉几个、剩几个</b>。剩下的编码数 ×2 就是下一层（多扩 1 位）的可用数。做完一定要验算每一行的"OP 位 + 各地址字段位 = 16"，五行全平才算对。</div>
+      </div>
+
+      <!-- ======== 例题 3 ======== -->
+      <div class="ex">
+        <h3 style="margin-top:0">例题 3｜指令格式分析（7 小问）<span class="sub2">第 4 章 · 复习 PPT</span></h3>
+        <div class="q"><em>题目</em>某机主存容量为 4M×16 位，且存储字长等于指令字长。若该机指令系统可完成 108 种操作，操作码位数固定，且具有直接、间接、变址、基址、相对、立即等六种寻址方式，试回答：<br>(1) 画出一地址指令格式并指出各字段的作用；(2) 该指令直接寻址的最大范围；(3) 一次间接寻址和多次间接寻址的寻址范围；(4) 立即数的范围（十进制）；(5) 相对寻址的位移量（十进制）；(6) 六种寻址方式中哪种执行时间最短、哪种最长，为什么；(7) 如何修改指令格式，使寻址范围扩大到 4M。</div>
+
+        <p style="font-size:13.4px;margin:14px 0 6px;font-weight:600;color:var(--accent)">(1) 先确定三个字段的位数</p>
+        <ol class="sol">
+          <li><b>操作码位数</b>：108 种操作 → log₂108 = 6.75 → <b>取 7 位</b>（2⁷ = 128 ≥ 108）。注意是"向上取整"，6 位只有 64 种，不够。</li>
+          <li><b>寻址特征位数</b>：6 种寻址方式 → log₂6 = 2.58 → <b>取 3 位</b>。</li>
+          <li><b>形式地址位数</b>：16 − 7 − 3 = <b>6 位</b>。</li>
+        </ol>
+        <div class="final"><b>格式：</b><span class="eq">OP(7 位) | M(3 位，寻址方式) | A(6 位，形式地址)</span> = 16 位<br>作用：<b>OP</b> 指明做什么操作；<b>M</b> 指明按哪种寻址方式解释 A；<b>A</b> 是形式地址，可能是直接地址、寄存器号、位移量或立即数，由 M 决定。</div>
+
+        <p style="font-size:13.4px;margin:18px 0 6px;font-weight:600;color:var(--accent)">(2) (4) (5) 三个范围，全看 A 字段</p>
+        <div style="overflow-x:auto;margin:8px 0">
+          <table style="font-size:13px">
+            <thead><tr><th style="width:150px">小问</th><th style="width:170px">A 的 6 位怎么解释</th><th>结果</th></tr></thead>
+            <tbody>
+              <tr><td>(2) 直接寻址范围</td><td>无符号地址</td><td>0 ~ 2⁶−1 = <b>0 ~ 63</b>，即 64 个字</td></tr>
+              <tr><td>(4) 立即数范围</td><td>补码（可正可负）</td><td><b>−32 ~ +31</b></td></tr>
+              <tr><td>(5) 相对寻址位移量</td><td>补码（可正可负）</td><td><b>−32 ~ +31</b></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="warn" style="background:#fff8e6;border-color:#f3e0b0;color:#7a5a12"><b>为什么直接寻址用无符号、立即数和位移量用补码？</b>直接地址只有正方向（地址从 0 开始编号），负数地址没意义，所以 6 位全用上 → 0~63。<br>而立即数和位移量都必须能表示"负数"（比如减 5、向后跳 3 条），最高位要当符号位 → 6 位补码只有 5 位数值 → −32~+31。<br><b>记住：同一个 A 字段，寻址方式不同，解释方式就不同，范围也不同。这是本题的核心考点。</b></div>
+
+        <p style="font-size:13.4px;margin:18px 0 6px;font-weight:600;color:var(--accent)">(3) 间接寻址的寻址范围</p>
+        <ol class="sol">
+          <li><b>一次间接</b>：A 字段指向一个主存单元，该单元里存的是"真正的地址"。存储字长 16 位 → 这个地址有 <b>16 位</b> → 寻址范围 2¹⁶ = <b>64K 字</b>。</li>
+          <li><b>多次间接</b>：为了判断"还要不要再间接一次"，必须拿出 1 位当标志位，剩下 15 位作地址 → 2¹⁵ = <b>32K 字</b>。</li>
+        </ol>
+        <div class="final">(3) 一次间接 <b>64K</b>（2¹⁶），多次间接 <b>32K</b>（2¹⁵）。</div>
+
+        <p style="font-size:13.4px;margin:18px 0 6px;font-weight:600;color:var(--accent)">(6) 执行时间长短</p>
+        <div class="final"><b>最短 = 立即寻址</b>：操作数就在指令里，取出指令就有数据，<b>不需要再访存</b>。<br><b>最长 = 间接寻址</b>：要额外访存至少一次（一次间接访 1 次，多次间接要访多次）才能拿到有效地址，再访存取操作数，访存次数最多。<br>其余四种（直接、变址、基址、相对）都是"访存一次取操作数"，居中。</div>
+
+        <p style="font-size:13.4px;margin:18px 0 6px;font-weight:600;color:var(--accent)">(7) 扩大到 4M 的方法</p>
+        <ol class="sol">
+          <li>4M×16 位的 4M 指的是 <b>4M 个存储字</b> → 2²² 个字 → 需要 <b>22 位地址</b>。</li>
+          <li>而现在 A 只有 6 位，直接寻址只覆盖 64 个字，差得很远。要覆盖 2²²，A 必须扩到 <b>22 位</b>。</li>
+          <li>7（OP）+ 3（M）+ 22（A）= <b>32 位</b> → 指令字长要从 16 位扩到 32 位，也就是采用<b>双字长指令</b>，一条指令占 2 个存储字。</li>
+        </ol>
+        <div class="final">(7) 把指令字长由 16 位改为 <b>32 位（双字长指令）</b>，格式为 OP(7) + M(3) + A(22) = 32 位，形式地址扩到 22 位即可直接寻址全部 4M。<br>（另一种可行思路：保持 16 位字长，改用<b>基址寄存器</b>，用基址 + 位移量拼出 22 位地址，但那就不是"直接寻址"了。）</div>
+        <div class="warn"><b>这一题的采分结构：</b>7 个小问、每问 1~2 分，独立给分。即使 (1) 算错了，(2)~(5) 按你自己算出的 A 位数继续往下推也能得分。<b>所以千万别因为不会第一问就整题空着</b> —— 把"108 种操作取 7 位""6 种寻址取 3 位"这两步写出来就是分。</div>
+      </div>
+
+      <!-- ======== 例题 4 ======== -->
+      <div class="ex">
+        <h3 style="margin-top:0">例题 4｜微操作命令与节拍安排 <span class="sub2">第 5 章 · 复习 PPT 节拍表 + 第九章作业</span></h3>
+        <div class="q"><em>题目</em>表 5-x 给出了某指令的取指和译码阶段每个节拍的功能和有效控制信号。请说明：① 取指周期为什么必须分成这几个节拍；② 执行阶段 c5~c9 完成的是哪条指令；③ 该指令的完整微操作序列。</div>
+
+        <div style="overflow-x:auto;margin:10px 0">
+          <table style="font-size:12.8px">
+            <thead><tr><th style="width:66px">时钟</th><th style="width:230px">功能</th><th>有效控制信号</th></tr></thead>
+            <tbody>
+              <tr><td>c1</td><td>MAR ← (PC)</td><td>PCout, MARin</td></tr>
+              <tr><td>c2</td><td>MDR ← M，PC ← (PC)+1</td><td>MemR, MDRinE, PC+1</td></tr>
+              <tr><td>c3</td><td>IR ← (MDR)</td><td>MDRout, IRin</td></tr>
+              <tr><td>c4</td><td>指令译码</td><td>无</td></tr>
+              <tr><td>c5</td><td>MAR ← (R1)</td><td>R1out, MARin</td></tr>
+              <tr><td>c6</td><td>MDR ← M，A ← (R0)</td><td>MemR, MDRinE, R0out, Ain</td></tr>
+              <tr><td>c7</td><td>AC ← (MDR) + (A)</td><td>MDRout, Add, ACin</td></tr>
+              <tr><td>c8</td><td>MDR ← (AC)</td><td>ACout, MDRin</td></tr>
+              <tr><td>c9</td><td>M ← (MDR)</td><td>MDRoutE, MemW</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p style="font-size:13.4px;margin:14px 0 6px;font-weight:600;color:var(--accent)">① 取指周期为什么是 c1~c4 这四拍</p>
+        <ol class="sol">
+          <li><b>c1</b>：把 PC 里的指令地址送进地址寄存器 MAR。<b>因为主存要的是 MAR 里的地址，PC 不能直接连主存。</b></li>
+          <li><b>c2</b>：用 MAR 的地址读主存，数据进 MDR；同时 PC 加 1，指向下一条指令。<b>这两件事可以并行</b>（读主存和 PC 加 1 互不干扰），所以放在同一拍 —— 这就是"相容性微操作放在同一节拍"的实例。</li>
+          <li><b>c3</b>：MDR 里的指令送进指令寄存器 IR，准备译码。</li>
+          <li><b>c4</b>：对 IR 里的操作码译码，确定要执行什么操作。<b>译码本身不产生控制信号</b>，所以"有效控制信号"一栏写"无"。</li>
+        </ol>
+        <div class="final"><b>取指四步口诀：</b><span class="eq">PC → MAR → 读主存 → MDR → IR → 译码</span>，即 c1 送地址、c2 读存储并 PC+1、c3 送 IR、c4 译码。<br><b>这四拍是任何指令都要走的公共流程</b>，被称为"公共取指微程序"。</div>
+
+        <p style="font-size:13.4px;margin:16px 0 6px;font-weight:600;color:var(--accent)">② c5~c9 完成的是哪条指令</p>
+        <ol class="sol">
+          <li>c5 把 <b>R1 的内容当地址</b> 送进 MAR → R1 里存的是地址，这是<b>寄存器间接寻址</b>。</li>
+          <li>c6 按该地址读主存进 MDR，同时把 <b>R0 送进暂存器 A</b> → 取到了间接寻址的操作数，另一个操作数来自 R0。</li>
+          <li>c7 做加法，结果进累加器 AC。</li>
+          <li>c8、c9 把 AC 写回 MDR 再写回主存 → <b>结果写回原地址</b>。</li>
+        </ol>
+        <div class="final"><b>结论：</b>这是一条 <b>「ADD (R1), R0」</b> —— 即 ((R1)) + (R0) → (R1)，<b>寄存器间接寻址的加法指令，结果存回内存</b>。<br>完整微操作序列：c1~c4 取指译码 ＋ c5~c9 执行。</div>
+
+        <p style="font-size:13.4px;margin:16px 0 6px;font-weight:600;color:var(--accent)">③ 写这类题的固定套路（考场直接套）</p>
+        <ol class="sol">
+          <li><b>先写公共取指四拍</b>，这四拍任何指令都一样，是白送的分。</li>
+          <li><b>再按"取操作数 → 运算 → 存结果"三段写执行阶段</b>。取操作数看寻址方式（直接寻址只需一次访存、间址要两次），运算看 ALU 的控制信号，存结果看写回哪里。</li>
+          <li><b>每个节拍必须同时写出"数据怎么流动"和"哪几个控制信号有效"。</b>只写前者拿一半分，只写后者零分（因为阅卷要看逻辑）。</li>
+          <li><b>相斥的微操作绝不能放同一拍。</b>比如"PCout"和"R1out"同时有效会让总线冲突，必须分拍。</li>
+        </ol>
+        <div class="warn"><b>信号命名规律（各校教材略有差异，按你们课本的写法）：</b>寄存器名 + in 表示输入（如 MARin、IRin），寄存器名 + out 表示输出到总线（如 PCout、MDRout），带 E 后缀表示送外部总线（如 MDRinE 从外部总线输入、MDRoutE 输出到外部总线），MemR / MemW 表示读 / 写主存。<b>写不出信号名就用这套规律自己推，比空着强。</b></div>
+      </div>
+
+      <!-- ======== 例题 5 ======== -->
+      <div class="ex">
+        <h3 style="margin-top:0">例题 5｜水平型微指令格式设计与控存容量 <span class="sub2">第 5 章 · 复习 PPT · 10 分</span></h3>
+        <div class="q"><em>题目</em>某机共有 52 个微操作控制信号，构成 5 个相斥类的微命令组，各组分别包含 5、8、2、15、22 个微命令。已知可判定的外部条件有两个，微指令字长 28 位。<br>(1) 按水平型微指令格式设计微指令，要求下地址字段直接给出后继微指令地址。(2) 指出控制存储器的容量。</div>
+
+        <ol class="sol">
+          <li><b>每个相斥组 +1</b>：同一字段一次只能输出一个值，而"这一组都不发出"也是一种状态，所以每组要额外加 1 种"不发命令"状态。</li>
+          <li><b>各组位数 = ⌈log₂(微命令数 + 1)⌉</b>：
+            <br>组1：5+1 = 6 → <b>3 位</b>（2³=8 ≥ 6）
+            <br>组2：8+1 = 9 → <b>4 位</b>（2⁴=16 ≥ 9）
+            <br>组3：2+1 = 3 → <b>2 位</b>
+            <br>组4：15+1 = 16 → <b>4 位</b>（正好 2⁴）
+            <br>组5：22+1 = 23 → <b>5 位</b>（2⁵=32 ≥ 23）</li>
+          <li><b>控制字段合计</b> = 3 + 4 + 2 + 4 + 5 = <b>18 位</b></li>
+          <li><b>测试条件字段</b>：2 个外部条件，采用直接控制编码（每个条件一位）→ <b>2 位</b></li>
+          <li><b>下地址字段</b> = 28 − 18 − 2 = <b>8 位</b></li>
+          <li><b>控存容量</b> = 2⁸ × 28 位 = 256 个单元 × 28 位 = <b>7168 位</b>（= 896 字节）</li>
+        </ol>
+        <div class="final"><b>答：</b>微指令格式为 <span class="eq">微操作控制字段 18 位 | 测试条件 2 位 | 下址字段 8 位</span>，共 28 位。<br>控制存储器容量 = <b>256 × 28 位 = 7168 位</b>。</div>
+        <div class="warn"><b>三个高频坑：</b><br>① <b>忘了 +1。</b>直接算 ⌈log₂5⌉ = 3 位好像也对，但 ⌈log₂8⌉ = 3 位就错了（需要 4 位，因为要 9 种状态）。<b>凡"这一组可以全不发"，就必须 +1。</b><br>② <b>容量只写"28×28"。</b>（复习 PPT 原稿这里写得含糊）正确写法是 2⁸ 个单元 × 每单元 28 位 = 256×28 = 7168 位。<b>地址位数决定"多少个单元"，字长决定"每单元多少位"，两者相乘才是容量。</b><br>③ <b>测试条件位数算错。</b>"两个可判定条件、直接控制编码"= 2 位；如果题目改成"编码控制"，则是 ⌈log₂(2+1)⌉ = 2 位 —— 这里凑巧相同，但换个条件数就不一样了，注意看清编码方式。</div>
+
+        <p style="font-size:13.4px;margin:18px 0 6px;font-weight:600;color:var(--accent)">配套变式（第十章作业 6）</p>
+        <p style="font-size:13.3px;color:var(--ink-2);margin:0 0 8px">
+          某计算机采用微程序控制器，共有 32 条指令，公共取指令微程序含 2 条微指令，各指令对应的微程序（除公共部分外）平均由 4 条微指令组成，采用断定法（下址字段法）确定下条微指令地址，则下址字段位数至少是？
+        </p>
+        <ol class="sol">
+          <li>微指令总数 = 4 × 32 + 2 = <b>130</b> 条</li>
+          <li>下址字段要能指向 130 个单元中的任一个 → ⌈log₂130⌉ = <b>8 位</b>（2⁷=128 &lt; 130，不够；2⁸=256 ≥ 130）</li>
+        </ol>
+        <div class="final"><b>答：8 位。</b>（原题选项 C）<b>坑在这里：</b>128 和 130 只差 2，很多人一看"32 条指令"就算成 5 位或 6 位。<b>一定要先算出微指令总数，再取以 2 为底的对数向上取整。</b></div>
+      </div>
+
+      <!-- ======== 例题 6 ======== -->
+      <div class="ex">
+        <h3 style="margin-top:0">例题 6｜第 5 章概念速答（客观题必考）<span class="sub2">第九 / 十章作业客观题汇总</span></h3>
+        <div class="q"><em>说明</em>这一块全是单选/填空题，第九、十章作业里共 30 余道。下面把最高频的 12 条结论汇总成一张表，背下来即可直接对应。</div>
+
+        <div style="overflow-x:auto;margin:10px 0">
+          <table style="font-size:12.8px">
+            <thead><tr><th style="width:210px">问题</th><th>答案与一句话理由</th></tr></thead>
+            <tbody>
+              <tr><td>指令周期 / 机器周期 / 时钟周期 的关系</td><td><b>指令周期 ⊃ 机器周期 ⊃ 时钟周期</b>。指令周期 = 取指 + 执行一条指令的全部时间；机器周期是完成一个基本操作的时间，通常由<b>存取周期</b>决定（因为访存最慢）；时钟周期是最小节拍 = 1/f。</td></tr>
+              <tr><td>机器周期通常由什么确定</td><td><b>存取周期</b>。CPU 内部操作快，访存慢，所以一个机器周期至少得够完成一次访存。</td></tr>
+              <tr><td>取指后 PC 里存的是什么</td><td><b>下一条指令的地址</b>（取指过程中已经 PC+1 了）。</td></tr>
+              <tr><td>指令译码器对什么译码</td><td><b>指令的操作码字段</b>，不是整条指令、也不是地址码。</td></tr>
+              <tr><td>时序控制信号发生器的作用</td><td><b>产生各种操作控制信号</b>（不是产生时序，那只是它的一部分）。</td></tr>
+              <tr><td>控制器的全部功能</td><td><b>从主存取出指令、分析指令并产生有关的操作控制信号</b>。</td></tr>
+              <tr><td>机器指令与微指令的关系</td><td><b>每条机器指令由一段微程序解释执行</b>（不是一条微指令）。</td></tr>
+              <tr><td>微程序存放在哪里</td><td><b>控制存储器</b>（在 CPU 内部），不在主存、不在 Cache。</td></tr>
+              <tr><td>微程序入口地址由什么形成</td><td><b>机器指令的操作码字段</b>（经地址转移逻辑映射）。</td></tr>
+              <tr><td>修改指令系统只需做什么</td><td><b>改变控制存储器的内容</b>（这是微程序控制器最大的优点）。</td></tr>
+              <tr><td>组合逻辑控制器 vs 微程序控制器</td><td>组合逻辑（硬连线）：<b>速度快、修改扩展难</b>；微程序：<b>速度慢、修改扩展容易</b>（因为要多读一次控存）。</td></tr>
+              <tr><td>相容性微操作 / 相斥性微操作</td><td><b>相容性 = 同一 CPU 周期内可以并行执行</b>的微操作；<b>相斥性 = 不能并行</b>（争用同一部件或总线）。</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="warn"><b>两个最容易反的：</b><br>① <b>相容 / 相斥</b>——"可以并行"叫相容，不是相斥。第十章作业 13、14 题就是专门设这个坑，选项故意把两者描述互换。<br>② <b>速度与可改性</b>——组合逻辑是"快但难改"，微程序是"慢但易改"。别背成"微程序又快又易改"，世上没有这种好事（微程序的慢正是因为要多读一次控制存储器）。</div>
+      </div>
+
+      <!-- ======== 问答窗口 ======== -->
+      <h3 style="margin-top:34px">这一节最容易卡住的两个点｜点开逐层追问</h3>
+
+      <div class="chat">
+        <div class="ttl">问答窗口 12 · 操作码扩展到底是怎么"挤"出空间的</div>
+        <div class="rd on">
+          <div class="bub ask">操作码扩展我不理解：指令种类越多操作码越长，那为什么还能"扩展"？空间从哪来的？</div>
+          <div class="bub ans">空间来自 <b>"短指令用不到的编码"</b>。<br>想象操作码是一个编码空间：<br>· 2 位操作码有 4 个格子。你只用 3 个放二地址指令，<b>第 4 个格子（11）空着</b>。<br>· 这个空格子不必浪费 —— 把"11"当作前缀，<b>在后面再接 3 位</b>，就变成 8 个新格子（11 000 ~ 11 111）。<br>· 这 8 个新格子可以放 6 条变址指令，又剩 2 个；再把"11 110"当前缀接 3 位，又变出 8 个格子……<br><br>所以"扩展"不是凭空造空间，是<b>把上一层没用的编码重新切开使用</b>。</div>
+        </div>
+        <div class="rd">
+          <div class="bub ask">那为什么第一层只能放 3 条，不能放 4 条？多放一条不是更好吗？</div>
+          <div class="bub ans">因为<b>必须留至少一个编码给扩展用</b>。<br>二地址指令需要 7+7 = 14 位给两个地址，只剩 2 位给操作码 —— 2 位最多 4 种，如果 4 种全用完，就再也没有"空闲编码"可以扩展了，后面四类指令（变址、寄存器、一地址、零地址）一条都放不下。<br><br>反过来看：<b>题目让你设计，就是在考你会不会主动牺牲编码</b>。3 条是题目要求的数量，剩下的那 1 个 "11" 就是留给后面所有指令的"门"。<br>这也是设计指令系统的基本原则：<b>高频指令用短操作码，低频指令用长操作码</b>，用编码换地址空间。</div>
+        </div>
+        <div class="rd">
+          <div class="bub ask">那我在考场上怎么算才不会乱？给个固定流程。</div>
+          <div class="bub ans">用"表格法"，一行一层，四个数列清楚：<br><b>层号 | OP 位数 | 本层可用编码数 | 本层用掉几个 / 剩几个</b><br><br>规则两条：<br>① <b>每多扩 1 位，可用编码数 ×2</b>（从上层的剩余数算起）；<br>② 每一层都要验算 <b>OP 位数 + 各地址字段位数 = 指令字长</b>。<br><br>以例题 2 为例：2 位层可用 4、用 3 剩 1；5 位层（+3 位）可用 1×2³=8、用 6 剩 2；8 位层（+3 位，前缀 11 110）可用 8、用 8 剩 0；9 位层（+4 位，前缀 11 111）可用 16、用 12 剩 4；16 位层（+7 位）可用 4×2⁷=512……<br><br>注意最后一行"可用数"是按剩余前缀算的，别死套公式 —— <b>每一行都回头看一眼"我现在挂在哪几个前缀下面"</b>，这是唯一不会算错的办法。</div>
+        </div>
+        <button class="nx">我还不懂，继续问 →</button>
+        <div class="end">一句话：每一层把上一层的空编码切开用，必须始终留至少一个空编码给下一层。</div>
+      </div>
+
+      <div class="chat">
+        <div class="ttl">问答窗口 13 · 微命令分组为什么每组都要 +1</div>
+        <div class="rd on">
+          <div class="bub ask">微指令字段编码，为什么是 ⌈log₂(n+1)⌉ 而不是 ⌈log₂n⌉？那个 +1 加的是什么？</div>
+          <div class="bub ans">加的是<b>"这一组一个都不发出"这种状态</b>。<br>一个字段在同一时刻只能输出一个值。假设某组有 5 个微命令，字段取 000 发第 1 个、001 发第 2 个……那"这一组这次一个都不需要发"该怎么办？<br>必须有编码表示它 —— 于是要 6 种状态：<b>不发 + 发第1个 + … + 发第5个</b>。<br>⌈log₂6⌉ = 3 位。</div>
+        </div>
+        <div class="rd">
+          <div class="bub ask">那如果某一组永远都有且只有一个要发，是不是就不用 +1 了？</div>
+          <div class="bub ans">理论上是的，但<b>考试里永远按 +1 算</b>，原因有两个：<br>① 实际微指令中，绝大多数相斥组在某些节拍确实"一个都不用发"，不加这个状态就无法编码；<br>② 教材例题、标准答案一律用 ⌈log₂(n+1)⌉，你按 n 算会跟标准答案对不上，直接扣分。<br><br>除非题目明确写"某组至少有一个微命令必须发出"，那就用 ⌈log₂n⌉。这种情况极少见。</div>
+        </div>
+        <div class="rd">
+          <div class="bub ask">那为什么"相斥"的才能编在一组？相容的为什么不行？</div>
+          <div class="bub ans">因为<b>同一字段一次只能出一个值</b>。<br>相容性微操作是"可以同时发"的（比如 PCout 和 MARin 可以同时有效）。如果把它们编进同一个字段，字段一次只能选一个，就<b>永远发不出两个</b>，等于人为毁掉了并行性。<br>而相斥性微操作本来就"不能同时发"，编在一组正好 —— 用编码强制互斥，既省位又符合物理约束。<br><br>所以对应关系是：<b>相斥 → 编进同一字段（省位）；相容 → 各占独立的一位（保并行）</b>。这也解释了为什么"直接控制编码"位数多但并行性最好，而"字段编码"位数少但并行性受限。</div>
+        </div>
+        <button class="nx">我还不懂，继续问 →</button>
+        <div class="end">三句话：每组 +1 是给"不发"留编码；相斥才编一组；相容必须各占一位。</div>
+      </div>
+
+      <!-- ======== 采分点清单 ======== -->
+      <div class="card" style="margin-top:26px">
+        <h3 style="margin-top:0">这一节的 8 条采分纪律</h3>
+        <ol class="sol">
+          <li><b>性能题先把 f 统一成 Hz、T 统一成 s，再代数。</b>单位错是这一族最大的失分源。</li>
+          <li><b>机器周期数 × 时钟周期数/机器周期 = CPI。</b>两个数乘起来，别漏乘。</li>
+          <li><b>"片内逻辑相同"= CPI 相同，是解题钥匙。</b>看到这句话，速度就只跟主频成正比。</li>
+          <li><b>操作码扩展一定列"层号 / OP 位数 / 可用编码 / 用掉剩多少"四列。</b>五行全平（位数加总 = 字长）才算完。</li>
+          <li><b>⌈log₂x⌉ 一律向上取整。</b>108 种操作要 7 位（不是 6），6 种寻址要 3 位（不是 2）。</li>
+          <li><b>形式地址 A 的解释随寻址方式变。</b>直接地址按无符号，立即数和位移量按补码 —— 同一字段两种范围。</li>
+          <li><b>微操作题先写公共取指四拍，再写执行三阶段。</b>每拍同时写数据流向和有效控制信号。</li>
+          <li><b>微命令分组必须 +1，控存容量 = 单元数 × 字长。</b>2⁸ 个单元 × 28 位，不是"28×28"。</li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- ============ ⑩ 复习路线 ============ -->
+    <section id="plan">
+      <h2>⑩ 复习路线</h2>
+      <p class="lead">按"先拿稳画图题与 Cache，再补浮点与微操作，最后刷客观题"的顺序排，前面的步骤不依赖后面的知识。</p>
+      <div class="card">
+        <ol class="steps">
+          <li><b>第 3 章 Cache 映射与性能（S3 / S4）</b><p>先学会"看到容量和块长就画出地址字段"，这是纯套路，最快拿分。<a href="#cache" style="color:var(--accent)">→ 已完成，点此进入</a></p></li>
+          <li><b>第 3 章 存储器扩展与 8 体交叉（S5 / S6）＋ 画图专项</b><p>两道画图题。按"算芯片数 → 分地址段 → 选译码器 → 连线"四步走。<a href="#mem" style="color:var(--accent)">→ 已完成，点此进入</a></p></li>
+          <li><b>第 2 章 IEEE754 与浮点加减（S1 / S2）</b><p>正反双向转换 + 五步法手算，练到不看讲义能写完。<a href="#fp" style="color:var(--accent)">→ 已完成，点此进入</a></p></li>
+          <li><b>第 2 章 ALU 进位链（S7）</b><p>74LS181 引脚含义 + 先行进位公式 + 双重分组，配 SVG 标准图。<a href="#fp" style="color:var(--accent)">→ 已完成，点此进入</a></p></li>
+          <li><b>第 1、4、5 章 A 级考点</b><p>CPI/MIPS 换算、指令系统设计、微指令格式设计，各 1~2 道母题反复变式。<a href="#acore" style="color:var(--accent)">→ 已完成，点此进入</a></p></li>
+          <li><b>B 级客观题速刷</b><p>第九/十章作业答案里的 30 余道单选，已汇总成 12 条结论表，见 <a href="#acore" style="color:var(--accent)">⑨ 例题 6</a>。</p></li>
+          <li><b>分层模拟卷</b><p>按作业真实的题型配比（单选40 + 填空30 + 简答30~60）出卷，限时完成。</p></li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- ============ ⑪ 待填充 ============ -->
+    <section id="todo">
+      <h2>⑪ 待填充模块</h2>
+      <p class="lead">当前这一版只有骨架。下面四块内容在你确认骨架无误后逐块填充，每块填完都会交给你验收。</p>
+      <div class="todo">
+        <div>
+          <div class="t">A. 知识点精讲（零基础版）</div>
+          <div class="d">已完成：第 0 章「基本概念」、第 3 章「Cache」、第 3 章「存储器扩展」、第 2 章「浮点与 ALU」、第 1/4/5 章「A 级考点」（24 道例题 + 10 SVG + 13 窗口）。剩余：分层模拟卷。</div>
+          <div class="st" style="background:#e6f4ea;color:#2f7d4e">进行中 · 5 / 6</div>
+        </div>
+        <div>
+          <div class="t">B. 画图题专项（配 SVG）</div>
+          <div class="d">4 类画图题各给：分步画法、采分点清单、常见错法对照，并用 SVG 画出标准答案图。</div>
+          <div class="st">待填充</div>
+        </div>
+        <div>
+          <div class="t">C. 互动问答窗口</div>
+          <div class="d">已上线 3 个（字/字节/字长、编址方式与地址位数、块·行·组·路），每个支持逐层追问 3 轮。后续随各章补齐。</div>
+          <div class="st" style="background:#e6f4ea;color:#2f7d4e">已可用 · 持续增加</div>
+        </div>
+        <div>
+          <div class="t">D. 分层模拟卷</div>
+          <div class="d">基础卷 / 提高卷各一套，按真实题型配比出题，答案默认折叠，标注题源与采分点。</div>
+          <div class="st">待填充</div>
+        </div>
+      </div>
+
+      <div class="note">
+        <b>数据来源说明：</b>本页所有题型、分值、考点均提取自你的 8 份超星作业截图、两份作业答案 docx 与《复习1》课件（49 页）。<code>计算机组成原理-指令系统1.ppt</code> 为旧版 ppt 格式，当前转换工具无法解析，暂未纳入；如需补充可另存为 pptx 后重新提取。
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<script>
+(function(){
+  // 侧栏高亮
+  var links = Array.prototype.slice.call(document.querySelectorAll('.sidebar a[href^="#"]'));
+  var targets = links.map(function(a){ return document.querySelector(a.getAttribute('href')); }).filter(Boolean);
+  function onScroll(){
+    var y = window.scrollY + 120, cur = null;
+    targets.forEach(function(t){ if(t.offsetTop <= y) cur = t; });
+    links.forEach(function(a){
+      a.classList.toggle('on', cur && a.getAttribute('href') === '#' + cur.id);
+    });
+  }
+  window.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+
+  // 章节折叠
+  document.querySelectorAll('.chap header').forEach(function(h){
+    h.addEventListener('click', function(){ h.parentNode.classList.toggle('open'); });
+  });
+
+  // 分级筛选
+  var btns = document.querySelectorAll('.filter button');
+  var rows = document.querySelectorAll('#levelTable tbody tr');
+  btns.forEach(function(b){
+    b.addEventListener('click', function(){
+      btns.forEach(function(x){ x.classList.remove('on'); });
+      b.classList.add('on');
+      var f = b.getAttribute('data-f');
+      rows.forEach(function(r){
+        var lv = r.getAttribute('data-lv');
+        var hit = (f === 'all') || (f === 'draw' ? lv.indexOf('draw') > -1 : lv === f);
+        r.style.display = hit ? '' : 'none';
+      });
+    });
+  });
+
+  // 互动问答窗口：逐层追问
+  document.querySelectorAll('.chat').forEach(function(box){
+    var rounds = Array.prototype.slice.call(box.querySelectorAll('.rd'));
+    var nx = box.querySelector('.nx');
+    var end = box.querySelector('.end');
+    var i = 1;
+    if(rounds.length <= 1){ if(nx) nx.style.display = 'none'; }
+    if(nx){
+      nx.addEventListener('click', function(){
+        if(i < rounds.length){
+          rounds[i].classList.add('on');
+          i++;
+          if(i >= rounds.length){
+            nx.style.display = 'none';
+            if(end) end.classList.add('on');
+          }
+        }
+      });
+    }
+  });
+})();
+</script>
+</body>
+</html>
