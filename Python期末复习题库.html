@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Python 期末复习题库</title>
+<style>
+:root{
+  --bg:#f5f7fa; --card:#ffffff; --ink:#1f2733; --sub:#5b6675; --line:#e3e8ef;
+  --accent:#2256a8; --accent-soft:#eaf1fc; --warn:#a8620a; --warn-soft:#fff6e6;
+  --ok:#17663c; --ok-soft:#e9f7ef;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font-family:"Microsoft YaHei","PingFang SC","Segoe UI",Arial,sans-serif;
+  font-size:15.5px;line-height:1.75;}
+.wrap{max-width:960px;margin:0 auto;padding:28px 18px 80px;}
+header.top{background:linear-gradient(135deg,#2256a8,#3f7fd6);color:#fff;
+  border-radius:14px;padding:26px 30px;box-shadow:0 6px 20px rgba(34,86,168,.18);}
+header.top h1{margin:0 0 6px;font-size:26px;letter-spacing:.5px;}
+header.top p{margin:2px 0;font-size:14px;opacity:.95;}
+.statbar{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px;}
+.stat{background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.28);
+  border-radius:9px;padding:7px 14px;font-size:13px;}
+.stat b{font-size:16px;}
+.toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;
+  margin:18px 0 10px;padding:14px 16px;background:var(--card);
+  border:1px solid var(--line);border-radius:12px;}
+.toolbar button{cursor:pointer;border:1px solid var(--accent);color:var(--accent);
+  background:#fff;border-radius:8px;padding:6px 14px;font-size:13px;}
+.toolbar button:hover{background:var(--accent-soft);}
+.toolbar .tip{color:var(--sub);font-size:13px;margin-left:auto;}
+nav.jump{display:flex;flex-wrap:wrap;gap:8px;margin:6px 0 26px;}
+nav.jump a{text-decoration:none;color:var(--accent);background:var(--accent-soft);
+  border-radius:20px;padding:5px 14px;font-size:13px;}
+nav.jump a:hover{background:#d8e6fb;}
+section.type{margin-top:34px;}
+section.type > h2{font-size:20px;margin:0 0 4px;padding-bottom:10px;
+  border-bottom:2px solid var(--accent);display:flex;align-items:center;gap:10px;}
+section.type > h2 .ico{color:var(--accent);}
+section.type > .desc{color:var(--sub);font-size:13.5px;margin:8px 0 16px;}
+.q{background:var(--card);border:1px solid var(--line);border-radius:12px;
+  padding:18px 20px;margin:14px 0;box-shadow:0 2px 8px rgba(30,50,80,.04);}
+.qhead{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:12px;}
+.num{display:inline-flex;align-items:center;justify-content:center;
+  width:30px;height:30px;border-radius:50%;background:var(--accent);color:#fff;
+  font-weight:700;font-size:15px;flex:none;}
+.badge{font-size:12px;border-radius:6px;padding:3px 9px;border:1px solid var(--line);
+  color:var(--sub);background:#fafbfd;}
+.badge.type{background:var(--accent-soft);color:var(--accent);border-color:#cfe0f8;font-weight:600;}
+.badge.tag{background:#f3f0fb;color:#6b46a8;border-color:#e4daf6;}
+.stem{margin:4px 0 10px;}
+.code{background:#f4f6f9;border:1px solid var(--line);border-left:3px solid var(--accent);
+  border-radius:8px;padding:12px 14px;margin:10px 0;overflow-x:auto;
+  font-family:Consolas,"Courier New",monospace;font-size:13.5px;line-height:1.65;color:#243044;}
+.blank{background:#fff2d6;color:var(--warn);border-bottom:1px dashed var(--warn);
+  padding:0 3px;border-radius:3px;font-weight:600;}
+.opts{list-style:none;padding:0;margin:8px 0 0 4px;}
+.opts li{padding:4px 0 4px 26px;position:relative;}
+.opts li::before{content:"○";position:absolute;left:4px;color:var(--sub);}
+.hint{margin-top:12px;background:var(--warn-soft);border:1px solid #f3dfb8;
+  border-radius:8px;padding:9px 12px;font-size:13.5px;color:#6b4a12;}
+.hint-tag{display:inline-block;background:#f0c877;color:#5a3d08;font-weight:700;
+  border-radius:5px;padding:1px 8px;margin-right:8px;font-size:12px;}
+.ans{margin-top:14px;border-top:1px dashed var(--line);padding-top:10px;}
+.ans summary{cursor:pointer;color:var(--accent);font-weight:600;font-size:14px;
+  user-select:none;list-style:none;display:inline-flex;align-items:center;gap:6px;}
+.ans summary::-webkit-details-marker{display:none;}
+.ans summary::before{content:"▸";transition:transform .15s;display:inline-block;}
+.ans[open] summary::before{transform:rotate(90deg);}
+.ans-body{margin-top:12px;background:#fbfcfe;border:1px solid var(--line);
+  border-radius:9px;padding:14px 16px;}
+.answer-line{font-size:14.5px;}
+.ans-tag{display:inline-block;background:var(--ok-soft);color:var(--ok);font-weight:700;
+  border-radius:5px;padding:1px 9px;margin-right:9px;font-size:12px;}
+.analysis{margin-top:12px;padding-top:12px;border-top:1px solid var(--line);
+  color:#394554;font-size:13.5px;}
+.an-title{font-weight:700;color:var(--accent);margin-bottom:6px;}
+.footer{margin-top:44px;text-align:center;color:var(--sub);font-size:13px;}
+@media print{
+  body{background:#fff;} header.top{box-shadow:none;}
+  .toolbar,nav.jump{display:none;}
+  .ans summary{list-style:unset;} .ans:not([open]) .ans-body{display:block;}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="top">
+  <h1>Python 期末复习题库</h1>
+  <p>依据 13 讲 PPT + 8 份平时作业/实验整理 · 按考试范围与重点分配题量</p>
+  <p>题型：单选 · 代码填空 · 代码改错 · 程序设计 · 编程 ｜ 答案默认折叠，点击展开</p>
+  <div class="statbar">
+    <span class="stat">总题数 <b>47</b></span>
+    <span class="stat">单选 <b>17</b></span>
+    <span class="stat">代码填空 <b>10</b></span>
+    <span class="stat">代码改错 <b>8</b></span>
+    <span class="stat">程序设计 <b>5</b></span>
+    <span class="stat">编程 <b>7</b></span>
+    <span class="stat">题源：老师PPT / 平时作业</span>
+  </div>
+</header>
+<div class="toolbar">
+  <button onclick="toggleAll(true)">展开全部答案</button>
+  <button onclick="toggleAll(false)">收起全部答案</button>
+  <span class="tip">先自测，再点开对答案；黄底为填空处，函数旁注见每题提示。</span>
+</div>
+<nav class="jump"><a href="#type-0">① 单选（17）</a><a href="#type-1">② 代码填空（10）</a><a href="#type-2">③ 代码改错（8）</a><a href="#type-3">④ 程序设计（5）</a><a href="#type-4">⑤ 编程（7）</a></nav>
+
+<section class="type" id="type-0">
+<h2><span class="ico">①</span>单项选择题</h2>
+<div class="desc">共 17 题 · 题源标记见每题左上角</div>
+<article class="q" id="q1">
+<div class="qhead">
+<span class="num">1</span>
+<span class="badge type">单选</span>
+<span class="badge src">题源：老师PPT</span>
+<span class="badge tag">库引用</span>
+</div>
+<div class="stem">关于 Python 中 import 库引用的说法，正确的是：</div>
+<ul class="opts">
+<li>A. import math 之后，可以直接写 sqrt(16) 调用平方根函数</li>
+<li>B. from math import sqrt 之后，可以直接写 sqrt(16) 调用平方根函数</li>
+<li>C. import math as m 之后，必须用 math.sqrt(16) 才能调用</li>
+<li>D. Python 不允许在一个程序中引用多个库</li>
+</ul>
+<div class="hint"><span class="hint-tag">函数/方法提示</span>库引用三种写法：import 库名（需加库名前缀）；from 库名 import 函数（直接用函数名）；import 库名 as 别名（用别名前缀）。</div>
+<details class="ans"><summary>点击查看答案与解析</summary><div class="ans-body"><div class="answer-line"><span class="ans-tag">参考答案</span>B</div><div class="analysis"><div class="an-title">考试导向解析</div>考点：库引用三种方式。<br>怎么拿分：记住 import math → math.sqrt；from math import sqrt → sqrt；import math as m → m.sqrt。B 正确。<br>常见失分点：把 from 方式误认为也要加库名前缀；把 as 别名方式误认为还能写全名。题源：老师PPT 理论02。</div></div></details>
+</article>
+<article class="q" id="q2">
+<div class="qhead">
+<span class="num">2</span>
+<span class="badge type">单选</span>
+<span class="badge src">题源：老师PPT</span>
+<span class="badge tag">温度转换</span>
+</div>
+<div class="stem">执行如下代码，输出最接近的是：<br>&gt;&gt;&gt; 输入 100F</div>
+<pre class="code"><code>temp = input(&quot;请输入温度：&quot;)
+if temp[-1] in [&#x27;F&#x27;, &#x27;f&#x27;]:
+    c = (eval(temp[:-1]) - 32) / 1.8
+    print(f&quot;{c:.2f}C&quot;)</code></pre>
+<ul class="opts">
+<li>A. 37.78C</li>
+<li>B. 212.00C</li>
+<li>C. 100.00C</li>
+<li>D. 55.56C</li>
+</ul>
+<div class="hint"><span class="hint-tag">函数/方法提示</span>temp[-1] 取最后一个字符判断单位；temp[:-1] 去掉单位；eval 把字符串变数字。F→C 公式：(F-32)/1.8。</div>
+<details class="ans"><summary>点击查看答案与解析</summary><div class="ans-body"><div class="answer-line"><span class="ans-tag">参考答案</span>A</div><div class="analysis"><div class="an-title">考试导向解析</div>考点：温度转换 + 字符串索引切片 + eval + 分支。<br>怎么拿分：(100-32)/1.8 = 68/1.8 ≈ 37.78，所以选 A。<br>常见失分点：记反公式（C→F 是 c*1.8+32）；忘记 eval 导致字符串无法计算。题源：老师PPT 理论02 温度转换案例。</div></div></details>
+</article>
+<article class="q" id="q3">
+<div class="qhead">
+<span class="num">3</span>
+<span class="badge type">单选</span>
+<span class="badge src">题源：老师PPT</span>
+<span class="badge tag">round/浮点精度</span>
+</div>
+<div class="stem">表达式 round(0.1 + 0.2, 1) 的结果是：</div>
+<ul class="opts">
+<li>A. 0.30000000000000004</li>
+<li>B. 0.3</li>
+<li>C. 0.4</li>
+<li>D. 报错</li>
+</ul>
+<div class="hint"><span class="hint-tag">函数/方法提示</span>round(x, n) 把 x 四舍五入保留 n 位小数。</div>
+<details class="ans"><summary>点击查看答案与解析</summary><div class="ans-body"><div class="answer-line"><span class="ans-tag">参考答案</span>B</div><div class="analysis"><div class="an-title">考试导向解析</div>考点：round 处理浮点精度。<br>怎么拿分：0.1+0.2 内部是 0.30000000000000004，round(...,1) 四舍五入到 1 位得 0.3，选 B。<br>常见失分点：混淆 round 结果与原始浮点误差。题源：老师PPT 理论03 浮点精度。</div></div></details>
+</article>
+<article class="q" id="q4">
+<div class="qhead">
+<span class="num">4</span>
+<span class="badge type">单选</span>
+<span class="badge src">题源：老师PPT</span>
+<span class="badge tag">浮点精度</span>
+</div>
+<div class="stem">在 Python 中，表达式 0.1 + 0.2 == 0.3 的结果是：</div>
+<ul class="opts">
+<li>A. True</li>
+<li>B. False</li>
+<li>C. 0.3</li>
+<li>D. 语法错误</li>
+</ul>
+<div class="hint"><span class="hint-tag">函数/方法提示</span>浮点数用二进制近似表示，存在精度误差，不做相等比较。</div>
+<details class="ans"><summary>点击查看答案与解析</summary><div class="ans-body"><div class="answer-line"><span class="ans-tag">参考答案</span>B</div><div class="analysis"><div class="an-title">考试导向解析</div>考点：浮点数精度问题。<br>怎么拿分：0.1+0.2 = 0.30000000000000004，不等于 0.3，选 B。<br>常见失分点：想当然认为等于 0.3。正确做法是 round(x,1)==0.3 或 abs(x-0.3)&lt;1e-6。题源：老师PPT 理论03 易错点。</div></div></details>
+</article>
+<article class="q" id="q5">
+<div class="qhead">
+<span class="num">5</span>
+<span class="badge type">单选</span>
+<span class="badge src">题源：平时作业</span>
+<span class="badge tag">random范围</span>
+</div>
+<div class="stem">执行 import random 后，random.randint(1, 10) 可能产生的整数范围是：</div>
+<ul class="opts">
+<li>A. 1 到 9（不含 10）</li>
+<li>B. 1 到 10（含 1 和 10）</li>
+<li>C. 0 到 10（含 0 和 10）</li>
+<li>D. 1 到 11（不含 11）</li>
+</ul>
+<div class="hint"><span class="hint-tag">函数/方法提示</span>randint(a, b) 产生 [a, b] 闭区间整数；range(a, b) 才是左闭右开。</div>
+<details class="ans"><summary>点击查看答案与解析</summary><div class="ans-body"><div class="answer-line"><span class="ans-tag">参考答案</span>B</div><div class="analysis"><div class="an-title">考试导向解析</div>考点：random.randint 闭区间特性。<br>怎么拿分：randint(1,10) 含两端，1~10 都可能，选 B。<br>常见失分点：把 randint 当成 range 的左闭右开；randint(1,10) 不包含 0。题源：平时作业 理论03 random 应用。</div></div></details>
+</article>
+<article class="q" id="q6">
+<div class="qhead">
+<span class="num">6</span>
+<span class="badge type">单选</span>
+<span class="badge src">题源：老师PPT</span>
+<span class="badge tag">random/seed</span>
+</div>
+<div class="stem">关于 random.seed(42) 的作用，说法正确的是：</div>
+<ul class="opts">
+<li>A. 让随机数生成速度变快</li>
+<li>B. 让后续随机数序列固定、可复现</li>
+<li>C. 让随机数一定等于 42</li>
+<li>D. 关闭随机数功能</li>
+</ul>
+<div class="hint"><span class="hint-tag">函数/方法提示</span>seed(整数) 设置随机种子，相同种子产生相同随机序列，常用于调试和复现。</div>
+<details class="ans"><summary>点击查看答案与解析</summary><div class="ans-body"><div class="answer-line"><span class="ans-tag">参考答案</span>B</div><div class="analysis"><div class="an-title">考试导向解析</div>考点：随机种子 seed。<br>怎么拿分：seed 固定随机序列，便于复现实验结果，选 B。<br>常见失分点：误以为 seed(42) 让随机数变成 42。题源：老师PPT 理论03 random 库。</div></div></details>
+</article>
+<article class="q" id="q7">
+<div class="qhead">
+<span class="num">7</span>
+<span class="badge type">单选</span>
+<span class="badge src">题源：平时作业</span>
+<span class="badge tag">字符串索引切片</span>
+</div>
+<div class="stem">设 s = &#x27;Python&#x27;，表达式 s[-1] + s[0:2] 的结果是：</div>
+<ul class="opts">
+<li>A. &#x27;nPy&#x27;</li>
+<li>B. &#x27;Pyt&#x27;</li>
+<li>C. &#x27;nyt&#x27;</li>
+<li>D. &#x27;onP&#x27;</li>
+</ul>
+<div class="hint"><span class="hint-tag">函数/方法提示</span>s[-1] 是最后一个字符 &#x27;n&#x27;；s[0:2] 是索引 0、1 两个字符 &#x27;Py&#x27;（左闭右开）。</div>
+<details class="ans"><summary>点击查看答案与解析</summary><div class="ans-body"><div class="answer-line"><span class="ans-tag">参考答案</span>A</div><div class="analysis"><div class="an-title">考试导向解析</div>考点：负索引 + 切片左闭右开。<br>怎么拿分：&#x27;n&#x27; + &#x27;Py&#x27; = &#x27;nPy&#x27;，选 A。<br>常见失分点：以为 s[0:2] 含第 2 位得到 &#x27;Pyt&#x27;；混淆负索引方向。题源：平时作业 理论04 索引切片。</div></div></details>
+</article>
+<article class="q" id="q8">
+<div class="qhead">
+<span class="num">8</span>
+<span class="badge type">单选</span>
+<span class="badge src">题源：平时作业</span>
+<span class="badge tag">字符串分隔拼接</span>
+</div>
+<div class="stem">执行 info = &#x27;10001|Python|张三&#x27;; parts = info.split(&#x27;|&#x27;) 后，parts[1] 的值是：</div>
+<ul class="opts">
+<li>A. &#x27;10001&#x27;</li>
+<li>B. &#x27;Python&#x27;</li>
+<li>C. &#x27;张三&#x27;</li>
+<li>D. [&#x27;10001&#x27;,&#x27;Python&#x27;,&#x27;张三&#x27;]</li>
+</ul>
+<div class="hint"><span class="hint-tag">函数/方法提示</span>split 按分隔符把字符串拆成列表，parts[0]、parts[1] 按下标取字段。</div>
+<details class="ans"><summary>点击查看答案与解析</summary><div class="ans-body"><div class="answer-line"><span class="ans-tag">参考答案</span>B</div><div class="analysis"><div class="an-title">考试导向解析</div>考点：split 分割。<br>怎么拿分：split(&#x27;|&#x27;) 得 [&#x27;10001&#x27;,&#x27;Python&#x27;,&#x27;张三&#x27;]，下标 1 是 &#x27;Python&#x27;，选 B。<br>常见失分点：记成下标从 1 开始；把整个列表当成结果。题源：平时作业 理论04 split 妙用。</div></div></details>
+</article>
+<article class="q" id="q9">
+<div class="qhead">
+<span class="num">9</span>
+<span class="badge type">单选</span>
+<span class="badge src">题源：老师PPT</span>
+<span class="badge tag">二重循环</span>
+</div>
+<div class="stem">执行以下代码，print 一共执行多少次？<br>for i in range(3):<br>    for j in range(4):<br>        print(i, j)</div>
+<ul class="opts">
+<li>A. 7</li>
+<li>B. 12</li>
+<li>C. 3</li>
+<li>D. 4</li>
+</ul>
+<div class="hint"><span class="hint-tag">函数/方法提示</span>嵌套循环总次数 = 外层次数 × 内层次数。</div>
+<details class="ans"><summary>点击查看答案与解析</summary><div class="ans-body"><div class="answer-line"><span class="ans-tag">参考答案</span>B</div><div class="analysis"><div class="an-title">考试导向解析</div>考点：二重循环执行次数。<br>怎么拿分：外层 3 次 × 内层 4 次 = 12 次，选 B。<br>常见失分点：加成 3+4=7。题源：老师PPT 理论06 嵌套循环。</div></div></details>
+</article>
+<article class="q" id="q10">
+<div class="qhead">
+<span class="num">10</span>
+<span class="badge type">单选</span>
+<span class="badge src">题源：老师PPT</span>
+<span class="badge tag">递归</span>
+</div>
+<div class="stem">关于递归函数中的“基例”，说法正确的是：</div>
+<ul class="opts">
+<li>A. 基例是函数第一次调用时的位置</li>
+<li>B. 基例是递归停止的条件，不再调用自身</li>
+<li>C. 基例可有可无，不影响递归</li>
+<li>D. 基例一定要写成 return 0</li>
+</ul>
+<div class="hint"><span class="hint-tag">函数/方法提示</span>递归两要素：基例（什么时候停）+ 递归链条（如何缩小规模）。</div>
+<details class="ans"><summary>点击查看答案与解析</summary><div class="ans-body"><div class="answer-line"><span class="ans-tag">参考答案</span>B</div><div class="analysis"><div class="an-title">考试导向解析</div>考点：递归两要素。<br>怎么拿分：基例是出口，让递归能停下来，选 B。<br>常见失分点：漏写基例导致 RecursionError。题源：老师PPT 理论08 递归思想。</div></div></details>
+</article>
+<article class="q" id="q11">
+<div class="qhead">
+<span class="num">11</span>
+<span class="badge type">单选</span>
+<span class="badge src">题源：平时作业</span>
+<span class="badge tag">sort与sorted</span>
+</div>
+<div class="stem">关于 list.sort() 与 sorted(list) 的区别，说法正确的是：</div>
+<ul class="opts">
+<li>A. sort() 返回新列表，sorted() 原地修改</li>
+<li>B. sort() 原地修改列表、返回 None；sorted() 返回新列表</li>
+<li>C. 两者完全相同</li>
+<li>D. sorted() 只能用于数字</li>
+</ul>
+<div class="hint"><span class="hint-tag">函数/方法提示</span>list.sort() 原地排序不返回新表（返回 None）；sorted(序列) 生成新列表，原表不变。</div>
+<details class="ans"><summary>点击查看答案与解析</summary><div class="ans-body"><div class="answer-line"><span class="ans-tag">参考答案</span>B</div><div class="analysis"><div class="an-title">考试导向解析</div>考点：sort 与 sorted 区别。<br>怎么拿分：sort 原地改、返回 None；sorted 不改原表、返回新表，选 B。<br>常见失分点：写 result = nums.sort() 结果得到 None。题源：平时作业 理论09 sort/sorted。</div></div></details>
+</article>
+<article class="q" id="q12">
+<div class="qhead">
+<span class="num">12</span>
+<span class="badge type">单选</span>
+<span class="badge src">题源：平时作业</span>
+<span class="badge tag">字典get</span>
+</div>
+<div class="stem">设 d = {&#x27;Python&#x27;: 59}，表达式 d.get(&#x27;Java&#x27;, 0) 的结果是：</div>
+<ul class="opts">
+<li>A. 报错 KeyError</li>
+<li>B. None</li>
+<li>C. 0</li>
+<li>D. 59</li>
+</ul>
+<div class="hint"><span class="hint-tag">函数/方法提示</span>d.get(key, default)：键存在返回值，不存在返回 default（不给则 None），不会报错。</div>
+<details class="ans"><summary>点击查看答案与解析</summary><div class="ans-body"><div class="answer-line"><span class="ans-tag">参考答案</span>C</div><div class="analysis"><div class="an-title">考试导向解析</div>考点：字典 get 安全访问。<br>怎么拿分：&#x27;Java&#x27; 不在字典中，返回默认值 0，选 C。<br>常见失分点：混淆 d[key]（不存在报 KeyError）与 d.get。题源：平时作业 理论10 get 安全访问。</div></div></details>
+</article>
+<article class="q" id="q13">
+<div class="qhead">
+<span class="num">13</span>
+<span class="badge type">单选</span>
+<span class="badge src">题源：平时作业</span>
+<span class="badge tag">字典遍历</span>
+</div>
+<div class="stem">要同时拿到字典 d 的键和值，应使用：</div>
+<ul class="opts">
+<li>A. for k in d:</li>
+<li>B. for v in d.values():</li>
+<li>C. for k, v in d.items():</li>
+<li>D. for k in d.keys():</li>
+</ul>
+<div class="hint"><span class="hint-tag">函数/方法提示</span>items() 返回键值对视图，配合两个变量可同时解包出键和值。</div>
+<details class="ans"><summary>点击查看答案与解析</summary><div class="ans-body"><div class="answer-line"><span class="ans-tag">参考答案</span>C</div><div class="analysis"><div class="an-title">考试导向解析</div>考点：字典遍历三方式。<br>怎么拿分：items() 成对遍历，选 C。<br>常见失分点：默认 for k in d 遍历的是键，不是值。题源：平时作业 理论10 字典遍历。</div></div></details>
+</article>
+<article class="q" id="q14">
+<div class="qhead">
+<span class="num">14</span>
+<span class="badge type">单选</span>
+<span class="badge src">题源：老师PPT</span>
+<span class="badge tag">文件读写</span>
+</div>
+<div class="stem">关于 open(&#x27;note.txt&#x27;, &#x27;w&#x27;, encoding=&#x27;utf-8&#x27;) 的说法，正确的是：</div>
+<ul class="opts">
+<li>A. 以只读方式打开，文件必须存在</li>
+<li>B. 以写入方式打开，会清空原文件内容</li>
+<li>C. 在文件末尾追加内容</li>
+<li>D. 以二进制方式打开</li>
+</ul>
+<div class="hint"><span class="hint-tag">函数/方法提示</span>r 读（文件须存在）；w 写（清空重建）；a 追加；b 二进制。</div>
+<details class="ans"><summary>点击查看答案与解析</summary><div class="ans-body"><div class="answer-line"><span class="ans-tag">参考答案</span>B</div><div class="analysis"><div class="an-title">考试导向解析</div>考点：文件打开模式。<br>怎么拿分：w 模式会覆盖清空原文件，选 B。<br>常见失分点：把 w 当成追加，误覆盖数据；忘记 encoding=&#x27;utf-8&#x27; 导致中文乱码。题源：老师PPT 理论11 读写模式。</div></div></details>
+</article>
+<article class="q" id="q15">
+<div class="qhead">
+<span class="num">15</span>
+<span class="badge type">单选</span>
+<span class="badge src">题源：平时作业</span>
+<span class="badge tag">循环分支结合</span>
+</div>
+<div class="stem">执行以下代码，输出的数字个数是：<br>for i in range(1, 11):<br>    if i % 2 == 0:<br>        continue<br>    print(i)</div>
+<ul class="opts">
+<li>A. 10</li>
+<li>B. 5</li>
+<li>C. 4</li>
+<li>D. 6</li>
+</ul>
+<div class="hint"><span class="hint-tag">函数/方法提示</span>continue 跳过本次循环；range(1,11) 是 1~10。</div>
+<details class="ans"><summary>点击查看答案与解析</summary><div class="ans-body"><div class="answer-line"><span class="ans-tag">参考答案</span>B</div><div class="analysis"><div class="an-title">考试导向解析</div>考点：continue + 循环 + 分支。<br>怎么拿分：偶数被 continue 跳过，只打印 1~10 中的奇数 1,3,5,7,9 共 5 个，选 B。<br>常见失分点：把 continue 当成 break（退出整个循环）。题源：平时作业 理论06 continue 过滤。</div></div></details>
+</article>
+<article class="q" id="q46">
+<div class="qhead">
+<span class="num">46</span>
+<span class="badge type">单选</span>
+<span class="badge src">题源：平时作业</span>
+<span class="badge tag">集合基础</span>
+</div>
+<div class="stem">设 a = {1, 2, 3}，b = {2, 3, 4}，表达式 a &amp; b 的结果是：</div>
+<ul class="opts">
+<li>A. {1, 4}</li>
+<li>B. {2, 3}</li>
+<li>C. {1, 2, 3, 4}</li>
+<li>D. {1}</li>
+</ul>
+<div class="hint"><span class="hint-tag">函数/方法提示</span>&amp; 求交集（共同元素）；| 并集；- 差集；^ 对称差。</div>
+<details class="ans"><summary>点击查看答案与解析</summary><div class="ans-body"><div class="answer-line"><span class="ans-tag">参考答案</span>B</div><div class="analysis"><div class="an-title">考试导向解析</div>考点：集合交并差基础。<br>怎么拿分：a 与 b 的共同元素是 2、3，选 B。<br>常见失分点：把 &amp; 当成并集。题源：平时作业 理论10 集合运算。</div></div></details>
+</article>
+<article class="q" id="q47">
+<div class="qhead">
+<span class="num">47</span>
+<span class="badge type">单选</span>
+<span class="badge src">题源：老师PPT</span>
+<span class="badge tag">json基础</span>
+</div>
+<div class="stem">关于 json.dump(data, f, ensure_ascii=False) 的说法，正确的是：</div>
+<ul class="opts">
+<li>A. 把数据写入文件，且中文保持原样不转义</li>
+<li>B. 把数据从文件读出</li>
+<li>C. 把中文转成 \u 编码</li>
+<li>D. 只能处理字符串</li>
+</ul>
+<div class="hint"><span class="hint-tag">函数/方法提示</span>dump 写文件、load 读文件；ensure_ascii=False 保留中文原样。</div>
+<details class="ans"><summary>点击查看答案与解析</summary><div class="ans-body"><div class="answer-line"><span class="ans-tag">参考答案</span>A</div><div class="analysis"><div class="an-title">考试导向解析</div>考点：JSON 持久化基础。<br>怎么拿分：dump 是写入，ensure_ascii=False 保留中文，选 A。<br>常见失分点：混淆 dump/load 方向；忘记 ensure_ascii=False 导致中文变 \u 转义。题源：老师PPT 理论11 JSON。</div></div></details>
+</article>
+</section>
+<section class="type" id="type-1">
+<h2><span class="ico">②</span>代码填空题（补全空缺部分）</h2>
+<div class="desc">共 10 题 · 题源标记见每题左上角</div>
+<article class="q" id="q16">
+<div class="qhead">
+<span class="num">16</span>
+<span class="badge type">代码填空</span>
+<span class="badge src">题源：老师PPT</span>
+<span class="badge tag">库引用</span>
+</div>
+<div class="stem">补充代码，用 sqrt 计算 16 的平方根（要求直接用函数名，不加库名前缀）：</div>
+<pre class="code"><code><span class="blank">from math import</span> sqrt
+print(sqrt(16))   # 输出 4.0</code></pre>
+<div class="hint"><span class="hint-tag">函数/方法提示</span>from math import sqrt 导入指定函数，之后可直接写 sqrt(...)。</div>
+<details class="ans"><summary>点击查看答案与解析</summary><div class="ans-body"><div class="answer-line"><span class="ans-tag">参考答案</span>from math import</div><div class="analysis"><div class="an-title">考试导向解析</div>考点：from...import 导入方式。<br>怎么拿分：填 from math import。<br>常见失分点：写成 import math 则后面必须写 math.sqrt。题源：老师PPT 理论02 库引用。</div></div></details>
+</article>
+<article class="q" id="q17">
+<div class="qhead">
+<span class="num">17</span>
+<span class="badge type">代码填空</span>
+<span class="badge src">题源：老师PPT</span>
+<span class="badge tag">温度转换</span>
+</div>
+<div class="stem">补全摄氏转华氏分支（输入如 37C）：</div>
+<pre class="code"><code>temp = input(&quot;请输入温度：&quot;)
+if temp[-1] in [&#x27;C&#x27;, &#x27;c&#x27;]:
+    c = eval(temp[0:<span class="blank">-1</span>])
+    f = c * 1.8 + 32
+    print(f&quot;转换后：{f:.2f}F&quot;)</code></pre>
+<div class="hint"><span class="hint-tag">函数/方法提示</span>temp[0:-1] 表示去掉最后一个字符（单位 C）。</div>
+<details class="ans"><summary>点击查看答案与解析</summary><div class="ans-body"><div class="answer-line"><span class="ans-tag">参考答案</span>-1</div><div class="analysis"><div class="an-title">考试导向解析</div>考点：切片去单位 + 温度转换。<br>怎么拿分：填 -1，temp[0:-1] 取出数字部分。<br>常见失分点：写 temp[0:1] 只取第一位；忘记 eval 转换。题源：老师PPT 理论02 温度转换。</div></div></details>
+</article>
+<article class="q" id="q18">
+<div class="qhead">
+<span class="num">18</span>
+<span class="badge type">代码填空</span>
+<span class="badge src">题源：老师PPT</span>
+<span class="badge tag">round</span>
+</div>
+<div class="stem">补全：把圆周率保留两位小数输出：</div>
+<pre class="code"><code>pi = 3.1415926
+print(f&quot;{pi:<span class="blank">.2f</span>}&quot;)   # 输出 3.14</code></pre>
+<div class="hint"><span class="hint-tag">函数/方法提示</span>f-string 中 :.2f 表示保留两位小数。</div>
+<details class="ans"><summary>点击查看答案与解析</summary><div class="ans-body"><div class="answer-line"><span class="ans-tag">参考答案</span>.2f</div><div class="analysis"><div class="an-title">考试导向解析</div>考点：f-string 精度控制。<br>怎么拿分：填 .2f。<br>常见失分点：写成 :.2 漏掉 f；写成 round(pi,2) 也可但格式不同。题源：老师PPT 理论02 格式化。</div></div></details>
+</article>
+<article class="q" id="q19">
+<div class="qhead">
+<span class="num">19</span>
+<span class="badge type">代码填空</span>
+<span class="badge src">题源：平时作业</span>
+<span class="badge tag">random/seed</span>
+</div>
+<div class="stem">补全：固定种子后，生成 1~100 的整数（含两端）：</div>
+<pre class="code"><code>import random
+random.seed(<span class="blank">42</span>)
+n = random.randint(1, 100)
+print(n)</code></pre>
+<div class="hint"><span class="hint-tag">函数/方法提示</span>seed() 里放一个整数即可（如 42），相同种子结果可复现。</div>
+<details class="ans"><summary>点击查看答案与解析</summary><div class="ans-body"><div class="answer-line"><span class="ans-tag">参考答案</span>42</div><div class="analysis"><div class="an-title">考试导向解析</div>考点：seed 用法。<br>怎么拿分：填任意整数，如 42。<br>常见失分点：seed 里写非整数会报错。题源：平时作业 理论03 seed 应用。</div></div></details>
+</article>
+<article class="q" id="q20">
+<div class="qhead">
+<span class="num">20</span>
+<span class="badge type">代码填空</span>
+<span class="badge src">题源：平时作业</span>
+<span class="badge tag">字符串切片</span>
+</div>
+<div class="stem">补全：用切片反转字符串：</div>
+<pre class="code"><code>s = &quot;hello&quot;
+rev = s[<span class="blank">::-1</span>]
+print(rev)   # 输出 olleh</code></pre>
+<div class="hint"><span class="hint-tag">函数/方法提示</span>s[::-1] 步长为 -1，从尾到头取字符，实现反转。</div>
+<details class="ans"><summary>点击查看答案与解析</summary><div class="ans-body"><div class="answer-line"><span class="ans-tag">参考答案</span>::-1</div><div class="analysis"><div class="an-title">考试导向解析</div>考点：切片步长反转。<br>怎么拿分：填 ::-1。<br>常见失分点：写成 [::-2] 会隔字符取。题源：平时作业 理论04 切片反转。</div></div></details>
+</article>
+<article class="q" id="q21">
+<div class="qhead">
+<span class="num">21</span>
+<span class="badge type">代码填空</span>
+<span class="badge src">题源：平时作业</span>
+<span class="badge tag">字符串分隔</span>
+</div>
+<div class="stem">补全：从图书信息中取出作者（第二段）：</div>
+<pre class="code"><code>info = &quot;10001|Python程序设计|张三&quot;
+parts = info.split(&#x27;<span class="blank">|</span>&#x27;)
+print(parts[2])   # 输出 张三</code></pre>
+<div class="hint"><span class="hint-tag">函数/方法提示</span>按竖线分隔，parts[2] 是第三段（作者）。</div>
+<details class="ans"><summary>点击查看答案与解析</summary><div class="ans-body"><div class="answer-line"><span class="ans-tag">参考答案</span>|</div><div class="analysis"><div class="an-title">考试导向解析</div>考点：split 分隔符。<br>怎么拿分：填 | 。<br>常见失分点：分隔符与字符串中实际字符不一致。题源：平时作业 理论04 ISBN/图书解析。</div></div></details>
+</article>
+<article class="q" id="q22">
+<div class="qhead">
+<span class="num">22</span>
+<span class="badge type">代码填空</span>
+<span class="badge src">题源：老师PPT</span>
+<span class="badge tag">二重循环</span>
+</div>
+<div class="stem">补全：打印 3 行 5 列的星号矩形：</div>
+<pre class="code"><code>for i in range(3):
+    for j in range(<span class="blank">5</span>):
+        print(&#x27;*&#x27;, end=&#x27;&#x27;)
+    print()</code></pre>
+<div class="hint"><span class="hint-tag">函数/方法提示</span>内层控制每行星号个数，5 列就 range(5)。</div>
+<details class="ans"><summary>点击查看答案与解析</summary><div class="ans-body"><div class="answer-line"><span class="ans-tag">参考答案</span>5</div><div class="analysis"><div class="an-title">考试导向解析</div>考点：二重循环。<br>怎么拿分：填 5。<br>常见失分点：把外层 range(3) 当成列数；内层漏掉 end=&#x27;&#x27; 会每个星号换行。题源：老师PPT 理论06 嵌套循环。</div></div></details>
+</article>
+<article class="q" id="q23">
+<div class="qhead">
+<span class="num">23</span>
+<span class="badge type">代码填空</span>
+<span class="badge src">题源：老师PPT</span>
+<span class="badge tag">递归</span>
+</div>
+<div class="stem">补全阶乘递归的基例：</div>
+<pre class="code"><code>def factorial(n):
+    if n &lt;= 1:
+        return <span class="blank">1</span>
+    return n * factorial(n - 1)
+
+print(factorial(5))   # 输出 120</code></pre>
+<div class="hint"><span class="hint-tag">函数/方法提示</span>0! = 1! = 1，这是阶乘递归的出口。</div>
+<details class="ans"><summary>点击查看答案与解析</summary><div class="ans-body"><div class="answer-line"><span class="ans-tag">参考答案</span>1</div><div class="analysis"><div class="an-title">考试导向解析</div>考点：递归基例。<br>怎么拿分：填 1。<br>常见失分点：基例写 return 0 会让结果全变 0。题源：老师PPT 理论08 阶乘递归。</div></div></details>
+</article>
+<article class="q" id="q24">
+<div class="qhead">
+<span class="num">24</span>
+<span class="badge type">代码填空</span>
+<span class="badge src">题源：平时作业</span>
+<span class="badge tag">sort与sorted/字典</span>
+</div>
+<div class="stem">补全：按价格从高到低排序图书字典列表：</div>
+<pre class="code"><code>books = [{&#x27;name&#x27;:&#x27;A&#x27;,&#x27;price&#x27;:59}, {&#x27;name&#x27;:&#x27;B&#x27;,&#x27;price&#x27;:35}]
+result = sorted(books, key=lambda b: b[&#x27;<span class="blank">price</span>&#x27;], reverse=True)
+print(result[0][&#x27;name&#x27;])   # 输出 A</code></pre>
+<div class="hint"><span class="hint-tag">函数/方法提示</span>lambda b: b[&#x27;price&#x27;] 指定按 price 字段排序，reverse=True 降序。</div>
+<details class="ans"><summary>点击查看答案与解析</summary><div class="ans-body"><div class="answer-line"><span class="ans-tag">参考答案</span>price</div><div class="analysis"><div class="an-title">考试导向解析</div>考点：sorted + lambda + 字典取值。<br>怎么拿分：填 price。<br>常见失分点：key 写成 b[&#x27;price&#x27;] 缺 lambda；混淆升降序。题源：平时作业 理论07/10 sorted 排名。</div></div></details>
+</article>
+<article class="q" id="q25">
+<div class="qhead">
+<span class="num">25</span>
+<span class="badge type">代码填空</span>
+<span class="badge src">题源：老师PPT</span>
+<span class="badge tag">文件读写</span>
+</div>
+<div class="stem">补全：用 with 语句安全写入文件：</div>
+<pre class="code"><code><span class="blank">with</span> open(&#x27;note.txt&#x27;, &#x27;w&#x27;, encoding=&#x27;utf-8&#x27;) as f:
+    f.write(&#x27;Hello 图书馆&#x27;)</code></pre>
+<div class="hint"><span class="hint-tag">函数/方法提示</span>with open(...) as f: 代码块结束自动关闭文件。</div>
+<details class="ans"><summary>点击查看答案与解析</summary><div class="ans-body"><div class="answer-line"><span class="ans-tag">参考答案</span>with</div><div class="analysis"><div class="an-title">考试导向解析</div>考点：with 上下文管理。<br>怎么拿分：填 with。<br>常见失分点：漏写 as f；忘记 encoding=&#x27;utf-8&#x27;。题源：老师PPT 理论11 with 语句。</div></div></details>
+</article>
+</section>
+<section class="type" id="type-2">
+<h2><span class="ico">③</span>代码改错题（找出错误并改正）</h2>
+<div class="desc">共 8 题 · 题源标记见每题左上角</div>
+<article class="q" id="q26">
+<div class="qhead">
+<span class="num">26</span>
+<span class="badge type">代码改错</span>
+<span class="badge src">题源：老师PPT</span>
+<span class="badge tag">浮点精度</span>
+</div>
+<div class="stem">找出并改正错误（浮点数相等比较）：</div>
+<pre class="code"><code>x = 0.1 + 0.2
+if x == 0.3:
+    print(&quot;相等&quot;)
+else:
+    print(&quot;不等&quot;)   # 程序输出了&quot;不等&quot;，与预期不符</code></pre>
+<div class="hint"><span class="hint-tag">函数/方法提示</span>浮点有精度误差，不能直接用 == 比较，用 round 或误差范围。</div>
+<details class="ans"><summary>点击查看答案与解析</summary><div class="ans-body"><div class="answer-line"><span class="ans-tag">参考答案</span>把 if x == 0.3 改为 if round(x, 1) == 0.3（或 abs(x - 0.3) &lt; 1e-6）。</div><div class="analysis"><div class="an-title">考试导向解析</div>考点：浮点精度。<br>怎么拿分：指出不能用 ==，给出 round 或 abs 容差方案。<br>常见失分点：只说“有误差”不给改法。题源：老师PPT 理论03 易错点。</div></div></details>
+</article>
+<article class="q" id="q27">
+<div class="qhead">
+<span class="num">27</span>
+<span class="badge type">代码改错</span>
+<span class="badge src">题源：老师PPT</span>
+<span class="badge tag">字符串不可变</span>
+</div>
+<div class="stem">找出并改正错误：</div>
+<pre class="code"><code>s = &quot;Python&quot;
+s[0] = &quot;J&quot;      # 想把首字母改成 J
+print(s)</code></pre>
+<div class="hint"><span class="hint-tag">函数/方法提示</span>字符串不可变；要“修改”只能重新赋值生成新字符串。</div>
+<details class="ans"><summary>点击查看答案与解析</summary><div class="ans-body"><div class="answer-line"><span class="ans-tag">参考答案</span>字符串不可变，不能按下标赋值。改为 s = &#x27;J&#x27; + s[1:]（或 s = s.replace(&#x27;P&#x27;,&#x27;J&#x27;,1)）。</div><div class="analysis"><div class="an-title">考试导向解析</div>考点：字符串不可变性。<br>怎么拿分：说明不可变 + 给出拼接/ replace 方案。<br>常见失分点：直接 s[0]=&#x27;J&#x27; 会 TypeError。题源：老师PPT 理论04 不可变性。</div></div></details>
+</article>
+<article class="q" id="q28">
+<div class="qhead">
+<span class="num">28</span>
+<span class="badge type">代码改错</span>
+<span class="badge src">题源：平时作业</span>
+<span class="badge tag">random范围</span>
+</div>
+<div class="stem">找出错误：想产生 1~10 的整数（含 10），下面代码范围对吗？</div>
+<pre class="code"><code>import random
+n = random.randrange(1, 10)   # 期望得到 1~10（含10）
+print(n)</code></pre>
+<div class="hint"><span class="hint-tag">函数/方法提示</span>randint(a,b) 含两端；randrange/range 左闭右开。</div>
+<details class="ans"><summary>点击查看答案与解析</summary><div class="ans-body"><div class="answer-line"><span class="ans-tag">参考答案</span>randrange(1,10) 不含 10（等价 range）。应改为 random.randint(1,10) 或 randrange(1,11)。</div><div class="analysis"><div class="an-title">考试导向解析</div>考点：随机函数区间区别。<br>怎么拿分：指出 randrange 不含上界，改用 randint。<br>常见失分点：把所有随机函数都当成含两端。题源：平时作业 理论03 random。</div></div></details>
+</article>
+<article class="q" id="q29">
+<div class="qhead">
+<span class="num">29</span>
+<span class="badge type">代码改错</span>
+<span class="badge src">题源：老师PPT</span>
+<span class="badge tag">字符串索引</span>
+</div>
+<div class="stem">找出并改正错误：</div>
+<pre class="code"><code>s = &quot;abc&quot;
+print(s[3])   # 想打印最后一个字符，结果报错</code></pre>
+<div class="hint"><span class="hint-tag">函数/方法提示</span>正索引 0 到 len-1；负索引 -1 是最后一个。</div>
+<details class="ans"><summary>点击查看答案与解析</summary><div class="ans-body"><div class="answer-line"><span class="ans-tag">参考答案</span>s[3] 越界（有效下标 0~2）。最后一个字符应写 s[-1] 或 s[len(s)-1]。</div><div class="analysis"><div class="an-title">考试导向解析</div>考点：索引越界。<br>怎么拿分：指出 IndexError，给出 s[-1] 改法。<br>常见失分点：以为长度 3 就能取 s[3]。题源：老师PPT 理论04 索引。</div></div></details>
+</article>
+<article class="q" id="q30">
+<div class="qhead">
+<span class="num">30</span>
+<span class="badge type">代码改错</span>
+<span class="badge src">题源：平时作业</span>
+<span class="badge tag">循环分支结合</span>
+</div>
+<div class="stem">找出错误：想打印 1~5，结果只打印到 4：</div>
+<pre class="code"><code>for i in range(1, 5):
+    print(i)</code></pre>
+<div class="hint"><span class="hint-tag">函数/方法提示</span>range(a,b) 含 a 不含 b；想含 5 就写 range(1,6)。</div>
+<details class="ans"><summary>点击查看答案与解析</summary><div class="ans-body"><div class="answer-line"><span class="ans-tag">参考答案</span>range(1,5) 左闭右开只到 4。应改为 range(1, 6)。</div><div class="analysis"><div class="an-title">考试导向解析</div>考点：range 边界。<br>怎么拿分：指出左闭右开，改上界为 6。<br>常见失分点：忘记 +1。题源：平时作业 理论06 range。</div></div></details>
+</article>
+<article class="q" id="q31">
+<div class="qhead">
+<span class="num">31</span>
+<span class="badge type">代码改错</span>
+<span class="badge src">题源：老师PPT</span>
+<span class="badge tag">递归</span>
+</div>
+<div class="stem">找出递归函数的两处问题：</div>
+<pre class="code"><code>def my_sum(n):
+    return n + my_sum(n - 1)   # 问题1
+
+print(my_sum(5))</code></pre>
+<div class="hint"><span class="hint-tag">函数/方法提示</span>递归必须有出口（基例），否则 RecursionError。</div>
+<details class="ans"><summary>点击查看答案与解析</summary><div class="ans-body"><div class="answer-line"><span class="ans-tag">参考答案</span>缺少基例，会无限递归。应先写：if n == 1: return 1，再写递归链条 return n + my_sum(n-1)。</div><div class="analysis"><div class="an-title">考试导向解析</div>考点：递归基例。<br>怎么拿分：补上基例 if n &lt;= 1: return 1。<br>常见失分点：只写链条不写基例。题源：老师PPT 理论08 递归思想。</div></div></details>
+</article>
+<article class="q" id="q32">
+<div class="qhead">
+<span class="num">32</span>
+<span class="badge type">代码改错</span>
+<span class="badge src">题源：平时作业</span>
+<span class="badge tag">字典get</span>
+</div>
+<div class="stem">找出错误：查询不存在的键导致程序崩溃：</div>
+<pre class="code"><code>d = {&#x27;Python&#x27;: 59}
+print(d[&#x27;Java&#x27;])   # 引发 KeyError</code></pre>
+<div class="hint"><span class="hint-tag">函数/方法提示</span>拿不准键是否存在，用 get 而不是 d[key]。</div>
+<details class="ans"><summary>点击查看答案与解析</summary><div class="ans-body"><div class="answer-line"><span class="ans-tag">参考答案</span>d[&#x27;Java&#x27;] 键不存在会报 KeyError。改用 d.get(&#x27;Java&#x27;, 0) 安全访问。</div><div class="analysis"><div class="an-title">考试导向解析</div>考点：字典安全访问。<br>怎么拿分：指出 KeyError，改用 get。<br>常见失分点：混淆 d[key] 与 get 的行为差异。题源：平时作业 理论10 get。</div></div></details>
+</article>
+<article class="q" id="q33">
+<div class="qhead">
+<span class="num">33</span>
+<span class="badge type">代码改错</span>
+<span class="badge src">题源：平时作业</span>
+<span class="badge tag">sort与sorted</span>
+</div>
+<div class="stem">找出错误：下面代码输出 None：</div>
+<pre class="code"><code>nums = [3, 1, 2]
+result = nums.sort()   # 想把排序结果存入 result
+print(result)          # 输出 None</code></pre>
+<div class="hint"><span class="hint-tag">函数/方法提示</span>sort 改原表不返回；sorted 返回新表不改原表。</div>
+<details class="ans"><summary>点击查看答案与解析</summary><div class="ans-body"><div class="answer-line"><span class="ans-tag">参考答案</span>list.sort() 原地排序、返回 None。应改为 nums.sort(); print(nums)，或 result = sorted(nums)。</div><div class="analysis"><div class="an-title">考试导向解析</div>考点：sort 返回值。<br>怎么拿分：说明 sort 返回 None，给出两种改法。<br>常见失分点：把 sort 的返回值当新列表。题源：平时作业 理论09 sort/sorted。</div></div></details>
+</article>
+</section>
+<section class="type" id="type-3">
+<h2><span class="ico">④</span>程序设计相关（流程描述 / 结构化概念 → 应用）</h2>
+<div class="desc">共 5 题 · 题源标记见每题左上角</div>
+<article class="q" id="q34">
+<div class="qhead">
+<span class="num">34</span>
+<span class="badge type">程序设计</span>
+<span class="badge src">题源：老师PPT</span>
+<span class="badge tag">IPO/温度转换</span>
+</div>
+<div class="stem">用 IPO 方法描述“温度转换程序”的设计，写出 I、P、O 各是什么，并说明处理逻辑。</div>
+<div class="hint"><span class="hint-tag">函数/方法提示</span>IPO = Input（输入）+ Process（处理）+ Output（输出），是贯穿全课的通用模型。</div>
+<details class="ans"><summary>点击查看答案与解析</summary><div class="ans-body"><div class="answer-line"><span class="ans-tag">参考答案</span>I（输入）：带单位的温度字符串，如 &#x27;100F&#x27; 或 &#x27;37C&#x27;。<br>P（处理）：用 temp[-1] 判断单位；若为 F/F，取 temp[:-1] 用 eval 转数字，按 C=(F-32)/1.8 计算；若为 C/c，按 F=C*1.8+32 计算；否则提示格式错误。<br>O（输出）：按 f-string 保留两位小数输出转换结果。</div><div class="analysis"><div class="an-title">考试导向解析</div>考点：IPO 程序设计方法 + 温度转换。<br>怎么拿分：三段齐全；处理部分写清“判断单位→套公式→格式化”。<br>常见失分点：只写输入和函数，漏掉处理逻辑；不写格式错误兜底。题源：老师PPT 理论01 IPO + 理论02 案例。</div></div></details>
+</article>
+<article class="q" id="q35">
+<div class="qhead">
+<span class="num">35</span>
+<span class="badge type">程序设计</span>
+<span class="badge src">题源：老师PPT</span>
+<span class="badge tag">分支结构</span>
+</div>
+<div class="stem">某图书馆借阅规则：学生最多借 5 本、教师 10 本、管理员 999 本，其他身份无效。用结构化概念描述如何用多分支实现“根据身份确定借阅上限”，并说明分支顺序是否需要调整。</div>
+<div class="hint"><span class="hint-tag">函数/方法提示</span>多分支从上到下依次判断，命中即停；条件重叠时必须把范围小的放前面。</div>
+<details class="ans"><summary>点击查看答案与解析</summary><div class="ans-body"><div class="answer-line"><span class="ans-tag">参考答案</span>用 if-elif-else 多分支：if role==&#x27;学生&#x27; → limit=5；elif role==&#x27;教师&#x27; → limit=10；elif role==&#x27;管理员&#x27; → limit=999；else → limit=0 并提示身份无效。<br>由于各条件互不重叠，顺序不影响结果；但若条件之间有包含关系（如按分数分段），必须从严到宽排序，否则前面的分支会抢先命中。</div><div class="analysis"><div class="an-title">考试导向解析</div>考点：多分支结构 + 条件顺序。<br>怎么拿分：写出 if-elif-else 结构；点出“命中即停、重叠要排序”。<br>常见失分点：把宽泛条件写在前面导致后续分支永远不到达。题源：老师PPT 理论05 借书权限。</div></div></details>
+</article>
+<article class="q" id="q36">
+<div class="qhead">
+<span class="num">36</span>
+<span class="badge type">程序设计</span>
+<span class="badge src">题源：平时作业</span>
+<span class="badge tag">循环分支结合</span>
+</div>
+<div class="stem">描述“猜数字游戏”的程序结构：用到了哪些控制结构？循环的退出条件是什么？</div>
+<div class="hint"><span class="hint-tag">函数/方法提示</span>while True + break 是交互式程序的典型模式；循环体内必须有分支和状态更新。</div>
+<details class="ans"><summary>点击查看答案与解析</summary><div class="ans-body"><div class="answer-line"><span class="ans-tag">参考答案</span>用到：①顺序结构（生成答案、初始化次数）；②循环结构 while True 反复接收输入；③分支结构 if 判断猜大/猜小/猜中；④break 在猜中时退出循环。<br>退出条件：猜中数字（或达到最大次数时循环结束）。每次循环末尾更新尝试次数，避免死循环。</div><div class="analysis"><div class="an-title">考试导向解析</div>考点：循环与分支结合、while True+break。<br>怎么拿分：说清三种结构各自作用；明确退出条件与计数更新。<br>常见失分点：漏写次数更新导致死循环；把 continue 与 break 混用。题源：平时作业 理论06 猜数字。</div></div></details>
+</article>
+<article class="q" id="q37">
+<div class="qhead">
+<span class="num">37</span>
+<span class="badge type">程序设计</span>
+<span class="badge src">题源：平时作业</span>
+<span class="badge tag">字典/词频统计</span>
+</div>
+<div class="stem">描述“统计一段英文文本中每个单词出现次数”的结构化过程（输入→处理→输出），并指出处理环节用到的关键方法。</div>
+<div class="hint"><span class="hint-tag">函数/方法提示</span>get(key,0)+1 是“查不到就从 0 开始加”的经典计数范式。</div>
+<details class="ans"><summary>点击查看答案与解析</summary><div class="ans-body"><div class="answer-line"><span class="ans-tag">参考答案</span>I：输入一段字符串文本。<br>P：①用 text.split() 分词得到单词列表；②建空字典 freq；③遍历单词，用 freq[w] = freq.get(w, 0) + 1 计数（get 保证首次出现从 0 开始）；④可用 sorted(freq.items(), key=lambda x:x[1], reverse=True) 排序。<br>O：输出词频字典（及出现最多的单词）。<br>关键方法：split、dict.get、items、sorted+lambda。</div><div class="analysis"><div class="an-title">考试导向解析</div>考点：字典计数范式 + IPO。<br>怎么拿分：写出 split、get 计数、items 遍历三件套。<br>常见失分点：用 freq[w]+=1 首次会 KeyError；漏掉排序。题源：平时作业 理论10 词频统计。</div></div></details>
+</article>
+<article class="q" id="q38">
+<div class="qhead">
+<span class="num">38</span>
+<span class="badge type">程序设计</span>
+<span class="badge src">题源：老师PPT</span>
+<span class="badge tag">递归结构化</span>
+</div>
+<div class="stem">从结构化角度说明递归函数求 n! 的两个组成部分，并写出完整的递归链条与基例。</div>
+<div class="hint"><span class="hint-tag">函数/方法提示</span>写任何递归前先用一句话说清“什么时候停”，再写“如何变小”。</div>
+<details class="ans"><summary>点击查看答案与解析</summary><div class="ans-body"><div class="answer-line"><span class="ans-tag">参考答案</span>递归两要素：<br>①基例（出口）：n == 0 或 n == 1 时返回 1，递归在此停止。<br>②递归链条（缩小规模）：n! = n × (n-1)!，即 return n * factorial(n-1)。<br>完整代码：<br>def factorial(n):<br>    if n &lt;= 1:<br>        return 1<br>    return n * factorial(n-1)<br>展开示例：factorial(4)=4×3×2×1=24。</div><div class="analysis"><div class="an-title">考试导向解析</div>考点：递归两要素、阶乘模型。<br>怎么拿分：基例 + 链条缺一不可；能写出展开过程更好。<br>常见失分点：漏 return、基例不可达。题源：老师PPT 理论08 阶乘递归。</div></div></details>
+</article>
+</section>
+<section class="type" id="type-4">
+<h2><span class="ico">⑤</span>编程题（代码段补齐 + 完整代码编写）</h2>
+<div class="desc">共 7 题 · 题源标记见每题左上角</div>
+<article class="q" id="q39">
+<div class="qhead">
+<span class="num">39</span>
+<span class="badge type">编程</span>
+<span class="badge src">题源：老师PPT</span>
+<span class="badge tag">温度转换综合</span>
+</div>
+<div class="stem">完整编写：输入带单位温度（如 32C 或 100F），判断单位并转换输出，保留两位小数；输入格式非法时提示错误。</div>
+<pre class="code"><code>temp = input(&quot;请输入温度(如32C/100F)：&quot;)
+if temp[-1] in [&#x27;F&#x27;, &#x27;f&#x27;]:
+    f = eval(temp[:-1])
+    c = (f - 32) / 1.8
+    print(f&quot;转换后温度：{c:.2f}C&quot;)
+elif temp[-1] in [&#x27;C&#x27;, &#x27;c&#x27;]:
+    c = eval(temp[:-1])
+    f = c * 1.8 + 32
+    print(f&quot;转换后温度：{f:.2f}F&quot;)
+else:
+    print(&quot;输入格式错误&quot;)</code></pre>
+<div class="hint"><span class="hint-tag">函数/方法提示</span>eval 去掉字符串最外层引号并按表达式求值；切片 [:-1] 去掉最后一位单位。</div>
+<details class="ans"><summary>点击查看答案与解析</summary><div class="ans-body"><div class="answer-line"><span class="ans-tag">参考答案</span>见左（参考代码）。关键点：temp[-1] 判单位、temp[:-1] 取数字、eval 转换、F→C 用 (F-32)/1.8、C→F 用 C*1.8+32、f-string 保留两位。</div><div class="analysis"><div class="an-title">考试导向解析</div>考点：温度转换 + 切片 + eval + 多分支 + 格式化。<br>怎么拿分：三分支齐全（F/C/错误）；两个公式写对；格式化 .2f。<br>常见失分点：公式记反；忘记 eval；漏掉 else 兜底。题源：老师PPT 理论02 温度转换。</div></div></details>
+</article>
+<article class="q" id="q40">
+<div class="qhead">
+<span class="num">40</span>
+<span class="badge type">编程</span>
+<span class="badge src">题源：平时作业</span>
+<span class="badge tag">random模拟</span>
+</div>
+<div class="stem">代码补齐：用 random 模拟掷骰子 6000 次，统计 1~6 点各出现的次数并输出。</div>
+<pre class="code"><code>import random
+counts = [0] * <span class="blank">6</span>
+for _ in range(6000):
+    point = random.randint(<span class="blank">1</span>, <span class="blank">6</span>)
+    counts[<span class="blank">point - 1</span>] += 1
+for i, c in enumerate(counts, 1):
+    print(f&quot;{i}点：{c}次&quot;)</code></pre>
+<div class="hint"><span class="hint-tag">函数/方法提示</span>randint(1,6) 产生 1~6；列表下标从 0 开始，点数减 1 才是下标。</div>
+<details class="ans"><summary>点击查看答案与解析</summary><div class="ans-body"><div class="answer-line"><span class="ans-tag">参考答案</span>依次填：6；1；6；point-1。列表下标 0~5 对应 1~6 点，所以计数时用 point-1。</div><div class="analysis"><div class="an-title">考试导向解析</div>考点：random.randint + 列表计数 + enumerate。<br>怎么拿分：randint 范围含 6；下标 point-1 映射正确。<br>常见失分点：counts[point] 越界（point=6 时）；把 randint 写成 randrange 漏掉 6。题源：平时作业 理论03 掷骰子。</div></div></details>
+</article>
+<article class="q" id="q41">
+<div class="qhead">
+<span class="num">41</span>
+<span class="badge type">编程</span>
+<span class="badge src">题源：平时作业</span>
+<span class="badge tag">字符串处理综合</span>
+</div>
+<div class="stem">完整编写：输入一句英文，统计字符 &#x27;e&#x27; 出现的次数，并把整句反转后输出。</div>
+<pre class="code"><code>s = input(&quot;请输入一句英文：&quot;)
+cnt = s.count(&#x27;e&#x27;)          # 统计 e 出现次数
+rev = s[::-1]               # 反转字符串
+print(f&quot;&#x27;e&#x27;出现次数：{cnt}&quot;)
+print(f&quot;反转结果：{rev}&quot;)</code></pre>
+<div class="hint"><span class="hint-tag">函数/方法提示</span>count 统计子串出现次数；[::-1] 反转字符串（步长为 -1）。</div>
+<details class="ans"><summary>点击查看答案与解析</summary><div class="ans-body"><div class="answer-line"><span class="ans-tag">参考答案</span>见左（参考代码）。用 s.count(&#x27;e&#x27;) 统计次数，用 s[::-1] 反转。</div><div class="analysis"><div class="an-title">考试导向解析</div>考点：字符串 count 方法 + 切片反转 + f-string。<br>怎么拿分：count 与 [::-1] 两个点写对。<br>常见失分点：用 find 只能找第一次位置；反转写成 [::2]。题源：平时作业 理论04 字符串方法。</div></div></details>
+</article>
+<article class="q" id="q42">
+<div class="qhead">
+<span class="num">42</span>
+<span class="badge type">编程</span>
+<span class="badge src">题源：老师PPT</span>
+<span class="badge tag">二重循环</span>
+</div>
+<div class="stem">代码补齐：打印 5 行倒三角星号图案（第 1 行 5 个星，逐行递减到 1 个）。</div>
+<pre class="code"><code>for i in range(5, 0, -1):
+    for j in range(<span class="blank">i</span>):
+        print(&#x27;*&#x27;, end=&#x27;&#x27;)
+    <span class="blank">print</span>()</code></pre>
+<div class="hint"><span class="hint-tag">函数/方法提示</span>外层 range(5,0,-1) 控制行数递减；内层 range(i) 控制该行星号数。</div>
+<details class="ans"><summary>点击查看答案与解析</summary><div class="ans-body"><div class="answer-line"><span class="ans-tag">参考答案</span>内层 range(i)（i 从 5 递减到 1）；内层结束后 print() 换行。</div><div class="analysis"><div class="an-title">考试导向解析</div>考点：二重循环 + range 倒序。<br>怎么拿分：内层 range(i)，每行末尾 print() 换行。<br>常见失分点：内层漏 end=&#x27;&#x27; 导致星号竖排；忘记换行。题源：老师PPT 理论06 倒三角。</div></div></details>
+</article>
+<article class="q" id="q43">
+<div class="qhead">
+<span class="num">43</span>
+<span class="badge type">编程</span>
+<span class="badge src">题源：老师PPT</span>
+<span class="badge tag">递归斐波那契</span>
+</div>
+<div class="stem">完整编写递归函数 fib(n) 求斐波那契数列第 n 项（F(1)=F(2)=1），并打印前 8 项。</div>
+<pre class="code"><code>def fib(n):
+    if n == 1 or n == 2:    # 双基例
+        return 1
+    return fib(n - 1) + fib(n - 2)
+
+for i in range(1, 9):
+    print(fib(i), end=&quot; &quot;)
+# 输出：1 1 2 3 5 8 13 21</code></pre>
+<div class="hint"><span class="hint-tag">函数/方法提示</span>斐波那契需连续两个基例，否则双递归无法停止。</div>
+<details class="ans"><summary>点击查看答案与解析</summary><div class="ans-body"><div class="answer-line"><span class="ans-tag">参考答案</span>见左（参考代码）。关键点：双基例 n==1 或 n==2 返回 1；递归链条 fib(n-1)+fib(n-2)。</div><div class="analysis"><div class="an-title">考试导向解析</div>考点：斐波那契双递归 + 双基例。<br>怎么拿分：两个基例齐全、链条正确。<br>常见失分点：只写一个基例；Fib(35) 普通递归效率极低（了解即可）。题源：老师PPT 理论08 斐波那契。</div></div></details>
+</article>
+<article class="q" id="q44">
+<div class="qhead">
+<span class="num">44</span>
+<span class="badge type">编程</span>
+<span class="badge src">题源：平时作业</span>
+<span class="badge tag">字典get/排序</span>
+</div>
+<div class="stem">完整编写：统计句子 &#x27;the quick the lazy the dog&#x27; 中每个单词出现次数，并输出出现次数最多的单词。</div>
+<pre class="code"><code>sentence = &quot;the quick the lazy the dog&quot;
+freq = {}
+for w in sentence.split():
+    freq[w] = freq.get(w, 0) + 1
+print(freq)
+top = sorted(freq.items(), key=lambda x: x[1], reverse=True)[0]
+print(&quot;最高频：&quot;, top)</code></pre>
+<div class="hint"><span class="hint-tag">函数/方法提示</span>sorted(freq.items(), key=lambda x:x[1], reverse=True) 按字典的值排序。</div>
+<details class="ans"><summary>点击查看答案与解析</summary><div class="ans-body"><div class="answer-line"><span class="ans-tag">参考答案</span>见左（参考代码）。先用 split 分词，用 get(w,0)+1 计数，再用 sorted+lambda 按值降序取第一个。</div><div class="analysis"><div class="an-title">考试导向解析</div>考点：get 计数 + items 遍历 + sorted+lambda。<br>怎么拿分：get(w,0)+1 写法正确；key=lambda x:x[1] 按值排序。<br>常见失分点：用 freq[w]+=1 首次 KeyError；key 写成 x[0] 变成按单词排序。题源：平时作业 理论10 词频排名。</div></div></details>
+</article>
+<article class="q" id="q45">
+<div class="qhead">
+<span class="num">45</span>
+<span class="badge type">编程</span>
+<span class="badge src">题源：老师PPT</span>
+<span class="badge tag">文件读写</span>
+</div>
+<div class="stem">代码补齐：用 with 把三行书名写入 books.txt（utf-8），再用 with 逐行读回并打印。</div>
+<pre class="code"><code>books = [&quot;Python入门&quot;, &quot;数据结构&quot;, &quot;算法设计&quot;]
+with open(&quot;books.txt&quot;, &quot;w&quot;, encoding=&quot;<span class="blank">utf-8</span>&quot;) as f:
+    for b in books:
+        f.write(b + &quot;\n&quot;)
+with open(&quot;books.txt&quot;, encoding=&quot;utf-8&quot;) as f:
+    for line in f:
+        print(line.<span class="blank">strip</span>())   # 去掉行尾换行</code></pre>
+<div class="hint"><span class="hint-tag">函数/方法提示</span>encoding=&#x27;utf-8&#x27; 处理中文；strip() 去首尾空白（含换行）。</div>
+<details class="ans"><summary>点击查看答案与解析</summary><div class="ans-body"><div class="answer-line"><span class="ans-tag">参考答案</span>编码填 utf-8；读取后用 line.strip() 去掉行尾换行符。</div><div class="analysis"><div class="an-title">考试导向解析</div>考点：with + open 写读 + encoding + strip。<br>怎么拿分：写入用 w、读取默认 r；两处都写 encoding；strip 去换行。<br>常见失分点：写 w 时漏 encoding 导致中文乱码；读回不 strip 多出空行。题源：老师PPT 理论11 文件综合。</div></div></details>
+</article>
+</section>
+
+<div class="footer">题库按考试范围整理，不考复数 / 变量作用域 / turtle · 函数可看旁边提示</div>
+</div>
+<script>
+function toggleAll(open){
+  document.querySelectorAll('details.ans').forEach(function(d){ d.open = open; });
+}
+</script>
+</body>
+</html>
